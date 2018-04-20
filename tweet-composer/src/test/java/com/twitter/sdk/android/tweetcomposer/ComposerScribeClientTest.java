@@ -18,7 +18,6 @@ package com.twitter.sdk.android.tweetcomposer;
 
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,9 +30,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
@@ -50,19 +47,19 @@ public class ComposerScribeClientTest {
     private ArgumentCaptor<List<ScribeItem>> scribeItemsCaptor;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         composerScribeClient = new ComposerScribeClientImpl(mockClient);
     }
 
     @Test
-    public void testConstructor() throws Exception {
+    public void testConstructor() {
         composerScribeClient = new ComposerScribeClientImpl(mockClient);
         assertNotNull(composerScribeClient);
     }
 
     @Test
-    public void testConstructor_null() throws Exception {
+    public void testConstructor_null() {
         try {
             new ComposerScribeClientImpl(null);
             fail("expected scribeClient NullPointerException");
@@ -72,7 +69,7 @@ public class ComposerScribeClientTest {
     }
 
     @Test
-    public void testImpression() throws Exception {
+    public void testImpression() {
         composerScribeClient.impression();
         verify(mockClient).scribe(eventNamespaceCaptor.capture(), scribeItemsCaptor.capture());
         final EventNamespace eventNamespace = eventNamespaceCaptor.getValue();
@@ -81,7 +78,7 @@ public class ComposerScribeClientTest {
     }
 
     @Test
-    public void testTweetClick() throws Exception {
+    public void testTweetClick() {
         composerScribeClient.click(ScribeConstants.SCRIBE_TWEET_ELEMENT);
         verify(mockClient).scribe(eventNamespaceCaptor.capture(), scribeItemsCaptor.capture());
         final EventNamespace eventNamespace = eventNamespaceCaptor.getValue();
@@ -90,7 +87,7 @@ public class ComposerScribeClientTest {
     }
 
     @Test
-    public void testCancelClick() throws Exception {
+    public void testCancelClick() {
         composerScribeClient.click(ScribeConstants.SCRIBE_CANCEL_ELEMENT);
         verify(mockClient).scribe(eventNamespaceCaptor.capture(), scribeItemsCaptor.capture());
         final EventNamespace eventNamespace = eventNamespaceCaptor.getValue();

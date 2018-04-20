@@ -20,22 +20,15 @@ package com.twitter.sdk.android.tweetcomposer;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class ComposerActivityTest {
@@ -141,7 +134,7 @@ public class ComposerActivityTest {
     public void testBuilder_emptyArray() {
         final Intent intent = new ComposerActivity.Builder(mockContext)
                 .session(mockSession)
-                .hashtags(new String[0])
+                .hashtags()
                 .createIntent();
 
         assertNull(intent.getStringExtra(ComposerActivity.EXTRA_HASHTAGS));

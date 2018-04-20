@@ -57,7 +57,7 @@ public class TwitterCoreTest extends AndroidTestCase {
         }
     }
 
-    public void testGuestSessionManager_sdkStartNoTwitterKit() throws Exception {
+    public void testGuestSessionManager_sdkStartNoTwitterKit() {
         try {
             TwitterTestUtils.resetTwitter();
             TwitterCoreTestUtils.resetTwitterCore();
@@ -73,11 +73,11 @@ public class TwitterCoreTest extends AndroidTestCase {
         assertEquals(identifier, twitterCore.getIdentifier());
     }
 
-    public void testGetSessionManager() throws Exception {
+    public void testGetSessionManager() {
         assertNotNull(twitterCore.getSessionManager());
     }
 
-    public void testGetSessionManager_twitterNotInitialized() throws Exception {
+    public void testGetSessionManager_twitterNotInitialized() {
         try {
             TwitterTestUtils.resetTwitter();
             TwitterCoreTestUtils.resetTwitterCore();
@@ -88,11 +88,11 @@ public class TwitterCoreTest extends AndroidTestCase {
         }
     }
 
-    public void testGetAppSessionManager() throws Exception {
+    public void testGetAppSessionManager() {
         assertNotNull(twitterCore.getGuestSessionProvider());
     }
 
-    public void testGetAppSessionManager_twitterNotInitialized() throws Exception {
+    public void testGetAppSessionManager_twitterNotInitialized() {
         try {
             TwitterTestUtils.resetTwitter();
             TwitterCoreTestUtils.resetTwitterCore();
@@ -103,12 +103,12 @@ public class TwitterCoreTest extends AndroidTestCase {
         }
     }
 
-    public void testGetApiClient_activeSessionExists() throws Exception {
+    public void testGetApiClient_activeSessionExists() {
         twitterCore.twitterSessionManager = setUpSessionManager(mock(TwitterSession.class));
         assertNotNull(twitterCore.getApiClient());
     }
 
-    public void testGetApiClient_twitterNotInitialized() throws Exception {
+    public void testGetApiClient_twitterNotInitialized() {
         try {
             TwitterTestUtils.resetTwitter();
             TwitterCoreTestUtils.resetTwitterCore();
@@ -119,11 +119,11 @@ public class TwitterCoreTest extends AndroidTestCase {
         }
     }
 
-    public void testGetApiClient_withSession() throws Exception {
+    public void testGetApiClient_withSession() {
         assertNotNull(twitterCore.getApiClient(mock(TwitterSession.class)));
     }
 
-    public void testGetApiClient_withSessionTwitterNotInitialized() throws Exception {
+    public void testGetApiClient_withSessionTwitterNotInitialized() {
         try {
             TwitterTestUtils.resetTwitter();
             TwitterCoreTestUtils.resetTwitterCore();
@@ -134,7 +134,7 @@ public class TwitterCoreTest extends AndroidTestCase {
         }
     }
 
-    public void testGetGuestApiClient_twitterNotInitialized() throws Exception {
+    public void testGetGuestApiClient_twitterNotInitialized() {
         try {
             TwitterTestUtils.resetTwitter();
             TwitterCoreTestUtils.resetTwitterCore();

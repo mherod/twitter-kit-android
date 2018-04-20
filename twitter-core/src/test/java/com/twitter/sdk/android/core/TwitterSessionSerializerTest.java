@@ -58,7 +58,7 @@ public class TwitterSessionSerializerTest  {
     }
 
     @Test
-    public void testDeserialize_sessionWithAuthToken() throws Exception {
+    public void testDeserialize_sessionWithAuthToken() {
         final TwitterSession session = serializer.deserialize(SESSION_JSON);
         final TwitterSession newSession = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET, CREATED_AT),
@@ -67,7 +67,7 @@ public class TwitterSessionSerializerTest  {
     }
 
     @Test
-    public void testDeserialize_session() throws Exception {
+    public void testDeserialize_session() {
         final TwitterSession session = serializer.deserialize(FULL_SESSION_JSON);
         assertEquals(new TwitterSession(new TwitterAuthToken(TestFixtures.TOKEN,
                 TestFixtures.SECRET, CREATED_AT), TestFixtures.USER_ID, TestFixtures.SCREEN_NAME),
@@ -75,20 +75,20 @@ public class TwitterSessionSerializerTest  {
     }
 
     @Test
-    public void testDeserialize_sessionWithNullUserName() throws Exception {
+    public void testDeserialize_sessionWithNullUserName() {
         final TwitterSession session = serializer.deserialize(SESSION_JSON_NULL_USERNAME);
         assertEquals(new TwitterSession(new TwitterAuthToken(TestFixtures.TOKEN,
                 TestFixtures.SECRET, CREATED_AT), TestFixtures.USER_ID, null), session);
     }
 
     @Test
-    public void testDeserialize_nullSerializedSession() throws Exception {
+    public void testDeserialize_nullSerializedSession() {
         final TwitterSession session = serializer.deserialize(null);
         assertNull(session);
     }
 
     @Test
-    public void testSerialize_sessionWithAuthToken() throws Exception {
+    public void testSerialize_sessionWithAuthToken() {
         final TwitterSession session = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET, CREATED_AT),
                 TwitterSession.UNKNOWN_USER_ID, TwitterSession.UNKNOWN_USER_NAME);
@@ -96,7 +96,7 @@ public class TwitterSessionSerializerTest  {
     }
 
     @Test
-    public void testSerialize_session() throws Exception {
+    public void testSerialize_session() {
         final TwitterSession session = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET, CREATED_AT),
                 TestFixtures.USER_ID, TestFixtures.SCREEN_NAME);
@@ -104,7 +104,7 @@ public class TwitterSessionSerializerTest  {
     }
 
     @Test
-    public void testSerialize_sessionWithNullUserName() throws Exception {
+    public void testSerialize_sessionWithNullUserName() {
         final TwitterSession session = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET, CREATED_AT),
                 TestFixtures.USER_ID, null);

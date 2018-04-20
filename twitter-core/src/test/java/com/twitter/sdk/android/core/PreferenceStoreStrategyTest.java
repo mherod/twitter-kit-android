@@ -20,7 +20,6 @@ package com.twitter.sdk.android.core;
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStore;
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreStrategy;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,24 +42,24 @@ public class PreferenceStoreStrategyTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         preferenceStrategy.clear();
     }
 
     @Test
-    public void testRestore_emptyStore() throws Exception {
+    public void testRestore_emptyStore() {
         assertEquals(null, preferenceStrategy.restore());
     }
 
     @Test
-    public void testSaveAndRestore_nullSession() throws Exception {
+    public void testSaveAndRestore_nullSession() {
         preferenceStrategy.save(null);
         final TwitterSession restoredSession = preferenceStrategy.restore();
         assertEquals(null, restoredSession);
     }
 
     @Test
-    public void testSaveAndRestore_session() throws Exception {
+    public void testSaveAndRestore_session() {
         final TwitterSession session = new TwitterSession(new TwitterAuthToken
                 (TestFixtures.TOKEN, TestFixtures.SECRET), TwitterSession.UNKNOWN_USER_ID,
                 TwitterSession.UNKNOWN_USER_NAME);

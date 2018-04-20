@@ -18,7 +18,6 @@
 package com.twitter.sdk.android.core.internal.oauth;
 
 import android.text.format.DateUtils;
-
 import com.google.gson.annotations.SerializedName;
 
 public class GuestAuthToken extends OAuth2Token {
@@ -63,10 +62,7 @@ public class GuestAuthToken extends OAuth2Token {
 
         final GuestAuthToken that = (GuestAuthToken) o;
 
-        if (guestToken != null ? !guestToken.equals(that.guestToken) : that.guestToken != null)
-            return false;
-
-        return true;
+        return guestToken != null ? guestToken.equals(that.guestToken) : that.guestToken == null;
     }
 
     @Override

@@ -20,10 +20,9 @@ package com.twitter.sdk.android.tweetui;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.models.Tweet;
+import retrofit2.Call;
 
 import java.util.List;
-
-import retrofit2.Call;
 
 /**
  * TwitterListTimeline provides a timeline of tweets from the lists/statuses API source.
@@ -166,7 +165,7 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
          */
         public TwitterListTimeline build() {
             // user must provide either an id or slug, not both
-            if (!(listId == null ^ slug == null)) {
+            if ((listId == null) == (slug == null)) {
                 throw new IllegalStateException("must specify either a list id or slug/owner pair");
             }
 

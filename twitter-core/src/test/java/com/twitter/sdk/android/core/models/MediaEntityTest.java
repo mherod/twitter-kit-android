@@ -21,7 +21,6 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.twitter.sdk.android.core.TestResources;
 import com.twitter.sdk.android.core.internal.CommonUtils;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,7 +28,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.NotSerializableException;
 import java.io.ObjectOutputStream;
@@ -78,7 +76,7 @@ public class MediaEntityTest  {
     }
 
     @Test
-    public void testDeserialization() throws IOException {
+    public void testDeserialization() {
         JsonReader reader = null;
         try {
             reader = new JsonReader(new InputStreamReader(testResources

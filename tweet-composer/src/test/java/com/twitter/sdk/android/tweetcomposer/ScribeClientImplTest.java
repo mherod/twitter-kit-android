@@ -20,7 +20,6 @@ package com.twitter.sdk.android.tweetcomposer;
 import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,12 +38,12 @@ public class ScribeClientImplTest {
     private DefaultScribeClient mockDefaultScribeClient;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void testScribe() throws Exception {
+    public void testScribe() {
         final ScribeClient scribeClient = new ScribeClientImpl(mockDefaultScribeClient);
         final EventNamespace mockEventNamespace = mock(EventNamespace.class);
         final List<ScribeItem> mockItems = mock(List.class);

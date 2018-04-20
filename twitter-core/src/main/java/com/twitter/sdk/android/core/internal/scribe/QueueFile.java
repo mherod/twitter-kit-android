@@ -37,12 +37,7 @@
  */
 package com.twitter.sdk.android.core.internal.scribe;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.channels.FileChannel;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
@@ -564,7 +559,7 @@ public class QueueFile implements Closeable {
                 boolean first = true;
 
                 @Override
-                public void read(InputStream in, int length) throws IOException {
+                public void read(InputStream in, int length) {
                     if (first) {
                         first = false;
                     } else {

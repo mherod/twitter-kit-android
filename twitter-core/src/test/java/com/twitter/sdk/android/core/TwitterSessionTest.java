@@ -21,15 +21,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class TwitterSessionTest  {
 
     @Test
-    public void testConstructor_noAuthToken() throws Exception {
+    public void testConstructor_noAuthToken() {
         try {
             final TwitterSession session = new TwitterSession(null, TwitterSession.UNKNOWN_USER_ID,
                     TwitterSession.UNKNOWN_USER_NAME);
@@ -40,7 +38,7 @@ public class TwitterSessionTest  {
     }
 
     @Test
-    public void testEquals_sameObjects() throws Exception {
+    public void testEquals_sameObjects() {
         final TwitterSession session = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET), TestFixtures.USER_ID,
                 TestFixtures.SCREEN_NAME);
@@ -52,7 +50,7 @@ public class TwitterSessionTest  {
     }
 
     @Test
-    public void testEquals_sameObjectsWithNullUserName() throws Exception {
+    public void testEquals_sameObjectsWithNullUserName() {
         final TwitterSession session = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET), TestFixtures.USER_ID,
                 null);
@@ -64,7 +62,7 @@ public class TwitterSessionTest  {
     }
 
     @Test
-    public void testEquals_diffObjects() throws Exception {
+    public void testEquals_diffObjects() {
         final TwitterSession session = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET), TestFixtures.USER_ID,
                 TestFixtures.SCREEN_NAME);
@@ -76,7 +74,7 @@ public class TwitterSessionTest  {
     }
 
     @Test
-    public void testEquals_diffObjectsWithNullUserName() throws Exception {
+    public void testEquals_diffObjectsWithNullUserName() {
         final TwitterSession session = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET), TestFixtures.USER_ID,
                 null);

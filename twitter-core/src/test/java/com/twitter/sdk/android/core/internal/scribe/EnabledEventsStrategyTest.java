@@ -32,19 +32,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class EnabledEventsStrategyTest {
@@ -64,7 +53,7 @@ public class EnabledEventsStrategyTest {
     }
 
     @Test
-    public void testScheduleTimeBasedRollOverIfNeeded() throws Exception {
+    public void testScheduleTimeBasedRollOverIfNeeded() {
         final int rollover = 10;
         eventsStrategy.rolloverIntervalSeconds = rollover;
         eventsStrategy.scheduleTimeBasedRollOverIfNeeded();
@@ -72,13 +61,13 @@ public class EnabledEventsStrategyTest {
     }
 
     @Test
-    public void testScheduleTimeBasedRollOverIfNeeded_noRollOverInterval() throws Exception {
+    public void testScheduleTimeBasedRollOverIfNeeded_noRollOverInterval() {
         eventsStrategy.scheduleTimeBasedRollOverIfNeeded();
         verifyZeroInteractions(mockExecutor);
     }
 
     @Test
-    public void testCancelTimeBasedFileRollOver() throws Exception {
+    public void testCancelTimeBasedFileRollOver() {
         final ScheduledFuture mockFuture = mock(ScheduledFuture.class);
         eventsStrategy.scheduledRolloverFutureRef.set(mockFuture);
 
@@ -89,7 +78,7 @@ public class EnabledEventsStrategyTest {
     }
 
     @Test
-    public void testDeleteAllEvents() throws Exception {
+    public void testDeleteAllEvents() {
         eventsStrategy.deleteAllEvents();
         verify(mockFilesManager).deleteAllEventsFiles();
     }
@@ -123,7 +112,7 @@ public class EnabledEventsStrategyTest {
     }
 
     @Test
-    public void testConfigureRollover() throws Exception {
+    public void testConfigureRollover() {
         final int rollover = 10;
         eventsStrategy.configureRollover(rollover);
         assertEquals(rollover, eventsStrategy.rolloverIntervalSeconds);
@@ -131,7 +120,7 @@ public class EnabledEventsStrategyTest {
     }
 
     @Test
-    public void testScheduleTimeBasedFileRollOver() throws Exception {
+    public void testScheduleTimeBasedFileRollOver() {
         final long initialDelay = 10L;
         final long frequency = 20L;
         final ScheduledFuture<?> mockFuture = mock(ScheduledFuture.class);
@@ -146,7 +135,7 @@ public class EnabledEventsStrategyTest {
     }
 
     @Test
-    public void testScheduleTimeBasedRollOver_rollOverScheduled() throws Exception {
+    public void testScheduleTimeBasedRollOver_rollOverScheduled() {
         final long initialDelay = 10L;
         final long frequency = 20L;
         final ScheduledFuture<?> mockFuture = mock(ScheduledFuture.class);
@@ -157,7 +146,7 @@ public class EnabledEventsStrategyTest {
     }
 
     @Test
-    public void testSendAndCleanUpIfSuccess() throws Exception {
+    public void testSendAndCleanUpIfSuccess() {
         final List<File> fileList = new ArrayList<>();
         fileList.add(new File("file-1"));
         fileList.add(new File("file-2"));
@@ -174,14 +163,14 @@ public class EnabledEventsStrategyTest {
     }
 
     @Test
-    public void testSendAndCleanUpIfSuccess_doNothing() throws Exception {
+    public void testSendAndCleanUpIfSuccess_doNothing() {
         eventsStrategy.filesSender = null;
         eventsStrategy.sendAndCleanUpIfSuccess();
         verifyZeroInteractions(mockFilesManager);
     }
 
     @Test
-    public void testSendAndCleanUpIfSuccess_noFilesToSend() throws Exception {
+    public void testSendAndCleanUpIfSuccess_noFilesToSend() {
         doReturn(Collections.emptyList()).when(mockFilesManager).getBatchOfFilesToSend();
         eventsStrategy.sendAndCleanUpIfSuccess();
         verify(mockFilesManager).getBatchOfFilesToSend();
@@ -190,7 +179,7 @@ public class EnabledEventsStrategyTest {
     }
 
     @Test
-    public void testSendAndCleanUpIfSuccess_failedToSendFirstFile() throws Exception {
+    public void testSendAndCleanUpIfSuccess_failedToSendFirstFile() {
         final List<File> fileList = new ArrayList<>();
         fileList.add(new File("file-1"));
         fileList.add(new File("file-2"));
@@ -206,7 +195,7 @@ public class EnabledEventsStrategyTest {
     }
 
     @Test
-    public void testSendAndCleanUpIfSuccess_failedToSendFile() throws Exception {
+    public void testSendAndCleanUpIfSuccess_failedToSendFile() {
         final List<File> fileList1 = new ArrayList<>();
         fileList1.add(new File("file-1"));
         fileList1.add(new File("file-2"));

@@ -22,30 +22,12 @@ import android.content.Intent;
 import android.test.AndroidTestCase;
 import android.util.Log;
 import android.view.View;
-
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Logger;
-import com.twitter.sdk.android.core.Twitter;
-import com.twitter.sdk.android.core.TwitterConfig;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterCoreTestUtils;
-import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.TwitterTestUtils;
-
+import com.twitter.sdk.android.core.*;
 import org.mockito.ArgumentCaptor;
 
 import java.util.concurrent.ExecutorService;
 
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class TwitterLoginButtonTest extends AndroidTestCase {
 
@@ -109,7 +91,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
         assertNull(button.authClient);
     }
 
-    public void testConstructor_editMode() throws Exception {
+    public void testConstructor_editMode() {
             final TwitterLoginButton button = new TwitterLoginButton(getContext()) {
                 @Override
                 protected Activity getActivity() {
@@ -124,7 +106,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
             assertTrue(button.isEnabled());
     }
 
-    public void testConstructor_twitterNotStarted() throws Exception {
+    public void testConstructor_twitterNotStarted() {
         try {
             TwitterTestUtils.resetTwitter();
             TwitterCoreTestUtils.resetTwitterCore();
@@ -142,7 +124,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
         }
     }
 
-    public void testConstructor_twitterStarted() throws Exception {
+    public void testConstructor_twitterStarted() {
         try {
             Twitter.initialize(setUpLogTest());
 
@@ -192,7 +174,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
         verify(mockViewClickListener).onClick(eq(loginButton));
     }
 
-    public void testOnClick_callbackNullDebuggableTrue() throws Exception {
+    public void testOnClick_callbackNullDebuggableTrue() {
         Twitter.initialize(new TwitterConfig.Builder(getContext())
                 .executorService(mock(ExecutorService.class))
                 .debug(true)
@@ -208,7 +190,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
         }
     }
 
-    public void testOnClick_callbackNullDebuggableFalse() throws Exception {
+    public void testOnClick_callbackNullDebuggableFalse() {
         Twitter.initialize(setUpLogTest());
         try {
             loginButton.performClick();
@@ -219,7 +201,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
         }
     }
 
-    public void testOnClick_activityNullDebuggableTrue() throws Exception {
+    public void testOnClick_activityNullDebuggableTrue() {
         Twitter.initialize(new TwitterConfig.Builder(getContext())
                 .executorService(mock(ExecutorService.class))
                 .debug(true)
@@ -245,7 +227,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
         }
     }
 
-    public void testOnClick_activityNullDebuggableFalse() throws Exception {
+    public void testOnClick_activityNullDebuggableFalse() {
         Twitter.initialize(setUpLogTest());
         loginButton = new TwitterLoginButton(getContext(), null, 0, mockAuthClient) {
             // This is to allow us to test TwitterLoginButton without having to set up a real
@@ -266,7 +248,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
         }
     }
 
-    public void testOnClick_activityFinishingDebuggableFalse() throws Exception {
+    public void testOnClick_activityFinishingDebuggableFalse() {
         Twitter.initialize(setUpLogTest());
         loginButton = new TwitterLoginButton(getContext(), null, 0, mockAuthClient) {
             // This is to allow us to test TwitterLoginButton without having to set up a real
@@ -325,7 +307,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
         verifyNoMoreInteractions(mockAuthClient);
     }
 
-    public void testGetTwitterAuthClient() throws Exception {
+    public void testGetTwitterAuthClient() {
         try {
             Twitter.initialize(new TwitterConfig.Builder(getContext())
                     .executorService(mock(ExecutorService.class))
@@ -346,7 +328,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
         }
     }
 
-    public void testGetTwitterAuthClient_duplicateCalls() throws Exception {
+    public void testGetTwitterAuthClient_duplicateCalls() {
         try {
             Twitter.initialize(new TwitterConfig.Builder(getContext())
                     .executorService(mock(ExecutorService.class))

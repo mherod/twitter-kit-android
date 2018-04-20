@@ -18,7 +18,6 @@
 package com.twitter.sdk.android.core.identity;
 
 import android.webkit.ConsoleMessage;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +37,7 @@ public class OAuthWebChromeClientTest  {
     }
 
     @Test
-    public void testOnConsoleMessage() throws Exception {
+    public void testOnConsoleMessage() {
         final ConsoleMessage message = mock(ConsoleMessage.class);
         client.onConsoleMessage(message);
         verifyZeroInteractions(message);

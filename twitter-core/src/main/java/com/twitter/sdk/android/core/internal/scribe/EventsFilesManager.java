@@ -19,7 +19,6 @@ package com.twitter.sdk.android.core.internal.scribe;
 
 import android.content.Context;
 import android.util.Log;
-
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.internal.CommonUtils;
 import com.twitter.sdk.android.core.internal.CurrentTimeProvider;
@@ -63,12 +62,10 @@ public abstract class EventsFilesManager<T> {
      *                              on device. This is useful for providing a constant maximum, or
      *                              a default value that varies based on overriding
      *                              {@link #getMaxFilesToKeep()}
-     * @throws IOException
      */
     EventsFilesManager(Context context, EventTransform<T> transform,
-            CurrentTimeProvider currentTimeProvider, EventsStorage eventStorage,
-            int defaultMaxFilesToKeep)
-            throws IOException {
+                       CurrentTimeProvider currentTimeProvider, EventsStorage eventStorage,
+                       int defaultMaxFilesToKeep) {
         this.context = context.getApplicationContext();
         this.transform = transform;
         this.eventStorage = eventStorage;

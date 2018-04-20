@@ -18,13 +18,10 @@
 package com.twitter.sdk.android.core.models;
 
 import com.google.gson.Gson;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-
-import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -52,7 +49,7 @@ public class CoordinatesTest  {
     }
 
     @Test
-    public void testDeserialization() throws IOException {
+    public void testDeserialization() {
         final Coordinates coordinates = gson.fromJson(TEST_JSON, Coordinates.class);
         assertEquals(TEST_COORDINATES_LONGITUDE, coordinates.getLongitude());
         assertEquals(TEST_COORDINATES_LATITUDE, coordinates.getLatitude());

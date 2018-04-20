@@ -25,16 +25,14 @@ import com.twitter.sdk.android.core.internal.scribe.ScribeEvent;
 import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
-
-import org.junit.Test;
-
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
+import org.junit.Test;
 
 public class EqualsHashCodeTest {
 
     @Test
-    public void testTwitterAuthToken() throws Exception {
+    public void testTwitterAuthToken() {
         EqualsVerifier.forClass(TwitterAuthToken.class)
                 .suppress(Warning.STRICT_INHERITANCE)
                 .withIgnoredFields("createdAt")
@@ -42,7 +40,7 @@ public class EqualsHashCodeTest {
     }
 
     @Test
-    public void testOAuth2Token() throws Exception {
+    public void testOAuth2Token() {
         EqualsVerifier.forClass(OAuth2Token.class)
                 .suppress(Warning.STRICT_INHERITANCE)
                 .withIgnoredFields("createdAt")
@@ -51,7 +49,7 @@ public class EqualsHashCodeTest {
     }
 
     @Test
-    public void testGuestAuthToken() throws Exception {
+    public void testGuestAuthToken() {
         EqualsVerifier.forClass(GuestAuthToken.class)
                 .suppress(Warning.STRICT_INHERITANCE)
                 .withIgnoredFields("createdAt")
@@ -60,7 +58,7 @@ public class EqualsHashCodeTest {
     }
 
     @Test
-    public void testSession() throws Exception {
+    public void testSession() {
         EqualsVerifier.forClass(Session.class)
                 .suppress(Warning.STRICT_INHERITANCE)
                 .usingGetClass()
@@ -68,7 +66,7 @@ public class EqualsHashCodeTest {
     }
 
     @Test
-    public void testGuestSession() throws Exception {
+    public void testGuestSession() {
         EqualsVerifier.forClass(GuestSession.class)
                 .suppress(Warning.STRICT_INHERITANCE)
                 .usingGetClass()
@@ -76,7 +74,7 @@ public class EqualsHashCodeTest {
     }
 
     @Test
-    public void testTwitterSession() throws Exception {
+    public void testTwitterSession() {
         EqualsVerifier.forClass(TwitterSession.class)
                 .suppress(Warning.STRICT_INHERITANCE)
                 .usingGetClass()
@@ -84,7 +82,7 @@ public class EqualsHashCodeTest {
     }
 
     @Test
-    public void testEventNamespace() throws Exception {
+    public void testEventNamespace() {
         EqualsVerifier.forClass(EventNamespace.class)
                 .suppress(Warning.STRICT_INHERITANCE)
                 .usingGetClass()
@@ -92,7 +90,7 @@ public class EqualsHashCodeTest {
     }
 
     @Test
-    public void testScribeEvent() throws Exception {
+    public void testScribeEvent() {
         EqualsVerifier.forClass(ScribeEvent.class)
                 .suppress(Warning.STRICT_INHERITANCE)
                 .usingGetClass()
@@ -100,7 +98,7 @@ public class EqualsHashCodeTest {
     }
 
     @Test
-    public void testScribeItem() throws Exception {
+    public void testScribeItem() {
         EqualsVerifier.forClass(ScribeItem.class)
                 .suppress(Warning.STRICT_INHERITANCE)
                 .usingGetClass()
@@ -108,7 +106,7 @@ public class EqualsHashCodeTest {
     }
 
     @Test
-    public void testMediaDetails() throws Exception {
+    public void testMediaDetails() {
         EqualsVerifier.forClass(ScribeItem.MediaDetails.class)
                 .suppress(Warning.STRICT_INHERITANCE)
                 .usingGetClass()
@@ -116,7 +114,7 @@ public class EqualsHashCodeTest {
     }
 
     @Test
-    public void testCardEvent() throws Exception {
+    public void testCardEvent() {
         EqualsVerifier.forClass(ScribeItem.CardEvent.class)
                 .suppress(Warning.STRICT_INHERITANCE)
                 .usingGetClass()
@@ -124,7 +122,7 @@ public class EqualsHashCodeTest {
     }
 
     @Test
-    public void testTweet() throws Exception {
+    public void testTweet() {
         final Tweet tweet01 = new TweetBuilder().setId(123456).build();
         final Tweet tweet02 = new TweetBuilder().setId(654321).build();
         EqualsVerifier.forClass(Tweet.class)

@@ -18,7 +18,6 @@
 package com.twitter.sdk.android.tweetui.internal;
 
 import android.os.Build;
-
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetEntities;
@@ -152,11 +151,8 @@ public final class TweetMediaUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
                 CONTENT_TYPE_HLS.equals(variant.contentType)) {
             return true;
-        } else if (CONTENT_TYPE_MP4.equals(variant.contentType)) {
-            return true;
-        }
+        } else return CONTENT_TYPE_MP4.equals(variant.contentType);
 
-        return false;
     }
 
     static List<MediaEntity> getAllMediaEntities(Tweet tweet) {

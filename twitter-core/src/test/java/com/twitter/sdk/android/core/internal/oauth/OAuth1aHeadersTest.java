@@ -20,7 +20,6 @@ package com.twitter.sdk.android.core.internal.oauth;
 
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +45,7 @@ public class OAuth1aHeadersTest  {
     }
 
     @Test
-    public void testGetOAuthEchoHeaders() throws Exception {
+    public void testGetOAuthEchoHeaders() {
         final TwitterAuthConfig config = mock(TwitterAuthConfig.class);
         final TwitterAuthToken token = mock(TwitterAuthToken.class);
 
@@ -59,7 +58,7 @@ public class OAuth1aHeadersTest  {
     }
 
     @Test
-    public void testGetAuthorizationHeader() throws Exception {
+    public void testGetAuthorizationHeader() {
         final TwitterAuthConfig config = mock(TwitterAuthConfig.class);
         final TwitterAuthToken token = mock(TwitterAuthToken.class);
 

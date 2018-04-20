@@ -21,20 +21,16 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.twitter.sdk.android.core.TestResources;
 import com.twitter.sdk.android.core.internal.CommonUtils;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class TweetEntitiesTest {
@@ -69,7 +65,7 @@ public class TweetEntitiesTest {
     }
 
     @Test
-    public void testDeserialization() throws IOException {
+    public void testDeserialization() {
         JsonReader reader = null;
         try {
             reader = new JsonReader(new InputStreamReader(testResources
@@ -88,7 +84,7 @@ public class TweetEntitiesTest {
     }
 
     @Test
-    public void testDeserialization_noEntities() throws IOException {
+    public void testDeserialization_noEntities() {
         final TweetEntities tweetEntities = gson.fromJson("{\"urls\":[]}", TweetEntities.class);
         // We simply assert that we parsed it successfully and rely on our other unit tests to
         // verify parsing of the individual objects.

@@ -17,38 +17,22 @@
 
 package com.twitter.sdk.android.core.internal.oauth;
 
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterAuthToken;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.*;
 import com.twitter.sdk.android.core.internal.TwitterApi;
-
+import okhttp3.MediaType;
+import okhttp3.ResponseBody;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-
-import java.io.IOException;
-
-import okhttp3.MediaType;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Header;
 import retrofit2.http.Query;
 import retrofit2.mock.Calls;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricTestRunner.class)
 @SuppressWarnings("checkstyle:linelength")
@@ -74,7 +58,7 @@ public class OAuth1aServiceTest {
     }
 
     @Test
-    public void testGetAccessTokenUrl() throws NoSuchMethodException {
+    public void testGetAccessTokenUrl() {
         assertEquals("https://api.twitter.com/oauth/access_token", service.getAccessTokenUrl());
     }
 
@@ -199,7 +183,7 @@ public class OAuth1aServiceTest {
     }
 
     @Test
-    public void testCallbackWrapperSuccess() throws IOException {
+    public void testCallbackWrapperSuccess() {
         final String response = "oauth_token=7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4&"
                 + "oauth_token_secret=PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo&"
                 + "screen_name=test&user_id=1";
@@ -224,7 +208,7 @@ public class OAuth1aServiceTest {
     }
 
     private void setupCallbackWrapperTest(String responseStr,
-                                          Callback<OAuthResponse> authResponseCallback) throws IOException {
+                                          Callback<OAuthResponse> authResponseCallback) {
         final Callback<ResponseBody> callbackWrapper = service.getCallbackWrapper(authResponseCallback);
         final ResponseBody responseBody = ResponseBody.create(MediaType.parse("application/json"), responseStr);
         final Response<ResponseBody> response = Response.success(responseBody);
@@ -233,7 +217,7 @@ public class OAuth1aServiceTest {
     }
 
     @Test
-    public void testCallbackWrapperSuccess_noToken() throws IOException {
+    public void testCallbackWrapperSuccess_noToken() {
         final String response = "oauth_token_secret=PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo&"
                 + "screen_name=test&user_id=1";
         final Callback<OAuthResponse> callback = new Callback<OAuthResponse>() {
@@ -251,7 +235,7 @@ public class OAuth1aServiceTest {
     }
 
     @Test
-    public void testCallbackWrapperSuccess_iOException() throws IOException {
+    public void testCallbackWrapperSuccess_iOException() {
         final Callback<OAuthResponse> callback = new Callback<OAuthResponse>() {
             @Override
             public void success(Result<OAuthResponse> result) {

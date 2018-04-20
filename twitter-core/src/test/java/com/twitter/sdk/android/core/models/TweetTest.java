@@ -21,21 +21,15 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.twitter.sdk.android.core.TestResources;
 import com.twitter.sdk.android.core.internal.CommonUtils;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class TweetTest {
@@ -58,7 +52,7 @@ public class TweetTest {
     }
 
     @Test
-    public void testDeserialization() throws IOException {
+    public void testDeserialization() {
         JsonReader reader = null;
         try {
             reader = new JsonReader(new InputStreamReader(testResources
@@ -91,7 +85,7 @@ public class TweetTest {
     }
 
     @Test
-    public void testQuotedTweetDeserialization() throws IOException {
+    public void testQuotedTweetDeserialization() {
         JsonReader reader = null;
         try {
             reader = new JsonReader(new InputStreamReader(testResources

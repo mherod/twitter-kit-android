@@ -35,9 +35,7 @@ class TestEvent {
         final TestEvent testEvent = (TestEvent) o;
 
         if (id != null ? !id.equals(testEvent.id) : testEvent.id != null) return false;
-        if (msg != null ? !msg.equals(testEvent.msg) : testEvent.msg != null) return false;
-
-        return true;
+        return msg != null ? msg.equals(testEvent.msg) : testEvent.msg == null;
     }
 
     @Override

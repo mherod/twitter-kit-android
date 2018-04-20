@@ -19,7 +19,6 @@ package com.twitter.sdk.android.core.internal;
 
 import android.content.Context;
 import android.content.res.Resources;
-
 import com.twitter.sdk.android.core.Twitter;
 
 import java.io.Closeable;
@@ -33,7 +32,7 @@ public class CommonUtils {
     static final boolean TRACE_ENABLED_DEFAULT = false;
     private static Boolean clsTrace;
 
-    public static String streamToString(InputStream is) throws IOException {
+    public static String streamToString(InputStream is) {
         // Previous code was running into this: http://code.google.com/p/android/issues/detail?id=14562
         // on Android 2.3.3. The below code, cribbed from: http://weblogs.java.net/blog/pat/archive/2004/10/stupid_scanner_1.html
         // does not exhibit that problem.

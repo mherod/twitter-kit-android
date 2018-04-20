@@ -21,14 +21,7 @@ import com.twitter.sdk.android.core.GuestSession;
 import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.OAuthConstants;
-
-import java.io.IOException;
-
-import okhttp3.Authenticator;
-import okhttp3.Headers;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.Route;
+import okhttp3.*;
 
 /**
  * Refreshes guest auth session when server indicates session is expired.
@@ -42,7 +35,7 @@ public class GuestAuthenticator implements Authenticator {
     }
 
     @Override
-    public Request authenticate(Route route, Response response) throws IOException {
+    public Request authenticate(Route route, Response response) {
         return reauth(response);
     }
 

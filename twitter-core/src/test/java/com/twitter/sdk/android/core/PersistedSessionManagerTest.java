@@ -18,12 +18,10 @@
 package com.twitter.sdk.android.core;
 
 import android.content.SharedPreferences;
-
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStore;
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreStrategy;
 import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,15 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class PersistedSessionManagerTest {
@@ -74,7 +65,7 @@ public class PersistedSessionManagerTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         preferenceStore.edit().clear().commit();
     }
 
@@ -143,7 +134,7 @@ public class PersistedSessionManagerTest {
     }
 
     @Test
-    public void testRestoreSession_multipleRestoreCalls() throws Exception {
+    public void testRestoreSession_multipleRestoreCalls() {
         final TwitterSession mockSession = mock(TwitterSession.class);
         when(mockActiveSessionStorage.restore()).thenReturn(mockSession);
 
@@ -155,7 +146,7 @@ public class PersistedSessionManagerTest {
     }
 
     @Test
-    public void testRestoreSession_afterActiveSessionSetExternally() throws Exception {
+    public void testRestoreSession_afterActiveSessionSetExternally() {
         final TwitterSession mockRestoredSession = mock(TwitterSession.class);
         when(mockActiveSessionStorage.restore()).thenReturn(mockRestoredSession);
 

@@ -77,11 +77,7 @@ public class EventNamespace {
             return false;
         }
         if (page != null ? !page.equals(that.page) : that.page != null) return false;
-        if (section != null ? !section.equals(that.section) : that.section != null) {
-            return false;
-        }
-
-        return true;
+        return section != null ? section.equals(that.section) : that.section == null;
     }
 
     @Override

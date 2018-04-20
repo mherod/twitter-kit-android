@@ -18,12 +18,9 @@
 package com.twitter.sdk.android.core;
 
 import com.twitter.sdk.android.core.models.ApiError;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-
-import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -43,32 +40,32 @@ public class TwitterApiExceptionTest  {
     private static final String API_ERROR_NON_JSON = "not a json";
 
     @Test
-    public void testParseErrorCode() throws IOException {
+    public void testParseErrorCode() {
         final ApiError apiError = TwitterApiException.parseApiError(API_ERROR_JSON);
         assertEquals(API_ERROR_CODE, apiError.code);
         assertEquals(API_ERROR_MESSAGE, apiError.message);
     }
 
     @Test
-    public void testParseError_nonJSON() throws Exception {
+    public void testParseError_nonJSON() {
         assertNull(TwitterApiException.parseApiError(API_ERROR_NON_JSON));
     }
 
     @Test
-    public void testParseError_noErrorCode() throws Exception {
+    public void testParseError_noErrorCode() {
         final ApiError apiError = TwitterApiException.parseApiError(API_ERROR_NO_ERROR_CODE);
         assertEquals(DEFAULT_ERROR_CODE, apiError.code);
         assertEquals(API_ERROR_MESSAGE, apiError.message);
     }
 
     @Test
-    public void testParseError_noErrors() throws Exception {
+    public void testParseError_noErrors() {
         final ApiError apiError = TwitterApiException.parseApiError(API_ERROR_NO_ERRORS);
         assertNull(apiError);
     }
 
     @Test
-    public void testParseError_noMessage() throws Exception {
+    public void testParseError_noMessage() {
         final ApiError apiError = TwitterApiException.parseApiError(API_ERROR_NO_ERROR_MESSAGE);
         assertEquals(API_ERROR_CODE, apiError.code);
         assertEquals(null, apiError.message);

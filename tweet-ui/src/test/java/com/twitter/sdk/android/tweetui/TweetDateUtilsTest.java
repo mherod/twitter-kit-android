@@ -19,7 +19,6 @@ package com.twitter.sdk.android.tweetui;
 
 import android.content.res.Resources;
 import android.text.format.DateUtils;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +52,7 @@ public class TweetDateUtilsTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         TimeZone.setDefault(realDefaultTimeZone);
     }
 

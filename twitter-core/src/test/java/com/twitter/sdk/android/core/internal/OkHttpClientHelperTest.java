@@ -21,15 +21,13 @@ import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.network.OkHttpClientHelper;
-
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
-
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -38,7 +36,7 @@ import static org.mockito.Mockito.mock;
 public class OkHttpClientHelperTest {
 
     @Test
-    public void testGetCustomOkHttpClient_guestAuth() throws Exception {
+    public void testGetCustomOkHttpClient_guestAuth() {
         final Interceptor mockInterceptor = mock(Interceptor.class);
         final OkHttpClient customHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(mockInterceptor).build();
@@ -53,7 +51,7 @@ public class OkHttpClientHelperTest {
     }
 
     @Test
-    public void testGetCustomOkHttpClient_userAuth() throws Exception {
+    public void testGetCustomOkHttpClient_userAuth() {
         final Interceptor mockInterceptor = mock(Interceptor.class);
         final OkHttpClient customHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(mockInterceptor).build();

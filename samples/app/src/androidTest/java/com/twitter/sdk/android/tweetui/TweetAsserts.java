@@ -21,30 +21,21 @@ import android.graphics.drawable.Drawable;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.view.View;
 import android.widget.TextView;
-
 import com.example.app.R;
-
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-import java.lang.SuppressWarnings;
 import java.util.Locale;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasContentDescription;
-import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
-import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isFocusable;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
 public abstract class TweetAsserts {
     @SuppressWarnings("PrivateResource")
-    public static void assertTweetText(int tweetResId, String expected) throws Exception {
+    public static void assertTweetText(int tweetResId, String expected) {
         onView(allOf(withId(R.id.tw__tweet_text),
                 isDescendantOfA(withId(tweetResId))))
                 .check(matches(isDisplayed()))
@@ -52,7 +43,7 @@ public abstract class TweetAsserts {
     }
 
     @SuppressWarnings("PrivateResource")
-    public static void assertTweetTimestamp(int tweetResId, String expected) throws Exception {
+    public static void assertTweetTimestamp(int tweetResId, String expected) {
         onView(allOf(withId(R.id.tw__tweet_timestamp),
                 isDescendantOfA(withId(tweetResId))))
                 .check(matches(isDisplayed()))
@@ -127,11 +118,7 @@ public abstract class TweetAsserts {
                 if (drawables[2] != null && end == 0) {
                     return false;
                 }
-                if (drawables[3] != null && bottom == 0) {
-                    return false;
-                }
-
-                return true;
+                return drawables[3] == null || bottom != 0;
             }
         };
     }

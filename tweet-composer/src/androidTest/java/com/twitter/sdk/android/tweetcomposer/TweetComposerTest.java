@@ -18,7 +18,6 @@
 package com.twitter.sdk.android.tweetcomposer;
 
 import android.test.AndroidTestCase;
-
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterConfig;
 import com.twitter.sdk.android.core.TwitterCoreTestUtils;
@@ -39,13 +38,13 @@ public class TweetComposerTest extends AndroidTestCase {
                 .executorService(mock(ThreadPoolExecutor.class))
                 .build());
         tweetComposer = new TweetComposer();
-        tweetComposer.instance = tweetComposer;
+        TweetComposer.instance = tweetComposer;
     }
 
     public void tearDown()  throws Exception {
         TwitterTestUtils.resetTwitter();
         TwitterCoreTestUtils.resetTwitterCore();
-        tweetComposer.instance = null;
+        TweetComposer.instance = null;
 
         super.tearDown();
     }
@@ -60,11 +59,11 @@ public class TweetComposerTest extends AndroidTestCase {
         assertEquals(identifier, tweetComposer.getIdentifier());
     }
 
-    public void testGetInstance_twitterNotInitialized() throws Exception {
+    public void testGetInstance_twitterNotInitialized() {
         try {
             TwitterTestUtils.resetTwitter();
             TwitterCoreTestUtils.resetTwitterCore();
-            tweetComposer.instance = null;
+            TweetComposer.instance = null;
 
             TweetComposer.getInstance();
             fail("Should fail if Twitter is not initialized");

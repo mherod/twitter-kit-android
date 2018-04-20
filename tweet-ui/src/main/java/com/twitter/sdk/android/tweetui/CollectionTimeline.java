@@ -25,13 +25,12 @@ import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.models.TwitterCollection;
 import com.twitter.sdk.android.core.models.User;
+import retrofit2.Call;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import retrofit2.Call;
 
 /**
  * CollectionTimeline provides a timeline of tweets from the collections/collection API source.
@@ -110,7 +109,7 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
             if (timelineCursor != null) {
                 timelineResult = new TimelineResult<>(timelineCursor, tweets);
             } else {
-                timelineResult = new TimelineResult<>(null, Collections.<Tweet>emptyList());
+                timelineResult = new TimelineResult<>(null, Collections.emptyList());
             }
             if (cb != null) {
                 cb.success(new Result(timelineResult, result.response));

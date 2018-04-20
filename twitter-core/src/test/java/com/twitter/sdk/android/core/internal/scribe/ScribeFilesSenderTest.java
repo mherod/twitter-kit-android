@@ -18,17 +18,10 @@
 package com.twitter.sdk.android.core.internal.scribe;
 
 import android.content.Context;
-
-import com.twitter.sdk.android.core.GuestSession;
-import com.twitter.sdk.android.core.GuestSessionProvider;
-import com.twitter.sdk.android.core.SessionManager;
-import com.twitter.sdk.android.core.TestResources;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterAuthToken;
-import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.*;
 import com.twitter.sdk.android.core.internal.CommonUtils;
 import com.twitter.sdk.android.core.internal.IdManager;
-
+import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.junit.After;
@@ -38,38 +31,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.mock.Calls;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-import okhttp3.Interceptor;
-import okhttp3.MediaType;
-import okhttp3.Protocol;
-import okhttp3.Request;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.mock.Calls;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyLong;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class ScribeFilesSenderTest {
@@ -151,7 +124,7 @@ public class ScribeFilesSenderTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         for (File f : tempFiles) {
             f.delete();
         }
@@ -182,7 +155,7 @@ public class ScribeFilesSenderTest {
 
     private Call<ResponseBody> errorResponse(int statusCode) {
         final ResponseBody body = ResponseBody.create(MediaType.parse("application/json"), "");
-        return Calls.response(Response.<ResponseBody>error(statusCode, body));
+        return Calls.response(Response.error(statusCode, body));
     }
 
     // tests follow

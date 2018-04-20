@@ -23,14 +23,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.mopub.nativeads.BaseNativeAd;
 import com.mopub.nativeads.StaticNativeAd;
 import com.mopub.network.MaxWidthImageLoader;
 import com.mopub.network.Networking;
 import com.mopub.volley.toolbox.ImageLoader;
 import com.twitter.sdk.android.mopub.internal.RoundedImageView;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,11 +43,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class TwitterStaticNativeAdRendererTest {
@@ -73,7 +67,7 @@ public class TwitterStaticNativeAdRendererTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         Networking.setImageLoaderForTesting(mockImageLoader);
@@ -137,7 +131,7 @@ public class TwitterStaticNativeAdRendererTest {
     }
 
     @Test
-    public void testSupports_withCorrectInstanceOfBaseNativeAd_shouldReturnTrue() throws Exception {
+    public void testSupports_withCorrectInstanceOfBaseNativeAd_shouldReturnTrue() {
         assertTrue(twitterStaticNativeAdRenderer.supports(new StaticNativeAd() {}));
         assertFalse(twitterStaticNativeAdRenderer.supports(mock(BaseNativeAd.class)));
     }

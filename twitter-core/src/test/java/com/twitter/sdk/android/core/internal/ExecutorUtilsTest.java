@@ -48,12 +48,12 @@ public class ExecutorUtilsTest {
     }
 
     @Test
-    public void testGetNamedThreadFactory() throws Exception {
+    public void testGetNamedThreadFactory() {
         verifyGetNamedThreadFactory(THREAD_FACTORY_NAME);
     }
 
     @Test
-    public void testGetNamedThreadFactory_nullName() throws Exception {
+    public void testGetNamedThreadFactory_nullName() {
         verifyGetNamedThreadFactory(null);
     }
 
@@ -70,7 +70,7 @@ public class ExecutorUtilsTest {
 
     private static class ThreadNameCallable implements Callable<String> {
         @Override
-        public String call() throws Exception {
+        public String call() {
             return Thread.currentThread().getName();
         }
     }

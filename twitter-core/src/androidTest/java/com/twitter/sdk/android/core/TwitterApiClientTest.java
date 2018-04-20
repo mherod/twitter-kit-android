@@ -18,14 +18,12 @@
 package com.twitter.sdk.android.core;
 
 import android.test.AndroidTestCase;
-
 import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.services.FavoriteService;
 import com.twitter.sdk.android.core.services.StatusesService;
+import okhttp3.OkHttpClient;
 
 import java.util.concurrent.ExecutorService;
-
-import okhttp3.OkHttpClient;
 
 import static org.mockito.Mockito.mock;
 
@@ -57,7 +55,7 @@ public class TwitterApiClientTest extends AndroidTestCase {
         }
     }
 
-    public void testConstructor_noSession() throws Exception {
+    public void testConstructor_noSession() {
         try {
             new TwitterApiClient((TwitterSession) null);
             fail();
@@ -66,26 +64,26 @@ public class TwitterApiClientTest extends AndroidTestCase {
         }
     }
 
-    public void testGetService_cachedService() throws Exception {
+    public void testGetService_cachedService() {
         final TwitterApiClient client = newTwitterApiClient();
         final StatusesService service = client.getService(StatusesService.class);
         assertSame(service, client.getService(StatusesService.class));
     }
 
-    public void testGetService_differentServices() throws Exception {
+    public void testGetService_differentServices() {
         final TwitterApiClient client = newTwitterApiClient();
         final FavoriteService service = client.getService(FavoriteService.class);
         assertNotSame(service, client.getService(StatusesService.class));
     }
 
-    public void testApiClient_cachedGuestAuthClient() throws Exception {
+    public void testApiClient_cachedGuestAuthClient() {
         final TwitterApiClient customApiClient = new TwitterApiClient(newOkHttpClient());
         TwitterCore.getInstance().addGuestApiClient(customApiClient);
 
         assertEquals(customApiClient, TwitterCore.getInstance().getGuestApiClient());
     }
 
-    public void testApiClient_cachedUserAuthApiClient() throws Exception {
+    public void testApiClient_cachedUserAuthApiClient() {
         final TwitterSession mockUserSession = mock(TwitterSession.class);
         final TwitterApiClient customApiClient =
                 new TwitterApiClient(mockUserSession, newOkHttpClient());

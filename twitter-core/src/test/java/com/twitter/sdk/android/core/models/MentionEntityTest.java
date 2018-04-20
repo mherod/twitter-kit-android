@@ -18,13 +18,10 @@
 package com.twitter.sdk.android.core.models;
 
 import com.google.gson.Gson;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-
-import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -50,7 +47,7 @@ public class MentionEntityTest  {
     }
 
     @Test
-    public void testDeserialization() throws IOException {
+    public void testDeserialization() {
         final MentionEntity entity = gson.fromJson(TEST_JSON, MentionEntity.class);
         assertEquals(TEST_INDICES_START, entity.getStart());
         assertEquals(TEST_INDICES_END, entity.getEnd());

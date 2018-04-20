@@ -18,7 +18,6 @@
 package com.twitter.sdk.android.core.internal.scribe;
 
 import android.text.TextUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
@@ -107,11 +106,7 @@ public class ScribeEvent {
             return false;
         }
 
-        if (items != null ? !items.equals(that.items) : that.items != null) {
-            return false;
-        }
-
-        return true;
+        return items != null ? items.equals(that.items) : that.items == null;
     }
 
     @Override
