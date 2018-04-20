@@ -69,7 +69,8 @@ public class OAuth1aParametersTest  {
         }
     }
 
-    private static final TestParameters[] TEST_PARAMETERS = new TestParameters[] {
+    // tokens/secrets (disabled) from https://dev.twitter.com/web/sign-in/implementing
+    private static final TestParameters[] TEST_PARAMETERS = {
             // tokens/secrets (disabled) from https://dev.twitter.com/web/sign-in/implementing
             new TestParameters(
                     "POST",

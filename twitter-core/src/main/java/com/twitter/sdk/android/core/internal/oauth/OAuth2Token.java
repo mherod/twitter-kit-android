@@ -19,6 +19,7 @@ package com.twitter.sdk.android.core.internal.oauth;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 import com.twitter.sdk.android.core.AuthToken;
 
@@ -46,7 +47,6 @@ public class OAuth2Token extends AuthToken implements Parcelable {
     private final String accessToken;
 
     public OAuth2Token(String tokenType, String accessToken) {
-        super();
         this.tokenType = tokenType;
         this.accessToken = accessToken;
     }
@@ -58,7 +58,6 @@ public class OAuth2Token extends AuthToken implements Parcelable {
     }
 
     private OAuth2Token(Parcel in) {
-        super();
         tokenType = in.readString();
         accessToken = in.readString();
     }

@@ -21,16 +21,14 @@ import android.content.Context;
 
 import com.twitter.sdk.android.core.internal.CurrentTimeProvider;
 
-import java.io.IOException;
-
 class TestEventsFilesManager extends EventsFilesManager<TestEvent> {
 
     private final String rollOverFileName;
 
     TestEventsFilesManager(Context context, EventTransform<TestEvent> transform,
-                                  CurrentTimeProvider currentTimeProvider,
-                                  EventsStorage eventStorage, String rollOverFileName,
-                                  int defaultMaxFilesToKeep) throws IOException {
+                           CurrentTimeProvider currentTimeProvider,
+                           EventsStorage eventStorage, String rollOverFileName,
+                           int defaultMaxFilesToKeep) {
         super(context, transform, currentTimeProvider, eventStorage, defaultMaxFilesToKeep);
 
         this.rollOverFileName = rollOverFileName;

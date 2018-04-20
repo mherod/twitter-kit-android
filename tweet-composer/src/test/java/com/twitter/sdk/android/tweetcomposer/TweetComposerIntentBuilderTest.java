@@ -98,7 +98,7 @@ public class TweetComposerIntentBuilderTest {
         final String text = "test";
         final URL url = new URL("http://www.twitter.com");
 
-        final String result = text + " " + url.toString();
+        final String result = text + " " + url;
         final TweetComposer.Builder builder = new TweetComposer.Builder(context)
                 .text(text)
                 .url(url);

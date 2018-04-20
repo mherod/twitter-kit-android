@@ -162,7 +162,7 @@ public class TwitterStaticNativeAd extends FrameLayout {
         // Also set the default ad view radius for bottomLeft and bottomRight corners
         final StateListDrawable stateListDrawable = new StateListDrawable();
         final int adViewRadius = (int) getResources().getDimension(R.dimen.tw__ad_view_radius);
-        final float[] ctaViewRadii = new float[]{
+        final float[] ctaViewRadii = {
                 0, 0,
                 0, 0,
                 adViewRadius, adViewRadius,

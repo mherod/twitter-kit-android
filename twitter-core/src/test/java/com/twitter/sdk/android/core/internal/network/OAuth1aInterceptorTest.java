@@ -32,7 +32,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
-import java.io.IOException;
 import java.util.Map;
 
 import okhttp3.FormBody;
@@ -96,7 +95,7 @@ public class OAuth1aInterceptorTest {
     }
 
     @Test
-    public void testGetAuthHeaders() throws IOException {
+    public void testGetAuthHeaders() {
         final Request request = new Request.Builder().url(TEST_URL).build();
 
         final String header = interceptor.getAuthorizationHeader(request);
@@ -105,7 +104,7 @@ public class OAuth1aInterceptorTest {
     }
 
     @Test
-    public void testGetPostParameters_bodyWithMultipleParams() throws IOException {
+    public void testGetPostParameters_bodyWithMultipleParams() {
         final FormBody formBody = new FormBody.Builder()
                 .add(POST_KEY, POST_VALUE)
                 .add(POST_KEY_2, POST_VALUE_2)
@@ -124,7 +123,7 @@ public class OAuth1aInterceptorTest {
     }
 
     @Test
-    public void testGetPostParameters_withZeroParams() throws IOException {
+    public void testGetPostParameters_withZeroParams() {
         final FormBody formBody = new FormBody.Builder().build();
 
         final Request request = new Request.Builder()
@@ -138,7 +137,7 @@ public class OAuth1aInterceptorTest {
     }
 
     @Test
-    public void testGetPostParameters_withGetRequest() throws IOException {
+    public void testGetPostParameters_withGetRequest() {
         final Request request = new Request.Builder().url(TEST_URL).build();
 
         final Map<String, String> params = interceptor.getPostParams(request);

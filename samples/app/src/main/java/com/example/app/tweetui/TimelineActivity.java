@@ -87,7 +87,7 @@ public class TimelineActivity extends BaseActivity {
 
         // set custom scroll listener to enable swipe refresh layout only when at list top
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            boolean enableRefresh = false;
+            boolean enableRefresh;
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {}
             @Override

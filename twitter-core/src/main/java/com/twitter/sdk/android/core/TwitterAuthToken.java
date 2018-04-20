@@ -19,6 +19,7 @@ package com.twitter.sdk.android.core;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -44,7 +45,6 @@ public class TwitterAuthToken extends AuthToken implements Parcelable {
     public final String secret;
 
     public TwitterAuthToken(String token, String secret) {
-        super();
         this.token = token;
         this.secret = secret;
     }
@@ -57,7 +57,6 @@ public class TwitterAuthToken extends AuthToken implements Parcelable {
     }
 
     private TwitterAuthToken(Parcel in) {
-        super();
         this.token = in.readString();
         this.secret = in.readString();
     }

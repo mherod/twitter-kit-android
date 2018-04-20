@@ -37,7 +37,6 @@ class ShareTweetAction implements View.OnClickListener {
 
     // For testing only
     ShareTweetAction(Tweet tweet, TweetUi tweetUi, TweetScribeClient tweetScribeClient) {
-        super();
         this.tweet = tweet;
         this.tweetUi = tweetUi;
         this.tweetScribeClient = tweetScribeClient;

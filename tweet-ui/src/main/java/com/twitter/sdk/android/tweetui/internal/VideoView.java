@@ -72,8 +72,8 @@ public class VideoView extends SurfaceView
     private int mCurrentState = STATE_IDLE;
     private int mTargetState = STATE_IDLE;
     // All the stuff we need for playing and showing a video
-    private SurfaceHolder mSurfaceHolder = null;
-    private MediaPlayer mMediaPlayer = null;
+    private SurfaceHolder mSurfaceHolder;
+    private MediaPlayer mMediaPlayer;
     private int mAudioSession;
     private int mVideoWidth;
     private int mVideoHeight;

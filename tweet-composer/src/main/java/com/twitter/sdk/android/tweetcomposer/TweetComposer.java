@@ -190,7 +190,7 @@ public class TweetComposer {
                 if (builder.length() > 0) {
                     builder.append(' ');
                 }
-                builder.append(url.toString());
+                builder.append(url);
             }
 
             intent.putExtra(Intent.EXTRA_TEXT, builder.toString());

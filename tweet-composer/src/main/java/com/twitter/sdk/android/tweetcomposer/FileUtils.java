@@ -54,7 +54,7 @@ class FileUtils {
 
             // query content resolver for MediaStore id column
             final String selection = "_id=?";
-            final String[] args = new String[] {
+            final String[] args = {
                     parts[1]
             };
             return resolveFilePath(context, contentUri, selection, args);

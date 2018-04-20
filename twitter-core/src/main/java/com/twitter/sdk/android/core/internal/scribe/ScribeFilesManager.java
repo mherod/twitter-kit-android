@@ -21,7 +21,6 @@ import android.content.Context;
 
 import com.twitter.sdk.android.core.internal.CurrentTimeProvider;
 
-import java.io.IOException;
 import java.util.UUID;
 
 class ScribeFilesManager extends EventsFilesManager<ScribeEvent> {
@@ -32,7 +31,7 @@ class ScribeFilesManager extends EventsFilesManager<ScribeEvent> {
     ScribeFilesManager(Context context, EventTransform<ScribeEvent> transform,
                               CurrentTimeProvider currentTimeProvider,
                               QueueFileEventStorage eventsStorage, int defaultMaxFilesToKeep
-    ) throws IOException {
+    ) {
         super(context, transform, currentTimeProvider, eventsStorage, defaultMaxFilesToKeep);
     }
 
@@ -43,7 +42,7 @@ class ScribeFilesManager extends EventsFilesManager<ScribeEvent> {
         return new StringBuilder()
                 .append(FILE_PREFIX)
                 .append(ROLL_OVER_FILE_NAME_SEPARATOR)
-                .append(targetUUIDComponent.toString())
+                .append(targetUUIDComponent)
                 .append(ROLL_OVER_FILE_NAME_SEPARATOR)
                 .append(currentTimeProvider.getCurrentTimeMillis())
                 .append(FILE_EXTENSION)

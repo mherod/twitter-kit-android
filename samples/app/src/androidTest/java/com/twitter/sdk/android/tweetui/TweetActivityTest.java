@@ -24,9 +24,10 @@ import com.example.app.R;
 import com.example.app.tweetui.TweetActivity;
 import com.squareup.spoon.Spoon;
 
-import static android.support.test.espresso.Espresso.*;
-import static android.support.test.espresso.action.ViewActions.*;
-import static android.support.test.espresso.matcher.ViewMatchers.*;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.registerIdlingResources;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 /**
  * UI/integration tests of Tweet views added to the layout via code (requires network connectivity).
@@ -58,7 +59,7 @@ public class TweetActivityTest extends ActivityInstrumentationTestCase2<TweetAct
         registerIdlingResources(jackRes, jackCompactRes, bikeRes, bikeCompactRes);
     }
 
-    public void testTweetView() throws Exception {
+    public void testTweetView() {
         onView(withId(R.id.jack_regular_tweet)).perform(scrollTo());
         TweetAsserts.assertTweetText(R.id.jack_regular_tweet, EXPECTED_TEXT);
         TweetAsserts.assertTweetTimestamp(R.id.jack_regular_tweet, EXPECTED_TIMESTAMP);
@@ -71,7 +72,7 @@ public class TweetActivityTest extends ActivityInstrumentationTestCase2<TweetAct
         Spoon.screenshot(activity, TAG);
     }
 
-    public void testCompactTweetView() throws Exception {
+    public void testCompactTweetView() {
         onView(withId(R.id.jack_compact_tweet)).perform(scrollTo());
         TweetAsserts.assertTweetText(R.id.jack_compact_tweet, EXPECTED_TEXT);
         TweetAsserts.assertTweetTimestamp(R.id.jack_compact_tweet, EXPECTED_TIMESTAMP);

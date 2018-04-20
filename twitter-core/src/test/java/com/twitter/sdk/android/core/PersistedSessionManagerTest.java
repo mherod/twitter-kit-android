@@ -18,10 +18,12 @@
 package com.twitter.sdk.android.core;
 
 import android.content.SharedPreferences;
+
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStore;
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreStrategy;
 import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,8 +35,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class PersistedSessionManagerTest {
@@ -99,7 +108,7 @@ public class PersistedSessionManagerTest {
     public void testRestoreSession_multipleSavedSessions() {
         // Set up test by creating and serializing some test TwitterSessions.
         final SharedPreferences.Editor editor = preferenceStore.edit();
-        final TwitterSession[] sessions = new TwitterSession[]{
+        final TwitterSession[] sessions = {
                 new TwitterSession(new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET),
                         TestFixtures.USER_ID, TestFixtures.SCREEN_NAME),
                 new TwitterSession(new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET),

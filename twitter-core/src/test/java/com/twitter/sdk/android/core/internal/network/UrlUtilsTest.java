@@ -30,7 +30,7 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(RobolectricTestRunner.class)
 public class UrlUtilsTest {
 
-    private static final String[] ORIGINAL_STRINGS = new String[]{
+    private static final String[] ORIGINAL_STRINGS = {
             "Ladies + Gentlemen",
             "An encoded string!",
             "Dogs, Cats & Mice",
@@ -39,7 +39,7 @@ public class UrlUtilsTest {
             "-._~"
     };
 
-    private static final String[] PERCENT_ENCODED_STRINGS = new String[]{
+    private static final String[] PERCENT_ENCODED_STRINGS = {
             "Ladies%20%2B%20Gentlemen",
             "An%20encoded%20string%21",
             "Dogs%2C%20Cats%20%26%20Mice",
