@@ -15,22 +15,14 @@
  *
  */
 
-package com.twitter.sdk.android.tweetcomposer;
+package com.twitter.sdk.android.tweetcomposer
+
+import com.twitter.sdk.android.core.internal.scribe.EventNamespace
+import com.twitter.sdk.android.core.internal.scribe.ScribeItem
 
 /**
- * ComposerScribeClient represents scribe events of Tweet Composer components.
+ * ScribeClient writes tweet-composer scribe events.
  */
-interface ComposerScribeClient {
-
-
-    /**
-     * Scribes an impression of the Tweet Composer.
-     */
-    void impression();
-
-
-    /**
-     * Scribes a click on the Tweet Composer 'Tweet' or 'Cancel' button element.
-     */
-    void click(String element);
+internal interface ScribeClient {
+    fun scribe(eventNamespace: EventNamespace, items: List<ScribeItem>)
 }

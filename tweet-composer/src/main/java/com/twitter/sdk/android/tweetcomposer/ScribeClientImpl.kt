@@ -15,16 +15,18 @@
  *
  */
 
-package com.twitter.sdk.android.tweetcomposer;
+package com.twitter.sdk.android.tweetcomposer
 
-import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
-import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
-
-import java.util.List;
+import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient
+import com.twitter.sdk.android.core.internal.scribe.EventNamespace
+import com.twitter.sdk.android.core.internal.scribe.ScribeItem
 
 /**
- * ScribeClient writes tweet-composer scribe events.
+ * ScribeClientImpl is a ScribeClient that writes scribes using a twitter-core DefaultScribeClient.
  */
-interface ScribeClient {
-    void scribe(EventNamespace eventNamespace, List<ScribeItem> items);
+internal class ScribeClientImpl(private val scribeClient: DefaultScribeClient?) : ScribeClient {
+
+    override fun scribe(eventNamespace: EventNamespace, items: List<ScribeItem>) {
+        scribeClient?.scribe(eventNamespace, items)
+    }
 }

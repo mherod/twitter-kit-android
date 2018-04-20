@@ -33,8 +33,8 @@ public class ObservableScrollViewTest {
     public void testOnScrollChanged() {
         final ObservableScrollView scrollView =
                 new ObservableScrollView(RuntimeEnvironment.application);
-        final ObservableScrollView.ScrollViewListener listener =
-                mock(ObservableScrollView.ScrollViewListener.class);
+        final ScrollViewListener listener =
+                mock(ScrollViewListener.class);
         scrollView.setScrollViewListener(listener);
 
         scrollView.onScrollChanged(0, TEST_SCROLL_X, 0, 0);
