@@ -236,12 +236,12 @@ class TimelineDelegate<T extends Identifiable> {
 
         @Override
         public void success(Result<TimelineResult<T>> result) {
-            if (result.getData().items.size() > 0) {
-                final ArrayList<T> receivedItems = new ArrayList<>(result.getData().items);
+            if (result.getData().getItems().size() > 0) {
+                final ArrayList<T> receivedItems = new ArrayList<>(result.getData().getItems());
                 receivedItems.addAll(itemList);
                 itemList = receivedItems;
                 notifyDataSetChanged();
-                timelineStateHolder.setNextCursor(result.getData().timelineCursor);
+                timelineStateHolder.setNextCursor(result.getData().getTimelineCursor());
             }
             // do nothing when zero items are received. Subsequent 'next' call does not change.
             super.success(result);
@@ -262,7 +262,7 @@ class TimelineDelegate<T extends Identifiable> {
 
         @Override
         public void success(Result<TimelineResult<T>> result) {
-            if (result.getData().items.size() > 0) {
+            if (result.getData().getItems().size() > 0) {
                 itemList.clear();
             }
             super.success(result);
@@ -280,10 +280,10 @@ class TimelineDelegate<T extends Identifiable> {
 
         @Override
         public void success(Result<TimelineResult<T>> result) {
-            if (result.getData().items.size() > 0) {
-                itemList.addAll(result.getData().items);
+            if (result.getData().getItems().size() > 0) {
+                itemList.addAll(result.getData().getItems());
                 notifyDataSetChanged();
-                timelineStateHolder.setPreviousCursor(result.getData().timelineCursor);
+                timelineStateHolder.setPreviousCursor(result.getData().getTimelineCursor());
             }
             // do nothing when zero items are received. Subsequent 'next' call does not change.
             super.success(result);

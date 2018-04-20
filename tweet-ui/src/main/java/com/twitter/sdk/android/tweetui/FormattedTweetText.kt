@@ -15,29 +15,18 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.twitter.sdk.android.tweetui
 
 /**
  * This class holds values we need to correctly render tweet text. The values returned directly
  * from the REST API are html escaped for & < and > characters as well as not counting emoji
  * characters correctly in the entity indices.
  */
-class FormattedTweetText {
-    String text;
-    final List<FormattedUrlEntity> urlEntities;
-    final List<FormattedMediaEntity> mediaEntities;
-    final List<FormattedUrlEntity> hashtagEntities;
-    final List<FormattedUrlEntity> mentionEntities;
-    final List<FormattedUrlEntity> symbolEntities;
-
-    FormattedTweetText() {
-        urlEntities = new ArrayList<>();
-        mediaEntities = new ArrayList<>();
-        hashtagEntities = new ArrayList<>();
-        mentionEntities = new ArrayList<>();
-        symbolEntities = new ArrayList<>();
-    }
-}
+internal data class FormattedTweetText @JvmOverloads constructor(
+        var text: String? = null,
+        val urlEntities: List<FormattedUrlEntity> = arrayListOf(),
+        val hashtagEntities: List<FormattedUrlEntity> = arrayListOf(),
+        val mediaEntities: List<FormattedMediaEntity> = arrayListOf(),
+        val mentionEntities: List<FormattedUrlEntity> = arrayListOf(),
+        val symbolEntities: List<FormattedUrlEntity> = arrayListOf()
+)

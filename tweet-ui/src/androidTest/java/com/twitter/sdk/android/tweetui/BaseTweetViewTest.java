@@ -250,7 +250,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
         final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET);
         final int primaryTextColor = getResources().getColor(
                 R.color.tw__tweet_light_primary_text_color);
-        final int color = ColorUtils.calculateOpacityTransform(
+        final int color = ColorUtils.INSTANCE.calculateOpacityTransform(
                 BaseTweetView.SECONDARY_TEXT_COLOR_LIGHT_OPACITY, Color.WHITE, primaryTextColor);
         Assert.assertEquals(color, view.secondaryTextColor);
         Assert.assertEquals(color, view.timestampView.getCurrentTextColor());
@@ -262,7 +262,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
         final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET);
         final int containerColor = getResources().getColor(
                 R.color.tw__tweet_light_container_bg_color);
-        final int color = ColorUtils.calculateOpacityTransform(
+        final int color = ColorUtils.INSTANCE.calculateOpacityTransform(
                 BaseTweetView.MEDIA_BG_LIGHT_OPACITY, Color.BLACK, containerColor);
         Assert.assertEquals(color, TestUtils.getDrawableColor(view.avatarView));
     }
@@ -271,7 +271,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
         final BaseTweetView view = createView(context, TestFixtures.TEST_PHOTO_TWEET);
         final int containerColor = getResources().getColor(
                 R.color.tw__tweet_light_container_bg_color);
-        final int color = ColorUtils.calculateOpacityTransform(
+        final int color = ColorUtils.INSTANCE.calculateOpacityTransform(
                 BaseTweetView.MEDIA_BG_LIGHT_OPACITY, Color.BLACK, containerColor);
 
         final MediaEntity entity = TestFixtures.createMediaEntityWithPhoto(100, 100);
@@ -308,7 +308,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
                 R.style.tw__TweetDarkStyle);
         final int primaryTextColor = getResources().getColor(
                 R.color.tw__tweet_dark_primary_text_color);
-        final int color = ColorUtils.calculateOpacityTransform(
+        final int color = ColorUtils.INSTANCE.calculateOpacityTransform(
                 BaseTweetView.SECONDARY_TEXT_COLOR_DARK_OPACITY, Color.BLACK, primaryTextColor);
         Assert.assertEquals(color, view.secondaryTextColor);
         Assert.assertEquals(color, view.timestampView.getCurrentTextColor());
@@ -321,7 +321,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
                 R.style.tw__TweetDarkStyle);
         final int containerColor = getResources().getColor(
                 R.color.tw__tweet_dark_container_bg_color);
-        final int color = ColorUtils.calculateOpacityTransform(
+        final int color = ColorUtils.INSTANCE.calculateOpacityTransform(
                 BaseTweetView.MEDIA_BG_DARK_OPACITY, Color.WHITE, containerColor);
         Assert.assertEquals(color, TestUtils.getDrawableColor(view.avatarView));
     }
@@ -331,7 +331,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
                 R.style.tw__TweetDarkStyle);
         final int containerColor = getResources().getColor(
                 R.color.tw__tweet_dark_container_bg_color);
-        final int color = ColorUtils.calculateOpacityTransform(
+        final int color = ColorUtils.INSTANCE.calculateOpacityTransform(
                 BaseTweetView.MEDIA_BG_DARK_OPACITY, Color.WHITE, containerColor);
 
         final MediaEntity entity = TestFixtures.createMediaEntityWithPhoto(100, 100);

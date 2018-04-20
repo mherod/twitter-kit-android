@@ -15,16 +15,16 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui;
+package com.twitter.sdk.android.tweetui
 
 /**
  * Tweet interaction listener
  */
-interface LinkClickListener {
+internal interface LinkClickListener {
     /**
      * A URL was clicked
      *
      * @param url The source URL
      */
-    void onUrlClicked(String url);
+    fun onUrlClicked(url: String)
 }

@@ -65,8 +65,8 @@ final class TweetTextUtils {
         if (coreUrls != null) {
             for (UrlEntity entity : coreUrls) {
                 final FormattedUrlEntity formattedUrlEntity =
-                        FormattedUrlEntity.createFormattedUrlEntity(entity);
-                formattedTweetText.urlEntities.add(formattedUrlEntity);
+                        FormattedUrlEntity.Companion.createFormattedUrlEntity(entity);
+                formattedTweetText.getUrlEntities().add(formattedUrlEntity);
             }
         }
 
@@ -74,7 +74,7 @@ final class TweetTextUtils {
         if (coreMedia != null) {
             for (MediaEntity entity : coreMedia) {
                 final FormattedMediaEntity formattedMediaEntity = new FormattedMediaEntity(entity);
-                formattedTweetText.mediaEntities.add(formattedMediaEntity);
+                formattedTweetText.getMediaEntities().add(formattedMediaEntity);
             }
         }
 
@@ -82,8 +82,8 @@ final class TweetTextUtils {
         if (coreHashtags != null) {
             for (HashtagEntity entity : coreHashtags) {
                 final FormattedUrlEntity formattedHashtagEntity =
-                        FormattedUrlEntity.createFormattedUrlEntity(entity);
-                formattedTweetText.hashtagEntities.add(formattedHashtagEntity);
+                        FormattedUrlEntity.Companion.createFormattedUrlEntity(entity);
+                formattedTweetText.getHashtagEntities().add(formattedHashtagEntity);
             }
         }
 
@@ -91,8 +91,8 @@ final class TweetTextUtils {
         if (coreMentions != null) {
             for (MentionEntity entity : coreMentions) {
                 final FormattedUrlEntity formattedMentionEntity =
-                        FormattedUrlEntity.createFormattedUrlEntity(entity);
-                formattedTweetText.mentionEntities.add(formattedMentionEntity);
+                        FormattedUrlEntity.Companion.createFormattedUrlEntity(entity);
+                formattedTweetText.getMentionEntities().add(formattedMentionEntity);
             }
         }
 
@@ -100,8 +100,8 @@ final class TweetTextUtils {
         if (coreSymbols != null) {
             for (SymbolEntity entity : coreSymbols) {
                 final FormattedUrlEntity formattedSymbolEntity =
-                        FormattedUrlEntity.createFormattedUrlEntity(entity);
-                formattedTweetText.symbolEntities.add(formattedSymbolEntity);
+                        FormattedUrlEntity.Companion.createFormattedUrlEntity(entity);
+                formattedTweetText.getSymbolEntities().add(formattedSymbolEntity);
             }
         }
     }
@@ -119,13 +119,13 @@ final class TweetTextUtils {
         final HtmlEntities.Unescaped u = HtmlEntities.HTML40.unescape(tweet.text);
         final StringBuilder result = new StringBuilder(u.unescaped);
 
-        adjustIndicesForEscapedChars(formattedTweetText.urlEntities, u.indices);
-        adjustIndicesForEscapedChars(formattedTweetText.mediaEntities, u.indices);
-        adjustIndicesForEscapedChars(formattedTweetText.hashtagEntities, u.indices);
-        adjustIndicesForEscapedChars(formattedTweetText.mentionEntities, u.indices);
-        adjustIndicesForEscapedChars(formattedTweetText.symbolEntities, u.indices);
+        adjustIndicesForEscapedChars(formattedTweetText.getUrlEntities(), u.indices);
+        adjustIndicesForEscapedChars(formattedTweetText.getMediaEntities(), u.indices);
+        adjustIndicesForEscapedChars(formattedTweetText.getHashtagEntities(), u.indices);
+        adjustIndicesForEscapedChars(formattedTweetText.getMentionEntities(), u.indices);
+        adjustIndicesForEscapedChars(formattedTweetText.getSymbolEntities(), u.indices);
         adjustIndicesForSupplementaryChars(result, formattedTweetText);
-        formattedTweetText.text = result.toString();
+        formattedTweetText.setText(result.toString());
     }
 
     /**
@@ -163,17 +163,17 @@ final class TweetTextUtils {
                 end = index[1];
                 // len is actually (end - start + 1) - 1
                 len = end - start;
-                if (end < entity.start) {
+                if (end < entity.getStart()) {
                     // bump position of the next marker
                     diff += len;
                     m++;
-                } else if (end < entity.end) {
+                } else if (end < entity.getEnd()) {
                     inDiff += len;
                 }
             }
             // Once we've accumulated diffs, calc the offset
-            entity.start = entity.start  - (diff + inDiff);
-            entity.end = entity.end - (diff + inDiff);
+            entity.setStart(entity.getStart() - (diff + inDiff));
+            entity.setEnd(entity.getEnd() - (diff + inDiff));
         }
     }
 
@@ -196,11 +196,11 @@ final class TweetTextUtils {
             }
         }
 
-        adjustEntitiesWithOffsets(formattedTweetText.urlEntities, highSurrogateIndices);
-        adjustEntitiesWithOffsets(formattedTweetText.mediaEntities, highSurrogateIndices);
-        adjustEntitiesWithOffsets(formattedTweetText.hashtagEntities, highSurrogateIndices);
-        adjustEntitiesWithOffsets(formattedTweetText.mentionEntities, highSurrogateIndices);
-        adjustEntitiesWithOffsets(formattedTweetText.symbolEntities, highSurrogateIndices);
+        adjustEntitiesWithOffsets(formattedTweetText.getUrlEntities(), highSurrogateIndices);
+        adjustEntitiesWithOffsets(formattedTweetText.getMediaEntities(), highSurrogateIndices);
+        adjustEntitiesWithOffsets(formattedTweetText.getHashtagEntities(), highSurrogateIndices);
+        adjustEntitiesWithOffsets(formattedTweetText.getMentionEntities(), highSurrogateIndices);
+        adjustEntitiesWithOffsets(formattedTweetText.getSymbolEntities(), highSurrogateIndices);
     }
 
     /**
@@ -215,7 +215,7 @@ final class TweetTextUtils {
         if (entities == null || indices == null) return;
         for (FormattedUrlEntity entity : entities) {
             // find all indices <= start and update offsets by that much
-            final int start = entity.start;
+            final int start = entity.getStart();
             int offset = 0;
             for (Integer index : indices) {
                 if (index - offset <= start) {
@@ -224,8 +224,8 @@ final class TweetTextUtils {
                     break;
                 }
             }
-            entity.start = entity.start + offset;
-            entity.end = entity.end + offset;
+            entity.setStart(entity.getStart() + offset);
+            entity.setEnd(entity.getEnd() + offset);
         }
     }
 }

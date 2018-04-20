@@ -414,7 +414,7 @@ abstract class AbstractTweetView extends RelativeLayout{
         final FormattedTweetText formattedTweetText = dependencyProvider.getTweetUi()
                 .getTweetRepository().formatTweetText(displayTweet);
         String tweetText = null;
-        if (formattedTweetText != null) tweetText = formattedTweetText.text;
+        if (formattedTweetText != null) tweetText = formattedTweetText.getText();
 
         final long createdAt = TweetDateUtils.apiTimeToLong(displayTweet.createdAt);
         String timestamp = null;

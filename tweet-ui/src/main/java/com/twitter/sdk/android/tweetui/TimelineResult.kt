@@ -15,26 +15,16 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui;
-
-import java.util.List;
+package com.twitter.sdk.android.tweetui
 
 /**
  * TimelineResult represents timeline items and the TimelineCursor from a Timeline response.
  * @param <T> timeline item type
+</T> */
+/**
+ * Constructs a TimelineResult storing item and cursor data.
+ * @param timelineCursor cursor representing position and containsLastItem data
+ * @param items timeline items
  */
-public class TimelineResult<T> {
 
-    public final TimelineCursor timelineCursor;
-    public final List<T> items;
-
-    /**
-     * Constructs a TimelineResult storing item and cursor data.
-     * @param timelineCursor cursor representing position and containsLastItem data
-     * @param items timeline items
-     */
-    public TimelineResult(TimelineCursor timelineCursor, List<T> items) {
-        this.timelineCursor = timelineCursor;
-        this.items = items;
-    }
-}
+class TimelineResult<T>(val timelineCursor: TimelineCursor, val items: List<T>)

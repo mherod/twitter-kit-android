@@ -32,32 +32,32 @@ public class ColorUtilsTest {
 
     @Test
     public void testIsLightColor_blue() {
-        assertFalse(ColorUtils.isLightColor(Color.BLUE));
+        assertFalse(ColorUtils.INSTANCE.isLightColor(Color.BLUE));
     }
 
     @Test
     public void testIsLightColor_black() {
-        assertFalse(ColorUtils.isLightColor(Color.BLACK));
+        assertFalse(ColorUtils.INSTANCE.isLightColor(Color.BLACK));
     }
 
     @Test
     public void testIsLightColor_white() {
-        assertTrue(ColorUtils.isLightColor(Color.WHITE));
+        assertTrue(ColorUtils.INSTANCE.isLightColor(Color.WHITE));
     }
 
     @Test
     public void testCalculateOpacityTransform_zeroOpacity() {
-        assertEquals(Color.WHITE, ColorUtils.calculateOpacityTransform(0, Color.BLUE, Color.WHITE));
+        assertEquals(Color.WHITE, ColorUtils.INSTANCE.calculateOpacityTransform(0, Color.BLUE, Color.WHITE));
     }
 
     @Test
     public void testCalculateOpacityTransform_fullOpacity() {
-        assertEquals(Color.BLUE, ColorUtils.calculateOpacityTransform(1, Color.BLUE, Color.WHITE));
+        assertEquals(Color.BLUE, ColorUtils.INSTANCE.calculateOpacityTransform(1, Color.BLUE, Color.WHITE));
     }
 
     @Test
     public void testCalculateOpacityTransform_returnsFullOpacity() {
-        final int color = ColorUtils.calculateOpacityTransform(0, Color.BLUE, Color.WHITE);
+        final int color = ColorUtils.INSTANCE.calculateOpacityTransform(0, Color.BLUE, Color.WHITE);
         assertEquals(0xFF000000, color & 0xFF000000);
     }
 }

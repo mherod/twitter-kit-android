@@ -15,20 +15,13 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui;
+package com.twitter.sdk.android.tweetui
 
-import com.twitter.sdk.android.core.models.MediaEntity;
-import com.twitter.sdk.android.core.models.Tweet;
+import com.google.gson.annotations.SerializedName
 
-/**
- * Interface to be invoked when media is clicked.
- */
-public interface TweetMediaClickListener {
-
-    /**
-     * Called when media clicked.
-     * @param tweet The Tweet that was clicked.
-     * @param entity The entity that was clicked.
-     */
-    void onMediaEntityClick(Tweet tweet, MediaEntity entity);
-}
+class FilterValues(
+        @SerializedName("keywords") val keywords: List<String>,
+        @SerializedName("hashtags") val hashtags: List<String>,
+        @SerializedName("handles") val handles: List<String>,
+        @SerializedName("urls") val urls: List<String>
+)

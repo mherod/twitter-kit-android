@@ -55,22 +55,22 @@ public class BasicTimelineFilter implements TimelineFilter {
 
         wordIterator = BreakIterator.getWordInstance(locale);
         keywordConstraints = new TreeSet<>(comparator);
-        keywordConstraints.addAll(filterValues.keywords);
+        keywordConstraints.addAll(filterValues.getKeywords());
 
         hashTagConstraints = new TreeSet<>(comparator);
-        for (String hashtag : filterValues.hashtags) {
+        for (String hashtag : filterValues.getHashtags()) {
             final String sanitizedHashtag = normalizeHashtag(hashtag);
             hashTagConstraints.add(sanitizedHashtag);
         }
 
-        handleConstraints = new HashSet<>(filterValues.handles.size());
-        for (String handle : filterValues.handles) {
+        handleConstraints = new HashSet<>(filterValues.getHandles().size());
+        for (String handle : filterValues.getHandles()) {
             final String sanitizedHandle = normalizeHandle(handle);
             handleConstraints.add(sanitizedHandle);
         }
 
-        urlConstraints = new HashSet<>(filterValues.urls.size());
-        for (String url : filterValues.urls) {
+        urlConstraints = new HashSet<>(filterValues.getUrls().size());
+        for (String url : filterValues.getUrls()) {
             final String sanitizedUrl = normalizeUrl(url);
             urlConstraints.add(sanitizedUrl);
         }

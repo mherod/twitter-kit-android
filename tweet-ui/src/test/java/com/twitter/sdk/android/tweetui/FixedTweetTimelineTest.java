@@ -64,11 +64,11 @@ public class FixedTweetTimelineTest {
         timeline.next(ANY_ID, new Callback<TimelineResult<Tweet>>() {
             @Override
             public void success(Result<TimelineResult<Tweet>> result) {
-                assertEquals(fixedTweets, result.getData().items);
+                assertEquals(fixedTweets, result.getData().getItems());
                 assertEquals((Long) TestFixtures.TEST_PHOTO_TWEET.getId(),
-                        result.getData().timelineCursor.minPosition);
+                        result.getData().getTimelineCursor().minPosition);
                 assertEquals((Long) TestFixtures.TEST_TWEET.getId(),
-                        result.getData().timelineCursor.maxPosition);
+                        result.getData().getTimelineCursor().maxPosition);
                 assertNull(result.getResponse());
             }
             @Override
@@ -84,9 +84,9 @@ public class FixedTweetTimelineTest {
         timeline.previous(ANY_ID, new Callback<TimelineResult<Tweet>>() {
             @Override
             public void success(Result<TimelineResult<Tweet>> result) {
-                assertTrue(result.getData().items.isEmpty());
-                assertNull(result.getData().timelineCursor.maxPosition);
-                assertNull(result.getData().timelineCursor.minPosition);
+                assertTrue(result.getData().getItems().isEmpty());
+                assertNull(result.getData().getTimelineCursor().maxPosition);
+                assertNull(result.getData().getTimelineCursor().minPosition);
                 assertNull(result.getResponse());
             }
 

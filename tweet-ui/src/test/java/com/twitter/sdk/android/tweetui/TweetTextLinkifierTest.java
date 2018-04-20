@@ -74,8 +74,8 @@ public class TweetTextLinkifierTest {
                 = EntityFactory.newUrlEntity(fullText, url, displayUrl);
 
         final FormattedTweetText formattedText = new FormattedTweetText();
-        formattedText.text = fullText;
-        formattedText.urlEntities.add(FormattedUrlEntity.createFormattedUrlEntity(urlEntity));
+        formattedText.setText(fullText);
+        formattedText.getUrlEntities().add(FormattedUrlEntity.Companion.createFormattedUrlEntity(urlEntity));
 
         final CharSequence linkifiedText
                 = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true, true);
@@ -89,8 +89,8 @@ public class TweetTextLinkifierTest {
         final String fullText = "";
         final UrlEntity urlEntity = new UrlEntity("x z", "y", "z", -1, 30);
         final FormattedTweetText formattedText = new FormattedTweetText();
-        formattedText.text = fullText;
-        formattedText.urlEntities.add(FormattedUrlEntity.createFormattedUrlEntity(urlEntity));
+        formattedText.setText(fullText);
+        formattedText.getUrlEntities().add(FormattedUrlEntity.Companion.createFormattedUrlEntity(urlEntity));
 
         final CharSequence linkifiedText
                 = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true, true);
@@ -108,8 +108,8 @@ public class TweetTextLinkifierTest {
         final UrlEntity urlEntity =
                 EntityFactory.newUrlEntity(fullText, url, displayUrl);
         final FormattedTweetText formattedText = new FormattedTweetText();
-        formattedText.text = fullText;
-        formattedText.urlEntities.add(FormattedUrlEntity.createFormattedUrlEntity(urlEntity));
+        formattedText.setText(fullText);
+        formattedText.getUrlEntities().add(FormattedUrlEntity.Companion.createFormattedUrlEntity(urlEntity));
 
         final SpannableStringBuilder linkifiedText = (SpannableStringBuilder)
                 TweetTextLinkifier.linkifyUrls(formattedText, mockClickListener, 0, 0, true,
@@ -128,8 +128,8 @@ public class TweetTextLinkifierTest {
         final HashtagEntity hashtagEntity = EntityFactory.newHashtagEntity(fullText, hashtag);
 
         final FormattedTweetText formattedText = new FormattedTweetText();
-        formattedText.text = fullText;
-        formattedText.hashtagEntities.add(FormattedUrlEntity.createFormattedUrlEntity(
+        formattedText.setText(fullText);
+        formattedText.getHashtagEntities().add(FormattedUrlEntity.Companion.createFormattedUrlEntity(
                 hashtagEntity));
 
         final CharSequence linkifiedText
@@ -148,8 +148,8 @@ public class TweetTextLinkifierTest {
 
         final HashtagEntity hashtagEntity = EntityFactory.newHashtagEntity(fullText, hashtag);
         final FormattedTweetText formattedText = new FormattedTweetText();
-        formattedText.text = fullText;
-        formattedText.hashtagEntities.add(FormattedUrlEntity.createFormattedUrlEntity(
+        formattedText.setText(fullText);
+        formattedText.getHashtagEntities().add(FormattedUrlEntity.Companion.createFormattedUrlEntity(
                 hashtagEntity));
 
         final SpannableStringBuilder linkifiedText = (SpannableStringBuilder)
@@ -169,8 +169,8 @@ public class TweetTextLinkifierTest {
         final MentionEntity mentionEntity = EntityFactory.newMentionEntity(fullText, mention);
 
         final FormattedTweetText formattedText = new FormattedTweetText();
-        formattedText.text = fullText;
-        formattedText.mentionEntities.add(FormattedUrlEntity.createFormattedUrlEntity(
+        formattedText.setText(fullText);
+        formattedText.getMentionEntities().add(FormattedUrlEntity.Companion.createFormattedUrlEntity(
                 mentionEntity));
 
         final CharSequence linkifiedText
@@ -189,8 +189,8 @@ public class TweetTextLinkifierTest {
 
         final MentionEntity mentionEntity = EntityFactory.newMentionEntity(fullText, mention);
         final FormattedTweetText formattedText = new FormattedTweetText();
-        formattedText.text = fullText;
-        formattedText.mentionEntities.add(FormattedUrlEntity.createFormattedUrlEntity(
+        formattedText.setText(fullText);
+        formattedText.getMentionEntities().add(FormattedUrlEntity.Companion.createFormattedUrlEntity(
                 mentionEntity));
 
         final SpannableStringBuilder linkifiedText = (SpannableStringBuilder)
@@ -210,8 +210,8 @@ public class TweetTextLinkifierTest {
         final SymbolEntity symbolEntity = EntityFactory.newSymbolEntity(fullText, symbol);
 
         final FormattedTweetText formattedText = new FormattedTweetText();
-        formattedText.text = fullText;
-        formattedText.symbolEntities.add(FormattedUrlEntity.createFormattedUrlEntity(
+        formattedText.setText(fullText);
+        formattedText.getSymbolEntities().add(FormattedUrlEntity.Companion.createFormattedUrlEntity(
                 symbolEntity));
 
         final CharSequence linkifiedText
@@ -230,8 +230,8 @@ public class TweetTextLinkifierTest {
 
         final SymbolEntity symbolEntity = EntityFactory.newSymbolEntity(fullText, symbol);
         final FormattedTweetText formattedText = new FormattedTweetText();
-        formattedText.text = fullText;
-        formattedText.symbolEntities.add(FormattedUrlEntity.createFormattedUrlEntity(
+        formattedText.setText(fullText);
+        formattedText.getSymbolEntities().add(FormattedUrlEntity.Companion.createFormattedUrlEntity(
                 symbolEntity));
 
         final SpannableStringBuilder linkifiedText = (SpannableStringBuilder)
@@ -246,7 +246,7 @@ public class TweetTextLinkifierTest {
     @Test
     public void testLinkifyUrls_verifyPhotoOnlyStrippedFromEnd() {
         final FormattedTweetText formattedText = setupPicTwitterEntities();
-        final FormattedMediaEntity lastPhotoUrl = formattedText.mediaEntities.get(0);
+        final FormattedMediaEntity lastPhotoUrl = formattedText.getMediaEntities().get(0);
         final CharSequence linkifiedText
                 = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true, true);
 
@@ -254,7 +254,7 @@ public class TweetTextLinkifierTest {
         // that we can render inline
         assertEquals("photo", lastPhotoUrl.type);
         // assert that we do not strip it here and display it in the middle
-        assertTrue(linkifiedText.toString().contains(lastPhotoUrl.displayUrl));
+        assertTrue(linkifiedText.toString().contains(lastPhotoUrl.getDisplayUrl()));
     }
 
     @Test
@@ -315,9 +315,9 @@ public class TweetTextLinkifierTest {
                 72);
 
         final FormattedTweetText formattedText = new FormattedTweetText();
-        formattedText.text = text;
-        formattedText.urlEntities.add(FormattedUrlEntity.createFormattedUrlEntity(urlEntity));
-        formattedText.mediaEntities.add(new FormattedMediaEntity(mediaEntity));
+        formattedText.setText(text);
+        formattedText.getUrlEntities().add(FormattedUrlEntity.Companion.createFormattedUrlEntity(urlEntity));
+        formattedText.getMediaEntities().add(new FormattedMediaEntity(mediaEntity));
 
         return formattedText;
     }
@@ -352,7 +352,7 @@ public class TweetTextLinkifierTest {
     public void testMergeAndSortEntities_sortUrlsAndMediaAndHashtags() {
         final List<FormattedUrlEntity> urls = new ArrayList<>();
         final UrlEntity urlEntity = TestFixtures.newUrlEntity(2, 5);
-        final FormattedUrlEntity adjustedUrl = FormattedUrlEntity.createFormattedUrlEntity(
+        final FormattedUrlEntity adjustedUrl = FormattedUrlEntity.Companion.createFormattedUrlEntity(
                 urlEntity);
         urls.add(adjustedUrl);
 
@@ -364,19 +364,19 @@ public class TweetTextLinkifierTest {
         final List<FormattedUrlEntity> hashtags = new ArrayList<>();
         final HashtagEntity hashtag = TestFixtures.newHashtagEntity("TwitterForGood", 0, 13);
         final FormattedUrlEntity adjustedHashtag =
-                FormattedUrlEntity.createFormattedUrlEntity(hashtag);
+                FormattedUrlEntity.Companion.createFormattedUrlEntity(hashtag);
         hashtags.add(adjustedHashtag);
 
         final List<FormattedUrlEntity> mentions = new ArrayList<>();
         final MentionEntity mention = TestFixtures.newMentionEntity("twitterdev", 0, 9);
         final FormattedUrlEntity adjustedMention =
-                FormattedUrlEntity.createFormattedUrlEntity(mention);
+                FormattedUrlEntity.Companion.createFormattedUrlEntity(mention);
         mentions.add(adjustedMention);
 
         final List<FormattedUrlEntity> symbols = new ArrayList<>();
         final SymbolEntity symbol = TestFixtures.newSymbolEntity("TWTR", 0, 3);
         final FormattedUrlEntity adjustedSymbol =
-                FormattedUrlEntity.createFormattedUrlEntity(symbol);
+                FormattedUrlEntity.Companion.createFormattedUrlEntity(symbol);
         symbols.add(adjustedSymbol);
 
         final List<? extends FormattedUrlEntity> combined

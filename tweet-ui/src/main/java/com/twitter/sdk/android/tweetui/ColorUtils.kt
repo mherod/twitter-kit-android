@@ -15,12 +15,11 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui;
+package com.twitter.sdk.android.tweetui
 
-import android.graphics.Color;
+import android.graphics.Color
 
-final class ColorUtils {
-    private ColorUtils() {}
+internal object ColorUtils {
 
     /**
      * This method calculates a combination of colors using an opacity of the foreground layered
@@ -28,25 +27,25 @@ final class ColorUtils {
      * alpha values in the color attributes on the views directly.
      *
      * @param opacity      A value in the range of 0 to 1 that indicates the opacity desired for the
-     *                     overlay color
+     * overlay color
      * @param overlayColor The foreground color that the opacity will be applied to
      * @param primaryColor The background color that the foreground color is applied to
      * @return             The combined color value
      */
-    static int calculateOpacityTransform(final double opacity, final int overlayColor,
-            final int primaryColor) {
-        final int redPrimary = Color.red(primaryColor);
-        final int redOverlay = Color.red(overlayColor);
-        final int greenPrimary = Color.green(primaryColor);
-        final int greenOverlay = Color.green(overlayColor);
-        final int bluePrimary = Color.blue(primaryColor);
-        final int blueOverlay = Color.blue(overlayColor);
+    fun calculateOpacityTransform(opacity: Double, overlayColor: Int,
+                                  primaryColor: Int): Int {
+        val redPrimary = Color.red(primaryColor)
+        val redOverlay = Color.red(overlayColor)
+        val greenPrimary = Color.green(primaryColor)
+        val greenOverlay = Color.green(overlayColor)
+        val bluePrimary = Color.blue(primaryColor)
+        val blueOverlay = Color.blue(overlayColor)
 
-        final int redCalculated = (int) ((1 - opacity) * redPrimary + opacity * redOverlay);
-        final int greenCalculated = (int) ((1 - opacity) * greenPrimary + opacity * greenOverlay);
-        final int blueCalculated = (int) ((1 - opacity) * bluePrimary + opacity * blueOverlay);
+        val redCalculated = ((1 - opacity) * redPrimary + opacity * redOverlay).toInt()
+        val greenCalculated = ((1 - opacity) * greenPrimary + opacity * greenOverlay).toInt()
+        val blueCalculated = ((1 - opacity) * bluePrimary + opacity * blueOverlay).toInt()
 
-        return Color.rgb(redCalculated, greenCalculated, blueCalculated);
+        return Color.rgb(redCalculated, greenCalculated, blueCalculated)
     }
 
     /**
@@ -57,12 +56,12 @@ final class ColorUtils {
      * @param  color A color value
      * @return Whether or not the color is considered light
      */
-    static boolean isLightColor(final int color) {
-        final int r = Color.red(color);
-        final int g = Color.green(color);
-        final int b = Color.blue(color);
+    fun isLightColor(color: Int): Boolean {
+        val r = Color.red(color)
+        val g = Color.green(color)
+        val b = Color.blue(color)
 
-        final double threshold = 0.21 * r + 0.72 * g + 0.07 * b;
-        return threshold > 128;
+        val threshold = 0.21 * r + 0.72 * g + 0.07 * b
+        return threshold > 128
     }
 }

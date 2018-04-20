@@ -199,7 +199,7 @@ public abstract class BaseTweetView extends AbstractTweetView {
                 a.getBoolean(R.styleable.tw__TweetView_tw__tweet_actions_enabled, false);
 
         // Calculated colors
-        final boolean isLightBg = ColorUtils.isLightColor(containerBgColor);
+        final boolean isLightBg = ColorUtils.INSTANCE.isLightColor(containerBgColor);
 
         if (isLightBg) {
             photoErrorResId = R.drawable.tw__ic_tweet_photo_error_light;
@@ -212,14 +212,14 @@ public abstract class BaseTweetView extends AbstractTweetView {
         }
 
         // offset from white when background is light
-        secondaryTextColor = ColorUtils.calculateOpacityTransform(
+        secondaryTextColor = ColorUtils.INSTANCE.calculateOpacityTransform(
                 isLightBg ? SECONDARY_TEXT_COLOR_LIGHT_OPACITY : SECONDARY_TEXT_COLOR_DARK_OPACITY,
                 isLightBg ? Color.WHITE : Color.BLACK,
                 primaryTextColor
         );
 
         // offset from black when background is light
-        mediaBgColor = ColorUtils.calculateOpacityTransform(
+        mediaBgColor = ColorUtils.INSTANCE.calculateOpacityTransform(
                 isLightBg ? MEDIA_BG_LIGHT_OPACITY : MEDIA_BG_DARK_OPACITY,
                 isLightBg ? Color.BLACK : Color.WHITE,
                 containerBgColor

@@ -77,7 +77,7 @@ class TweetRepository {
         if (cached != null) return cached;
 
         final FormattedTweetText formattedTweetText = TweetTextUtils.formatTweetText(tweet);
-        if (formattedTweetText != null && !TextUtils.isEmpty(formattedTweetText.text)) {
+        if (formattedTweetText != null && !TextUtils.isEmpty(formattedTweetText.getText())) {
             formatCache.put(tweet.id, formattedTweetText);
         }
 

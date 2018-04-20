@@ -59,23 +59,23 @@ final class TweetTextLinkifier {
                                     boolean stripQuoteTweet, boolean stripVineCard) {
         if (tweetText == null) return null;
 
-        if (TextUtils.isEmpty(tweetText.text)) {
-            return tweetText.text;
+        if (TextUtils.isEmpty(tweetText.getText())) {
+            return tweetText.getText();
         }
 
-        final SpannableStringBuilder spannable = new SpannableStringBuilder(tweetText.text);
-        final List<FormattedUrlEntity> urls = ModelUtils.getSafeList(tweetText.urlEntities);
-        final List<FormattedMediaEntity> media = ModelUtils.getSafeList(tweetText.mediaEntities);
-        final List<FormattedUrlEntity> hashtags = ModelUtils.getSafeList(tweetText.hashtagEntities);
-        final List<FormattedUrlEntity> mentions = ModelUtils.getSafeList(tweetText.mentionEntities);
-        final List<FormattedUrlEntity> symbols = ModelUtils.getSafeList(tweetText.symbolEntities);
+        final SpannableStringBuilder spannable = new SpannableStringBuilder(tweetText.getText());
+        final List<FormattedUrlEntity> urls = ModelUtils.getSafeList(tweetText.getUrlEntities());
+        final List<FormattedMediaEntity> media = ModelUtils.getSafeList(tweetText.getMediaEntities());
+        final List<FormattedUrlEntity> hashtags = ModelUtils.getSafeList(tweetText.getHashtagEntities());
+        final List<FormattedUrlEntity> mentions = ModelUtils.getSafeList(tweetText.getMentionEntities());
+        final List<FormattedUrlEntity> symbols = ModelUtils.getSafeList(tweetText.getSymbolEntities());
         /*
          * We combine and sort the entities here so that we can correctly calculate the offsets
          * into the text.
          */
         final List<FormattedUrlEntity> combined = mergeAndSortEntities(urls, media, hashtags,
                 mentions, symbols);
-        final FormattedUrlEntity strippedEntity = getEntityToStrip(tweetText.text, combined,
+        final FormattedUrlEntity strippedEntity = getEntityToStrip(tweetText.getText(), combined,
                 stripQuoteTweet, stripVineCard);
 
         addUrlEntities(spannable, combined, strippedEntity, linkListener, linkColor,
@@ -118,7 +118,7 @@ final class TweetTextLinkifier {
             if (lhs == null && rhs != null) return -1;
             if (lhs != null && rhs == null) return 1;
             if (lhs == null && rhs == null) return 0;
-            return Integer.compare(lhs.start, rhs.start);
+            return Integer.compare(lhs.getStart(), rhs.getStart());
 
         });
         return combined;
@@ -146,19 +146,19 @@ final class TweetTextLinkifier {
         int start;
         int end;
         for (final FormattedUrlEntity url : entities) {
-            start = url.start - offset;
-            end = url.end - offset;
+            start = url.getStart() - offset;
+            end = url.getEnd() - offset;
             if (start >= 0 && end <= spannable.length()) {
                 // replace the last photo url with empty string, we can use the start indices as
                 // as simple check, since none of this will work anyways if we have overlapping
                 // entities
-                if (strippedEntity != null && strippedEntity.start == url.start) {
+                if (strippedEntity != null && strippedEntity.getStart() == url.getStart()) {
                     spannable.replace(start, end, "");
                     len = end - start;
                     offset += len;
-                } else if (!TextUtils.isEmpty(url.displayUrl)) {
-                    spannable.replace(start, end, url.displayUrl);
-                    len = end - (start + url.displayUrl.length());
+                } else if (!TextUtils.isEmpty(url.getDisplayUrl())) {
+                    spannable.replace(start, end, url.getDisplayUrl());
+                    len = end - (start + url.getDisplayUrl().length());
                     end -= len;
                     offset += len;
 
@@ -167,7 +167,7 @@ final class TweetTextLinkifier {
                         @Override
                         public void onClick(View widget) {
                             if (linkListener == null) return;
-                            linkListener.onUrlClicked(url.url);
+                            linkListener.onUrlClicked(url.getUrl());
                         }
                     };
                     spannable.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -181,7 +181,7 @@ final class TweetTextLinkifier {
         if (combined.isEmpty()) return null;
 
         final FormattedUrlEntity urlEntity = combined.get(combined.size() - 1);
-        if (stripLtrMarker(tweetText).endsWith(urlEntity.url) && (isPhotoEntity(urlEntity) ||
+        if (stripLtrMarker(tweetText).endsWith(urlEntity.getUrl()) && (isPhotoEntity(urlEntity) ||
                 (stripQuoteTweet && isQuotedStatus(urlEntity)) ||
                 (stripVineCard && isVineCard(urlEntity)))) {
             return urlEntity;
@@ -204,10 +204,10 @@ final class TweetTextLinkifier {
     }
 
     static boolean isQuotedStatus(final FormattedUrlEntity urlEntity) {
-        return QUOTED_STATUS_URL.matcher(urlEntity.expandedUrl).find();
+        return QUOTED_STATUS_URL.matcher(urlEntity.getExpandedUrl()).find();
     }
 
     static boolean isVineCard(final FormattedUrlEntity urlEntity) {
-        return VINE_URL.matcher(urlEntity.expandedUrl).find();
+        return VINE_URL.matcher(urlEntity.getExpandedUrl()).find();
     }
 }

@@ -15,22 +15,20 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui;
+package com.twitter.sdk.android.tweetui
 
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.models.MediaEntity
+import com.twitter.sdk.android.core.models.Tweet
 
 /**
- * BaseTweetAction keeps a Callback which should be called after Tweet actions are performed.
+ * Interface to be invoked when media is clicked.
  */
-class BaseTweetAction {
-    protected final Callback<Tweet> actionCallback;
+interface TweetMediaClickListener {
 
-    BaseTweetAction(Callback<Tweet> actionCallback) {
-        this.actionCallback = actionCallback;
-    }
-
-    Callback<Tweet> getActionCallback() {
-        return actionCallback;
-    }
+    /**
+     * Called when media clicked.
+     * @param tweet The Tweet that was clicked.
+     * @param entity The entity that was clicked.
+     */
+    fun onMediaEntityClick(tweet: Tweet, entity: MediaEntity)
 }
