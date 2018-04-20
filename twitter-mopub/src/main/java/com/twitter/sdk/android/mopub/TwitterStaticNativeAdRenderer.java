@@ -18,6 +18,7 @@
 package com.twitter.sdk.android.mopub;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -40,18 +41,19 @@ public class TwitterStaticNativeAdRenderer implements MoPubAdRenderer<StaticNati
         this.styleResId = styleResId;
     }
 
+    @NonNull
     @Override
-    public View createAdView(final Context context, final ViewGroup parent) {
+    public View createAdView(@NonNull final Context context, final ViewGroup parent) {
         return new TwitterStaticNativeAd(context, null, styleResId);
     }
 
     @Override
-    public void renderAdView(final View view, final StaticNativeAd staticNativeAd) {
+    public void renderAdView(@NonNull final View view, @NonNull final StaticNativeAd staticNativeAd) {
         update((TwitterStaticNativeAd) view, staticNativeAd);
     }
 
     @Override
-    public boolean supports(final BaseNativeAd nativeAd) {
+    public boolean supports(@NonNull final BaseNativeAd nativeAd) {
         return nativeAd instanceof StaticNativeAd;
     }
 

@@ -32,6 +32,7 @@ import java.util.GregorianCalendar;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.eq;
@@ -176,7 +177,7 @@ public class SearchTimelineTest {
         assertEquals(TEST_LANG, timeline.languageCode);
         assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
         assertEquals(TEST_UNTIL_DATE, timeline.untilDate);
-        assertEquals(TEST_GEOCODE, timeline.geocode);
+        assertSame(TEST_GEOCODE, timeline.geocode);
     }
 
     @Test
@@ -223,7 +224,7 @@ public class SearchTimelineTest {
                 .query(TEST_QUERY)
                 .geocode(TEST_GEOCODE)
                 .build();
-        assertEquals(TEST_GEOCODE, timeline.geocode);
+        assertSame(TEST_GEOCODE, timeline.geocode);
     }
 
     @Test

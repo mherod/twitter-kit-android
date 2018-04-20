@@ -33,7 +33,7 @@ public class CompactTweetViewXmlTest extends BaseTweetViewXmlTest {
 
     public void testLayout() {
         final CompactTweetView view = getView();
-        assertNotNull(view);
-        assertEquals(R.layout.tw__tweet_compact, view.getLayout());
+        Assert.assertNotNull(view);
+        Assert.assertEquals(R.layout.tw__tweet_compact, view.getLayout());
     }
 }

@@ -51,9 +51,9 @@ public class TwitterCoreTest extends AndroidTestCase {
             TwitterTestUtils.resetTwitter();
             TwitterCoreTestUtils.resetTwitterCore();
             TwitterCore.getInstance().getGuestSessionProvider();
-            fail("Should fail if Twitter is not initialized.");
+            Assert.fail("Should fail if Twitter is not initialized.");
         } catch (IllegalStateException ie) {
-            assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ie.getMessage());
+            Assert.assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ie.getMessage());
         }
     }
 
@@ -62,19 +62,19 @@ public class TwitterCoreTest extends AndroidTestCase {
             TwitterTestUtils.resetTwitter();
             TwitterCoreTestUtils.resetTwitterCore();
             TwitterCore.getInstance().getGuestSessionProvider();
-            fail("Should fail if Twitter is not initialized.");
+            Assert.fail("Should fail if Twitter is not initialized.");
         } catch (IllegalStateException ie) {
-            assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ie.getMessage());
+            Assert.assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ie.getMessage());
         }
     }
 
     public void testGetIdentifier() {
         final String identifier = BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
-        assertEquals(identifier, twitterCore.getIdentifier());
+        Assert.assertEquals(identifier, twitterCore.getIdentifier());
     }
 
     public void testGetSessionManager() {
-        assertNotNull(twitterCore.getSessionManager());
+        Assert.assertNotNull(twitterCore.getSessionManager());
     }
 
     public void testGetSessionManager_twitterNotInitialized() {
@@ -82,14 +82,14 @@ public class TwitterCoreTest extends AndroidTestCase {
             TwitterTestUtils.resetTwitter();
             TwitterCoreTestUtils.resetTwitterCore();
             TwitterCore.getInstance().getSessionManager();
-            fail("Should fail if Twitter is not initialized.");
+            Assert.fail("Should fail if Twitter is not initialized.");
         } catch (IllegalStateException ex) {
-            assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
+            Assert.assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
         }
     }
 
     public void testGetAppSessionManager() {
-        assertNotNull(twitterCore.getGuestSessionProvider());
+        Assert.assertNotNull(twitterCore.getGuestSessionProvider());
     }
 
     public void testGetAppSessionManager_twitterNotInitialized() {
@@ -97,15 +97,15 @@ public class TwitterCoreTest extends AndroidTestCase {
             TwitterTestUtils.resetTwitter();
             TwitterCoreTestUtils.resetTwitterCore();
             TwitterCore.getInstance().getGuestSessionProvider();
-            fail("Should fail if Twitter is not initialized.");
+            Assert.fail("Should fail if Twitter is not initialized.");
         } catch (IllegalStateException ex) {
-            assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
+            Assert.assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
         }
     }
 
     public void testGetApiClient_activeSessionExists() {
         twitterCore.twitterSessionManager = setUpSessionManager(mock(TwitterSession.class));
-        assertNotNull(twitterCore.getApiClient());
+        Assert.assertNotNull(twitterCore.getApiClient());
     }
 
     public void testGetApiClient_twitterNotInitialized() {
@@ -113,14 +113,14 @@ public class TwitterCoreTest extends AndroidTestCase {
             TwitterTestUtils.resetTwitter();
             TwitterCoreTestUtils.resetTwitterCore();
             twitterCore.getApiClient();
-            fail("Should fail if Twitter is not initialized.");
+            Assert.fail("Should fail if Twitter is not initialized.");
         } catch (IllegalStateException ex) {
-            assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
+            Assert.assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
         }
     }
 
     public void testGetApiClient_withSession() {
-        assertNotNull(twitterCore.getApiClient(mock(TwitterSession.class)));
+        Assert.assertNotNull(twitterCore.getApiClient(mock(TwitterSession.class)));
     }
 
     public void testGetApiClient_withSessionTwitterNotInitialized() {
@@ -128,9 +128,9 @@ public class TwitterCoreTest extends AndroidTestCase {
             TwitterTestUtils.resetTwitter();
             TwitterCoreTestUtils.resetTwitterCore();
             TwitterCore.getInstance().getApiClient(mock(TwitterSession.class));
-            fail("Should fail if Twitter is not initialized.");
+            Assert.fail("Should fail if Twitter is not initialized.");
         } catch (IllegalStateException ex) {
-            assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
+            Assert.assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
         }
     }
 
@@ -139,9 +139,9 @@ public class TwitterCoreTest extends AndroidTestCase {
             TwitterTestUtils.resetTwitter();
             TwitterCoreTestUtils.resetTwitterCore();
             TwitterCore.getInstance().getGuestApiClient();
-            fail("Should fail if Twitter is not initialized.");
+            Assert.fail("Should fail if Twitter is not initialized.");
         } catch (IllegalStateException ex) {
-            assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
+            Assert.assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
         }
     }
 

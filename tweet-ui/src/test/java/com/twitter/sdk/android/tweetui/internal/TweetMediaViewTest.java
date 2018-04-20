@@ -73,11 +73,13 @@ public class TweetMediaViewTest {
         assertArrayEquals(new float[]{0, 0, 0, 0, 0, 0, 0, 0}, tweetMediaView.radii, 0);
     }
 
+    @Test
     public void testSetMediaBgColor() {
         tweetMediaView.setMediaBgColor(Color.BLUE);
         assertEquals(Color.BLUE, tweetMediaView.mediaBgColor);
     }
 
+    @Test
     public void testSetPhotoErrorResId() {
         tweetMediaView.setPhotoErrorResId(TEST_ERROR_RES_ID);
         assertEquals(TEST_ERROR_RES_ID, tweetMediaView.photoErrorResId);

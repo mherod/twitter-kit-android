@@ -31,7 +31,7 @@ public class FixedTweetTimeline extends BaseTimeline implements Timeline<Tweet> 
     final List<Tweet> tweets;
 
     FixedTweetTimeline(List<Tweet> tweets) {
-        this.tweets = tweets == null ? new ArrayList<Tweet>() : tweets;
+        this.tweets = tweets == null ? new ArrayList<>() : tweets;
     }
 
     @Override
@@ -64,6 +64,7 @@ public class FixedTweetTimeline extends BaseTimeline implements Timeline<Tweet> 
         /**
          * Constructs a Builder.
          */
+        @SuppressWarnings("RedundantNoArgConstructor")
         public Builder() {}
 
         /**

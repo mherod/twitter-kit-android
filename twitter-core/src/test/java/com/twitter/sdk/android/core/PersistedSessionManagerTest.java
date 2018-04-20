@@ -235,7 +235,7 @@ public class PersistedSessionManagerTest {
         numSessionsThisTest++;
         assertMapSizes(numSessionsThisTest);
         verify(mockActiveSessionStorage).save(session2);
-        assertNotSame(session, session2);
+        assertNotSame(session2, session);
         assertEquals(session2, sessionManager.getActiveSession());
     }
 

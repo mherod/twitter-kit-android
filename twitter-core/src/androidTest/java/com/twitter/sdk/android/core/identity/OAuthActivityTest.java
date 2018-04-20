@@ -79,7 +79,7 @@ public class OAuthActivityTest extends ActivityUnitTestCase<OAuthActivity> {
                 = ArgumentCaptor.forClass(TwitterAuthException.class);
         verify(mockController).handleAuthError(eq(Activity.RESULT_CANCELED),
                 exceptionArgCaptor.capture());
-        assertEquals("Authorization failed, request was canceled.",
+        Assert.assertEquals("Authorization failed, request was canceled.",
                 exceptionArgCaptor.getValue().getMessage());
     }
 
@@ -87,6 +87,6 @@ public class OAuthActivityTest extends ActivityUnitTestCase<OAuthActivity> {
         init();
         getActivity().onComplete(Activity.RESULT_OK, new Intent());
 
-        assertTrue(isFinishCalled());
+        Assert.assertTrue(isFinishCalled());
     }
 }

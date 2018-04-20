@@ -18,6 +18,7 @@
 package com.example.app.tweetui;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
@@ -63,7 +64,7 @@ public class UniqueTweetActivity extends TweetUiActivity {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             final View v = inflater.inflate(R.layout.tweetui_fragment_unique_tweet, container,
                     false);

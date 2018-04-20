@@ -79,8 +79,8 @@ public class OverlayImageViewTest extends AndroidTestCase {
         overlayImageView.setOverlayDrawable(drawable);
 
         verify(overlay).cleanupDrawable(overlayImageView);
-        assertNotNull(overlayImageView.overlay);
-        assertEquals(drawable, overlayImageView.overlay.drawable);
+        Assert.assertNotNull(overlayImageView.overlay);
+        Assert.assertEquals(drawable, overlayImageView.overlay.drawable);
     }
 
     public void testSetOverlayDrawable_nullDrawable() {

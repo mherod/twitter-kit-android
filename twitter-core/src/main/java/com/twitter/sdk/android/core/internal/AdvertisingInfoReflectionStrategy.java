@@ -50,7 +50,7 @@ class AdvertisingInfoReflectionStrategy implements AdvertisingInfoStrategy {
             final Method method = Class.forName(CLASS_NAME_GOOGLE_PLAY_SERVICES_UTILS)
                     .getMethod(METHOD_NAME_IS_GOOGLE_PLAY_SERVICES_AVAILABLE, Context.class);
             final Integer result = (Integer) method.invoke(null, context);
-            return result.intValue() == GOOGLE_PLAY_SERVICES_SUCCESS_CODE;
+            return result == GOOGLE_PLAY_SERVICES_SUCCESS_CODE;
         } catch (Exception exception) {
             return false;
         }

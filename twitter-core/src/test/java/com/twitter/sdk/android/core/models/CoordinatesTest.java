@@ -18,6 +18,7 @@
 package com.twitter.sdk.android.core.models;
 
 import com.google.gson.Gson;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,8 +37,8 @@ public class CoordinatesTest  {
             + "    ],\n"
             + "    \"type\":\"Point\"\n"
             + "}\n";
-    private static final Double TEST_COORDINATES_LONGITUDE = Double.valueOf(-75.14310264);
-    private static final Double TEST_COORDINATES_LATITUDE = Double.valueOf(40.05701649);
+    private static final Double TEST_COORDINATES_LONGITUDE = -75.14310264;
+    private static final Double TEST_COORDINATES_LATITUDE = 40.05701649;
     private static final String TEST_TYPE = "Point";
 
     private Gson gson;

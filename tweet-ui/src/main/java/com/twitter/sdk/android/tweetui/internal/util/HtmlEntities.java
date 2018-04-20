@@ -903,88 +903,6 @@ public class HtmlEntities {
         int value(String name);
     }
 
-    static class PrimitiveEntityMap implements EntityMap {
-        @SuppressWarnings("unchecked")
-        private final Map mapNameToValue = new HashMap();
-
-        private final IntHashMap mapValueToName = new IntHashMap();
-
-        @SuppressWarnings("unchecked")
-        public void add(String name, int value) {
-            mapNameToValue.put(name, value);
-            mapValueToName.put(value, name);
-        }
-
-        public String name(int value) {
-            return (String) mapValueToName.get(value);
-        }
-
-        public int value(String name) {
-            final Object value = mapNameToValue.get(name);
-            if (value == null) {
-                return -1;
-            }
-            return ((Integer) value).intValue();
-        }
-    }
-
-    static class LookupEntityMap extends PrimitiveEntityMap {
-        private static final int LOOKUP_TABLE_SIZE = 256;
-
-        private String[] lookupTable;
-
-        @Override
-        public String name(int value) {
-            if (value < LOOKUP_TABLE_SIZE) {
-                return lookupTable()[value];
-            }
-            return super.name(value);
-        }
-
-        private String[] lookupTable() {
-            if (lookupTable == null) {
-                createLookupTable();
-            }
-            return lookupTable;
-        }
-
-        private void createLookupTable() {
-            lookupTable = new String[LOOKUP_TABLE_SIZE];
-            for (int i = 0; i < LOOKUP_TABLE_SIZE; ++i) {
-                lookupTable[i] = super.name(i);
-            }
-        }
-    }
-
-    /**
-     * The result of an unescape. Keeps an array of indices[start][end] on the original input that
-     * was escaped.
-     */
-    public static final class Unescaped {
-        public final String unescaped;
-        // An ordered list of start/end indices
-        public final ArrayList<int[]> indices;
-
-        public Unescaped(String unescaped, ArrayList<int[]> indices) {
-            this.unescaped = unescaped;
-            this.indices = indices;
-        }
-    }
-
-    public void addEntities(String[][] entityArray) {
-        for (String[] anEntityArray : entityArray) {
-            addEntity(anEntityArray[0], Integer.parseInt(anEntityArray[1]));
-        }
-    }
-
-    public void addEntity(String name, int value) {
-        map.add(name, value);
-    }
-
-    public int entityValue(String name) {
-        return map.value(name);
-    }
-
     /**
      * <p>
      * Unescapes the entities in a <code>String</code>.
@@ -1019,8 +937,7 @@ public class HtmlEntities {
                         try {
                             if (charAt1 == 'x' || charAt1 == 'X') {
                                 if (entityNameLength > 2) {
-                                    entityValue = Integer.valueOf(entityName.substring(2), 16)
-                                            .intValue();
+                                        entityValue = Integer.valueOf(entityName.substring(2), 16);
                                 }
                             } else {
                                 entityValue = Integer.parseInt(entityName.substring(1));
@@ -1050,4 +967,86 @@ public class HtmlEntities {
         }
         return new Unescaped(buf.toString(), indices);
     }
+
+        static class LookupEntityMap extends PrimitiveEntityMap {
+                private static final int LOOKUP_TABLE_SIZE = 256;
+
+                private String[] lookupTable;
+
+                @Override
+                public String name(int value) {
+                        if (value < LOOKUP_TABLE_SIZE) {
+                                return lookupTable()[value];
+                        }
+                        return super.name(value);
+                }
+
+                private String[] lookupTable() {
+                        if (lookupTable == null) {
+                                createLookupTable();
+                        }
+                        return lookupTable;
+                }
+
+                private void createLookupTable() {
+                        lookupTable = new String[LOOKUP_TABLE_SIZE];
+                        for (int i = 0; i < LOOKUP_TABLE_SIZE; ++i) {
+                                lookupTable[i] = super.name(i);
+                        }
+                }
+        }
+
+        /**
+         * The result of an unescape. Keeps an array of indices[start][end] on the original input that
+         * was escaped.
+         */
+        public static final class Unescaped {
+                public final String unescaped;
+                // An ordered list of start/end indices
+                public final ArrayList<int[]> indices;
+
+                public Unescaped(String unescaped, ArrayList<int[]> indices) {
+                        this.unescaped = unescaped;
+                        this.indices = indices;
+                }
+        }
+
+        public void addEntities(String[][] entityArray) {
+                for (String[] anEntityArray : entityArray) {
+                        addEntity(anEntityArray[0], Integer.parseInt(anEntityArray[1]));
+                }
+        }
+
+        public void addEntity(String name, int value) {
+                map.add(name, value);
+        }
+
+        public int entityValue(String name) {
+                return map.value(name);
+        }
+
+        static class PrimitiveEntityMap implements EntityMap {
+                @SuppressWarnings("unchecked")
+                private final Map mapNameToValue = new HashMap();
+
+                private final IntHashMap mapValueToName = new IntHashMap();
+
+                @SuppressWarnings("unchecked")
+                public void add(String name, int value) {
+                        mapNameToValue.put(name, value);
+                        mapValueToName.put(value, name);
+                }
+
+                public String name(int value) {
+                        return (String) mapValueToName.get(value);
+                }
+
+                public int value(String name) {
+                        final Object value = mapNameToValue.get(name);
+                        if (value == null) {
+                                return -1;
+                        }
+                        return (Integer) value;
+                }
+        }
 }

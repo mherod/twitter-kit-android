@@ -18,6 +18,7 @@
 package com.twitter.sdk.android.core.internal.scribe;
 
 import android.content.Context;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,8 +28,10 @@ import org.robolectric.RuntimeEnvironment;
 
 import java.util.concurrent.ScheduledExecutorService;
 
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
 public class EventsHandlerTest {

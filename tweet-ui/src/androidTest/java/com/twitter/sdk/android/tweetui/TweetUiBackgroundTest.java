@@ -55,11 +55,11 @@ public class TweetUiBackgroundTest extends InstrumentationTestCase {
         try {
             new TweetView(getInstrumentation().getTargetContext(), TestFixtures.TEST_TWEET);
         } catch (IllegalArgumentException e) {
-            fail(e.getMessage());
+            Assert.fail(e.getMessage());
         }
     }
 
     public void testGetTweetRepository() {
-        assertNotNull(TweetUi.getInstance().getTweetRepository());
+        Assert.assertNotNull(TweetUi.getInstance().getTweetRepository());
     }
 }

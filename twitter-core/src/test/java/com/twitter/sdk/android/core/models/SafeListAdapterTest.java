@@ -65,7 +65,7 @@ public class SafeListAdapterTest  {
     public void testDeserialization_validListModel1() {
         final Model1 model = gson.fromJson(TEST_JSON_LIST_VALUES, Model1.class);
         try {
-            model.listOfIntegers.add(Integer.valueOf(TEST_ANY_NUMBER));
+            model.listOfIntegers.add(TEST_ANY_NUMBER);
         } catch (Exception e) {
             assertTrue(e instanceof UnsupportedOperationException);
         }
@@ -87,7 +87,7 @@ public class SafeListAdapterTest  {
     public void testDeserialization_validListModel2() {
         final Model2 model = gson.fromJson(TEST_JSON_LIST_VALUES, Model2.class);
         try {
-            model.listOfLongs.add(Long.valueOf(TEST_ANY_NUMBER));
+            model.listOfLongs.add((long) TEST_ANY_NUMBER);
         } catch (Exception e) {
             assertTrue(e instanceof UnsupportedOperationException);
         }

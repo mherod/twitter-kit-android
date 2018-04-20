@@ -20,6 +20,7 @@ package com.twitter.sdk.android.tweetui.internal;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -63,7 +64,7 @@ public class OverlayImageView extends ImageView {
     }
 
     @Override
-    public void invalidateDrawable(Drawable drawable) {
+    public void invalidateDrawable(@NonNull Drawable drawable) {
         if (drawable == overlay.drawable) {
             invalidate();
         } else {

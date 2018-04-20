@@ -18,6 +18,7 @@
 package com.twitter.sdk.android.tweetcomposer;
 
 import android.test.AndroidTestCase;
+
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterConfig;
 import com.twitter.sdk.android.core.TwitterCoreTestUtils;
@@ -51,12 +52,12 @@ public class TweetComposerTest extends AndroidTestCase {
 
     public void testGetVersion() {
         final String version = BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER;
-        assertEquals(version, tweetComposer.getVersion());
+        Assert.assertEquals(version, tweetComposer.getVersion());
     }
 
     public void testGetIdentifier() {
         final String identifier = BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
-        assertEquals(identifier, tweetComposer.getIdentifier());
+        Assert.assertEquals(identifier, tweetComposer.getIdentifier());
     }
 
     public void testGetInstance_twitterNotInitialized() {
@@ -66,9 +67,9 @@ public class TweetComposerTest extends AndroidTestCase {
             TweetComposer.instance = null;
 
             TweetComposer.getInstance();
-            fail("Should fail if Twitter is not initialized");
+            Assert.fail("Should fail if Twitter is not initialized");
         } catch (IllegalStateException e) {
-            assertEquals(TWITTER_NOT_INIT_ERROR_MSG, e.getMessage());
+            Assert.assertEquals(TWITTER_NOT_INIT_ERROR_MSG, e.getMessage());
         }
     }
 }

@@ -77,7 +77,7 @@ public class SafeMapAdapterTest  {
     public void testDeserialization_validMapModel2() {
         final Model2 model = gson.fromJson(TEST_JSON_MAP_NUMBER_VALUES, Model2.class);
         try {
-            model.stringLongMap.put(TEST_ANY_STRING_KEY, Long.valueOf(TEST_ANY_NUMBER));
+            model.stringLongMap.put(TEST_ANY_STRING_KEY, (long) TEST_ANY_NUMBER);
         } catch (Exception e) {
             assertTrue(e instanceof UnsupportedOperationException);
         }

@@ -26,6 +26,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 @RunWith(RobolectricTestRunner.class)
 public class GuestSessionSerializerTest {
@@ -76,7 +77,7 @@ public class GuestSessionSerializerTest {
     @Test
     public void testDeserialize_serializedStringAuthTokenIsGuestAuthToken() {
         final GuestSession session = serializer.deserialize(JSON_SESSION_GUEST);
-        assertEquals(GuestAuthToken.class, session.getAuthToken().getClass());
+        assertSame(GuestAuthToken.class, session.getAuthToken().getClass());
         assertEquals(TEST_TOKEN_TYPE, session.getAuthToken().getTokenType());
         assertEquals(TEST_ACCESS_TOKEN, session.getAuthToken().getAccessToken());
         assertEquals(TEST_GUEST_TOKEN, session.getAuthToken().getGuestToken());

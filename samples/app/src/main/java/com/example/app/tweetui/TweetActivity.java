@@ -19,6 +19,7 @@ package com.example.app.tweetui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -84,8 +85,8 @@ public class TweetActivity extends TweetUiActivity {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
             final View v = inflater.inflate(R.layout.tweetui_fragment_tweet, container, false);
 
             final ViewGroup tweetRegion = v.findViewById(R.id.tweet_region);

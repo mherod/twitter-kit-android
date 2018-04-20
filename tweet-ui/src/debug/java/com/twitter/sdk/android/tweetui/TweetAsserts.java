@@ -33,12 +33,12 @@ public final class TweetAsserts extends Assert {
         final int primaryTextColor
                 = resources.getColor(R.color.tw__tweet_light_primary_text_color);
 
-        assertEquals(containerColor, view.containerBgColor);
-        assertEquals(primaryTextColor, view.primaryTextColor);
-        assertEquals(primaryTextColor, view.contentView.getCurrentTextColor());
-        assertEquals(primaryTextColor, view.fullNameView.getCurrentTextColor());
-        assertEquals(R.drawable.tw__ic_tweet_photo_error_light, view.photoErrorResId);
-        assertEquals(R.drawable.tw__ic_logo_blue, view.birdLogoResId);
+        Assert.assertEquals(containerColor, view.containerBgColor);
+        Assert.assertEquals(primaryTextColor, view.primaryTextColor);
+        Assert.assertEquals(primaryTextColor, view.contentView.getCurrentTextColor());
+        Assert.assertEquals(primaryTextColor, view.fullNameView.getCurrentTextColor());
+        Assert.assertEquals(R.drawable.tw__ic_tweet_photo_error_light, view.photoErrorResId);
+        Assert.assertEquals(R.drawable.tw__ic_logo_blue, view.birdLogoResId);
     }
 
     public static void assertDarkColors(BaseTweetView view, Resources resources) {
@@ -47,11 +47,11 @@ public final class TweetAsserts extends Assert {
         final int primaryTextColor
                 = resources.getColor(R.color.tw__tweet_dark_primary_text_color);
 
-        assertEquals(containerColor, view.containerBgColor);
-        assertEquals(primaryTextColor, view.primaryTextColor);
-        assertEquals(primaryTextColor, view.contentView.getCurrentTextColor());
-        assertEquals(primaryTextColor, view.fullNameView.getCurrentTextColor());
-        assertEquals(R.drawable.tw__ic_tweet_photo_error_dark, view.photoErrorResId);
-        assertEquals(R.drawable.tw__ic_logo_white, view.birdLogoResId);
+        Assert.assertEquals(containerColor, view.containerBgColor);
+        Assert.assertEquals(primaryTextColor, view.primaryTextColor);
+        Assert.assertEquals(primaryTextColor, view.contentView.getCurrentTextColor());
+        Assert.assertEquals(primaryTextColor, view.fullNameView.getCurrentTextColor());
+        Assert.assertEquals(R.drawable.tw__ic_tweet_photo_error_dark, view.photoErrorResId);
+        Assert.assertEquals(R.drawable.tw__ic_logo_white, view.birdLogoResId);
     }
 }

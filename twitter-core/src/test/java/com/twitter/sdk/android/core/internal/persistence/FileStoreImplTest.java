@@ -87,6 +87,7 @@ public class FileStoreImplTest {
         assertNull(fileStore.getExternalFilesDir());
     }
 
+    @Test
     public void testPrepare() {
         verifyFile(fileStore.prepare(new File(RuntimeEnvironment.application.getFilesDir(),
                 "FileStoreImplTest/")));

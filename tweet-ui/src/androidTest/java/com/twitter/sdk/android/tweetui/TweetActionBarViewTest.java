@@ -34,7 +34,7 @@ public class TweetActionBarViewTest extends TweetUiTestCase {
         final TweetActionBarView view = createView();
         final Callback<Tweet> actionCallback = mock(Callback.class);
         view.setOnActionCallback(actionCallback);
-        assertEquals(actionCallback, view.actionCallback);
+        Assert.assertEquals(actionCallback, view.actionCallback);
     }
 
     public void testSetLike() {
@@ -47,9 +47,9 @@ public class TweetActionBarViewTest extends TweetUiTestCase {
         verify(view.likeButton).setToggledOn(TestFixtures.TEST_TWEET.favorited);
         verify(view.likeButton).setOnClickListener(likeCaptor.capture());
         final LikeTweetAction likeAction = likeCaptor.getValue();
-        assertNotNull(likeAction);
-        assertEquals(TestFixtures.TEST_TWEET, likeAction.tweet);
-        assertEquals(tweetRepository, likeAction.tweetRepository);
+        Assert.assertNotNull(likeAction);
+        Assert.assertEquals(TestFixtures.TEST_TWEET, likeAction.tweet);
+        Assert.assertEquals(tweetRepository, likeAction.tweetRepository);
     }
 
     public void testSetLike_handlesNullTweet() {
@@ -66,8 +66,8 @@ public class TweetActionBarViewTest extends TweetUiTestCase {
                 = ArgumentCaptor.forClass(ShareTweetAction.class);
         verify(view.shareButton).setOnClickListener(shareCaptor.capture());
         final ShareTweetAction shareAction = shareCaptor.getValue();
-        assertNotNull(shareAction);
-        assertEquals(TestFixtures.TEST_TWEET, shareAction.tweet);
+        Assert.assertNotNull(shareAction);
+        Assert.assertEquals(TestFixtures.TEST_TWEET, shareAction.tweet);
     }
 
     public void testSetShare_handlesNullTweet() {

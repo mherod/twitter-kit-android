@@ -61,33 +61,33 @@ public class QuoteTweetViewTest extends AbstractTweetViewTest {
     public void testGetAspectRatio() {
         final QuoteTweetView quoteTweetView = createView(context, TestFixtures.TEST_TWEET);
 
-        assertEquals(1.0, quoteTweetView.getAspectRatio(
+        Assert.assertEquals(1.0, quoteTweetView.getAspectRatio(
                 TestFixtures.createMediaEntityWithPhoto(100, 100)), DELTA);
-        assertEquals(1.0, quoteTweetView.getAspectRatio(
+        Assert.assertEquals(1.0, quoteTweetView.getAspectRatio(
                 TestFixtures.createMediaEntityWithPhoto(300, 400)), DELTA);
-        assertEquals(1.0, quoteTweetView.getAspectRatio(
+        Assert.assertEquals(1.0, quoteTweetView.getAspectRatio(
                 TestFixtures.createMediaEntityWithPhoto(100, 800)), DELTA);
-        assertEquals(1.3333, quoteTweetView.getAspectRatio(
+        Assert.assertEquals(1.3333, quoteTweetView.getAspectRatio(
                 TestFixtures.createMediaEntityWithPhoto(400, 300)), DELTA);
-        assertEquals(1.6666, quoteTweetView.getAspectRatio(
+        Assert.assertEquals(1.6666, quoteTweetView.getAspectRatio(
                 TestFixtures.createMediaEntityWithPhoto(500, 300)), DELTA);
-        assertEquals(2.0, quoteTweetView.getAspectRatio(
+        Assert.assertEquals(2.0, quoteTweetView.getAspectRatio(
                 TestFixtures.createMediaEntityWithPhoto(600, 300)), DELTA);
-        assertEquals(2.3333, quoteTweetView.getAspectRatio(
+        Assert.assertEquals(2.3333, quoteTweetView.getAspectRatio(
                 TestFixtures.createMediaEntityWithPhoto(700, 300)), DELTA);
-        assertEquals(2.6666, quoteTweetView.getAspectRatio(
+        Assert.assertEquals(2.6666, quoteTweetView.getAspectRatio(
                 TestFixtures.createMediaEntityWithPhoto(800, 300)), DELTA);
-        assertEquals(3.0, quoteTweetView.getAspectRatio(
+        Assert.assertEquals(3.0, quoteTweetView.getAspectRatio(
                 TestFixtures.createMediaEntityWithPhoto(900, 300)), DELTA);
-        assertEquals(3.0, quoteTweetView.getAspectRatio(
+        Assert.assertEquals(3.0, quoteTweetView.getAspectRatio(
                 TestFixtures.createMediaEntityWithPhoto(1000, 50)), DELTA);
     }
 
     public void testGetAspectRatioForPhotoEntity() {
         final QuoteTweetView quoteTweetView = createView(context, TestFixtures.TEST_PHOTO_TWEET);
-        assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(1));
-        assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(2));
-        assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(3));
-        assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(4));
+        Assert.assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(1));
+        Assert.assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(2));
+        Assert.assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(3));
+        Assert.assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(4));
     }
 }

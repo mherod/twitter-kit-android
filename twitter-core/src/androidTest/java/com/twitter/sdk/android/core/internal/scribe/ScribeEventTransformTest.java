@@ -62,7 +62,7 @@ public class ScribeEventTransformTest extends AndroidTestCase {
         final ScribeEvent scribeEvent =
                 new ScribeEvent("testcategory", eventNamespace, 1404426136717L);
         final byte[] bytes = transform.toBytes(scribeEvent);
-        assertEquals(scribeEventJsonString, new String(bytes, "UTF-8"));
+        Assert.assertEquals(scribeEventJsonString, new String(bytes, "UTF-8"));
     }
 
     public void testToBytes_withItems() throws IOException {
@@ -72,7 +72,7 @@ public class ScribeEventTransformTest extends AndroidTestCase {
                 new ScribeEvent("testcategory", eventNamespace, 1404426136717L, itemList);
         final byte[] bytes = transform.toBytes(scribeEvent);
 
-        assertTrue(new String(bytes, "UTF-8").contains(TEST_ITEM_TYPE));
-        assertTrue(new String(bytes, "UTF-8").contains(TEST_DESCRIPTION));
+        Assert.assertTrue(new String(bytes, "UTF-8").contains(TEST_ITEM_TYPE));
+        Assert.assertTrue(new String(bytes, "UTF-8").contains(TEST_DESCRIPTION));
     }
 }

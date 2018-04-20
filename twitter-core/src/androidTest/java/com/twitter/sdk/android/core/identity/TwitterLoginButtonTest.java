@@ -22,12 +22,30 @@ import android.content.Intent;
 import android.test.AndroidTestCase;
 import android.util.Log;
 import android.view.View;
-import com.twitter.sdk.android.core.*;
+
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Logger;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterCoreTestUtils;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.TwitterTestUtils;
+
 import org.mockito.ArgumentCaptor;
 
 import java.util.concurrent.ExecutorService;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 public class TwitterLoginButtonTest extends AndroidTestCase {
 
@@ -65,9 +83,9 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
     public void testConstructor_contextNotActivity() {
         try {
             loginButton = new TwitterLoginButton(getContext(), null, 0, mockAuthClient);
-            fail("Constructor should throw an exception when provided context is not an activity");
+            Assert.fail("Constructor should throw an exception when provided context is not an activity");
         } catch (IllegalStateException e) {
-            assertEquals(TwitterLoginButton.ERROR_MSG_NO_ACTIVITY, e.getMessage());
+            Assert.assertEquals(TwitterLoginButton.ERROR_MSG_NO_ACTIVITY, e.getMessage());
         }
     }
 
@@ -78,7 +96,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
                 return true;
             }
         };
-        assertNull(loginButton.getActivity());
+        Assert.assertNull(loginButton.getActivity());
     }
 
     public void testConstructor_nullTwitterAuthClient() {
@@ -88,7 +106,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
                 return mock(Activity.class);
             }
         };
-        assertNull(button.authClient);
+        Assert.assertNull(button.authClient);
     }
 
     public void testConstructor_editMode() {
@@ -103,7 +121,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
                     return true;
                 }
             };
-            assertTrue(button.isEnabled());
+        Assert.assertTrue(button.isEnabled());
     }
 
     public void testConstructor_twitterNotStarted() {
@@ -117,7 +135,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
                 }
             };
 
-            assertFalse(button.isEnabled());
+            Assert.assertFalse(button.isEnabled());
 
         } finally {
             TwitterTestUtils.resetTwitter();
@@ -137,7 +155,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
 
             final Logger logger = Twitter.getLogger();
             verify(logger, never()).e(eq(TwitterLoginButton.TAG), anyString());
-            assertTrue(button.isEnabled());
+            Assert.assertTrue(button.isEnabled());
 
         } finally {
             TwitterTestUtils.resetTwitter();
@@ -148,16 +166,16 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
     public void testSetCallback_callbackNull() {
         try {
             loginButton.setCallback(null);
-            fail("setCallback should throw an exception when called with null callback");
+            Assert.fail("setCallback should throw an exception when called with null callback");
         } catch (IllegalArgumentException e) {
-            assertEquals("Callback cannot be null", e.getMessage());
+            Assert.assertEquals("Callback cannot be null", e.getMessage());
         }
     }
 
     public void testGetCallback() {
         final Callback<TwitterSession> mockCallback = mock(Callback.class);
         loginButton.setCallback(mockCallback);
-        assertSame(mockCallback, loginButton.getCallback());
+        Assert.assertSame(mockCallback, loginButton.getCallback());
     }
 
     public void testOnClick() {
@@ -181,9 +199,9 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
                 .build());
         try {
             loginButton.performClick();
-            fail("onClick should throw an exception when called and there is no callback");
+            Assert.fail("onClick should throw an exception when called and there is no callback");
         } catch (IllegalStateException e) {
-            assertEquals("Callback must not be null, did you call setCallback?", e.getMessage());
+            Assert.assertEquals("Callback must not be null, did you call setCallback?", e.getMessage());
         } finally {
             TwitterCoreTestUtils.resetTwitterCore();
             TwitterTestUtils.resetTwitter();
@@ -218,9 +236,9 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
 
         try {
             loginButton.performClick();
-            fail("onClick should throw an exception when called and there is no activity");
+            Assert.fail("onClick should throw an exception when called and there is no activity");
         } catch (IllegalStateException e) {
-            assertEquals(TwitterLoginButton.ERROR_MSG_NO_ACTIVITY, e.getMessage());
+            Assert.assertEquals(TwitterLoginButton.ERROR_MSG_NO_ACTIVITY, e.getMessage());
         } finally {
             TwitterCoreTestUtils.resetTwitterCore();
             TwitterTestUtils.resetTwitter();
@@ -286,7 +304,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
     private void assertLogMessage(String expectedMessage) {
         final ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(Twitter.getLogger()).w(eq(Twitter.TAG), argumentCaptor.capture());
-        assertEquals(expectedMessage, argumentCaptor.getValue());
+        Assert.assertEquals(expectedMessage, argumentCaptor.getValue());
     }
 
     public void testOnActivityResult_requestCodeMatches() {
@@ -320,7 +338,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
                 }
             };
             final TwitterAuthClient client = button.getTwitterAuthClient();
-            assertNotNull(client);
+            Assert.assertNotNull(client);
 
         } finally {
             TwitterCoreTestUtils.resetTwitterCore();
@@ -342,7 +360,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
             };
             final TwitterAuthClient client = button.getTwitterAuthClient();
             final TwitterAuthClient client2 = button.getTwitterAuthClient();
-            assertSame(client, client2);
+            Assert.assertSame(client, client2);
 
         } finally {
             TwitterCoreTestUtils.resetTwitterCore();

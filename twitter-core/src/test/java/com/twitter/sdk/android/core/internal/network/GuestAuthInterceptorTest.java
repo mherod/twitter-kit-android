@@ -36,6 +36,7 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -101,7 +102,7 @@ public class GuestAuthInterceptorTest {
         verify(mockChain).proceed(requestCaptor.capture());
 
         final Request unsignedRequest = requestCaptor.getValue();
-        assertEquals(request, unsignedRequest);
+        assertSame(request, unsignedRequest);
     }
 
     @Test

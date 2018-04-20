@@ -55,7 +55,7 @@ public class TwitterCore {
     private volatile GuestSessionProvider guestSessionProvider;
 
     TwitterCore(TwitterAuthConfig authConfig) {
-        this(authConfig, new ConcurrentHashMap<Session, TwitterApiClient>(), null);
+        this(authConfig, new ConcurrentHashMap<>(), null);
     }
 
     // Testing only

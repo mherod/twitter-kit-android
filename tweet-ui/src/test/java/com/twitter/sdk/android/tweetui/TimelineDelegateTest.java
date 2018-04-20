@@ -356,7 +356,7 @@ public class TimelineDelegateTest {
                 = ArgumentCaptor.forClass(TwitterException.class);
         verifyZeroInteractions(mockTimeline);
         verify(mockCallback).failure(exceptionCaptor.capture());
-        assertEquals(exceptionCaptor.getValue().getMessage(), REQUIRED_MAX_CAPACITY_ERROR);
+        assertEquals(REQUIRED_MAX_CAPACITY_ERROR, exceptionCaptor.getValue().getMessage());
     }
 
     @Test
@@ -369,7 +369,7 @@ public class TimelineDelegateTest {
                 = ArgumentCaptor.forClass(TwitterException.class);
         verifyZeroInteractions(mockTimeline);
         verify(mockCallback).failure(exceptionCaptor.capture());
-        assertEquals(exceptionCaptor.getValue().getMessage(), REQUIRED_REQUEST_IN_FLIGHT_ERROR);
+        assertEquals(REQUIRED_REQUEST_IN_FLIGHT_ERROR, exceptionCaptor.getValue().getMessage());
     }
 
     @Test
@@ -391,7 +391,7 @@ public class TimelineDelegateTest {
                 = ArgumentCaptor.forClass(TwitterException.class);
         verifyZeroInteractions(mockTimeline);
         verify(mockCallback).failure(exceptionCaptor.capture());
-        assertEquals(exceptionCaptor.getValue().getMessage(), REQUIRED_MAX_CAPACITY_ERROR);
+        assertEquals(REQUIRED_MAX_CAPACITY_ERROR, exceptionCaptor.getValue().getMessage());
     }
 
     @Test
@@ -404,7 +404,7 @@ public class TimelineDelegateTest {
                 = ArgumentCaptor.forClass(TwitterException.class);
         verifyZeroInteractions(mockTimeline);
         verify(mockCallback).failure(exceptionCaptor.capture());
-        assertEquals(exceptionCaptor.getValue().getMessage(), REQUIRED_REQUEST_IN_FLIGHT_ERROR);
+        assertEquals(REQUIRED_REQUEST_IN_FLIGHT_ERROR, exceptionCaptor.getValue().getMessage());
     }
 
     /* nested Callbacks */

@@ -20,6 +20,7 @@ package com.example.app.tweetui;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -74,7 +75,7 @@ public class TweetPreviewActivity extends TweetUiActivity {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, final ViewGroup container,
+        public View onCreateView(@NonNull LayoutInflater inflater, final ViewGroup container,
                                  Bundle savedInstanceState) {
             final View v = inflater.inflate(R.layout.tweetui_fragment_tweet_preview, container,
                     false);

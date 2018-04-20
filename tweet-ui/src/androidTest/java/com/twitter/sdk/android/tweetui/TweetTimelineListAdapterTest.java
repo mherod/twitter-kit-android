@@ -58,10 +58,10 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
         if (listAdapter.actionCallback instanceof TweetTimelineListAdapter.ReplaceTweetCallback) {
             final TweetTimelineListAdapter.ReplaceTweetCallback replaceCallback
                     = (TweetTimelineListAdapter.ReplaceTweetCallback) listAdapter.actionCallback;
-            assertEquals(mockTimelineDelegate, replaceCallback.delegate);
-            assertNull(replaceCallback.cb);
+            Assert.assertEquals(mockTimelineDelegate, replaceCallback.delegate);
+            Assert.assertNull(replaceCallback.cb);
         } else {
-            fail("Expected default actionCallback to be a ReplaceTweetCallback");
+            Assert.fail("Expected default actionCallback to be a ReplaceTweetCallback");
         }
     }
 
@@ -76,10 +76,10 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
         if (listAdapter.actionCallback instanceof TweetTimelineListAdapter.ReplaceTweetCallback) {
             final TweetTimelineListAdapter.ReplaceTweetCallback replaceCallback
                     = (TweetTimelineListAdapter.ReplaceTweetCallback) listAdapter.actionCallback;
-            assertEquals(mockTimelineDelegate, replaceCallback.delegate);
-            assertEquals(mockCallback, replaceCallback.cb);
+            Assert.assertEquals(mockTimelineDelegate, replaceCallback.delegate);
+            Assert.assertEquals(mockCallback, replaceCallback.cb);
         } else {
-            fail("Expected actionCallback to be wrapped in ReplaceTweetCallback");
+            Assert.fail("Expected actionCallback to be wrapped in ReplaceTweetCallback");
         }
     }
 
@@ -91,13 +91,13 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
                 .setOnActionCallback(mockCallback)
                 .setViewStyle(R.style.tw__TweetDarkStyle)
                 .build();
-        assertEquals(R.style.tw__TweetDarkStyle, listAdapter.styleResId);
+        Assert.assertEquals(R.style.tw__TweetDarkStyle, listAdapter.styleResId);
         if (listAdapter.actionCallback instanceof TweetTimelineListAdapter.ReplaceTweetCallback) {
             final TweetTimelineListAdapter.ReplaceTweetCallback replaceCallback
                     = (TweetTimelineListAdapter.ReplaceTweetCallback) listAdapter.actionCallback;
-            assertEquals(mockCallback, replaceCallback.cb);
+            Assert.assertEquals(mockCallback, replaceCallback.cb);
         } else {
-            fail("Expected actionCallback to be wrapped in ReplaceTweetCallback");
+            Assert.fail("Expected actionCallback to be wrapped in ReplaceTweetCallback");
         }
     }
 
@@ -106,9 +106,9 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
         try {
             listAdapter = new TweetTimelineListAdapter.Builder(null).setTimeline(mockTimeline)
                     .build();
-            fail("Null context should throw exception");
+            Assert.fail("Null context should throw exception");
         } catch (IllegalArgumentException e) {
-            assertEquals(NULL_CONTEXT_MESSAGE, e.getMessage());
+            Assert.assertEquals(NULL_CONTEXT_MESSAGE, e.getMessage());
         }
     }
 
@@ -116,9 +116,9 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
         try {
             listAdapter = new TweetTimelineListAdapter.Builder(getContext()).setTimeline(null)
                     .build();
-            fail("Null timeline should throw exception");
+            Assert.fail("Null timeline should throw exception");
         } catch (IllegalArgumentException e) {
-            assertEquals(NULL_TIMELINE_MESSAGE, e.getMessage());
+            Assert.assertEquals(NULL_TIMELINE_MESSAGE, e.getMessage());
         }
     }
 
@@ -130,7 +130,7 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
                 .setTimelineFilter(mockTimelineFilter)
                 .build();
 
-        assertTrue(listAdapter.delegate instanceof FilterTimelineDelegate);
+        Assert.assertTrue(listAdapter.delegate instanceof FilterTimelineDelegate);
     }
 
     public void testBuilder_withNullTimelineFilter() {
@@ -140,7 +140,7 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
                 .setTimelineFilter(null)
                 .build();
 
-        assertTrue(listAdapter.delegate instanceof TimelineDelegate);
+        Assert.assertTrue(listAdapter.delegate instanceof TimelineDelegate);
     }
 
     /**
@@ -157,9 +157,9 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
         // assert that
         // - default implementation of getView returns a CompactTweetView
         // - sanity check that CompactTweetView tweet id matches the Tweet's id
-        assertEquals(CompactTweetView.class, view.getClass());
+        Assert.assertSame(CompactTweetView.class, view.getClass());
         final BaseTweetView tv = (BaseTweetView) view;
-        assertEquals(listAdapter.getItemId(0), tv.getTweetId());
+        Assert.assertEquals(listAdapter.getItemId(0), tv.getTweetId());
     }
 
     public void testDefaultViewStyle_viaConstructor() {
@@ -167,7 +167,7 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
         listAdapter = new TweetTimelineListAdapter(getContext(), fakeTimeline);
         final View view = listAdapter.getView(0, null, null);
         final BaseTweetView tv = (BaseTweetView) view;
-        assertEquals(R.style.tw__TweetLightStyle, tv.styleResId);
+        Assert.assertEquals(R.style.tw__TweetLightStyle, tv.styleResId);
     }
 
     public void testDefaultViewStyle_viaBuilder() {
@@ -177,7 +177,7 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
                 .build();
         final View view = listAdapter.getView(0, null, null);
         final BaseTweetView tv = (BaseTweetView) view;
-        assertEquals(R.style.tw__TweetLightStyle, tv.styleResId);
+        Assert.assertEquals(R.style.tw__TweetLightStyle, tv.styleResId);
     }
 
     public void testConstructor_scribesImpression() {
@@ -197,23 +197,23 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
         verify(tweetUi).scribe(tfwNamespaceCaptor.capture(), scribeItemsCaptor.capture());
 
         final EventNamespace sdkNs = sdkNamespaceCaptor.getValue();
-        assertEquals(REQUIRED_SDK_IMPRESSION_CLIENT, sdkNs.client);
-        assertEquals(REQUIRED_SDK_IMPRESSION_PAGE, sdkNs.page);
-        assertEquals(TEST_SCRIBE_SECTION, sdkNs.section);
-        assertEquals(REQUIRED_SDK_IMPRESSION_COMPONENT, sdkNs.component);
-        assertEquals(REQUIRED_SDK_IMPRESSION_ELEMENT, sdkNs.element);
-        assertEquals(REQUIRED_IMPRESSION_ACTION, sdkNs.action);
+        Assert.assertEquals(REQUIRED_SDK_IMPRESSION_CLIENT, sdkNs.client);
+        Assert.assertEquals(REQUIRED_SDK_IMPRESSION_PAGE, sdkNs.page);
+        Assert.assertEquals(TEST_SCRIBE_SECTION, sdkNs.section);
+        Assert.assertEquals(REQUIRED_SDK_IMPRESSION_COMPONENT, sdkNs.component);
+        Assert.assertEquals(REQUIRED_SDK_IMPRESSION_ELEMENT, sdkNs.element);
+        Assert.assertEquals(REQUIRED_IMPRESSION_ACTION, sdkNs.action);
 
         final EventNamespace tfwNs = tfwNamespaceCaptor.getValue();
-        assertEquals(REQUIRED_TFW_CLIENT, tfwNs.client);
-        assertEquals(REQUIRED_TFW_PAGE, tfwNs.page);
-        assertEquals(REQUIRED_TFW_SECTION, tfwNs.section);
-        assertEquals(TEST_SCRIBE_SECTION, tfwNs.component);
-        assertEquals(REQUIRED_TFW_ELEMENT, tfwNs.element);
-        assertEquals(REQUIRED_IMPRESSION_ACTION, tfwNs.action);
+        Assert.assertEquals(REQUIRED_TFW_CLIENT, tfwNs.client);
+        Assert.assertEquals(REQUIRED_TFW_PAGE, tfwNs.page);
+        Assert.assertEquals(REQUIRED_TFW_SECTION, tfwNs.section);
+        Assert.assertEquals(TEST_SCRIBE_SECTION, tfwNs.component);
+        Assert.assertEquals(REQUIRED_TFW_ELEMENT, tfwNs.element);
+        Assert.assertEquals(REQUIRED_IMPRESSION_ACTION, tfwNs.action);
 
         final List<ScribeItem> scribeItems = scribeItemsCaptor.getValue();
-        assertNotNull(scribeItems);
+        Assert.assertNotNull(scribeItems);
     }
 
     public void testSetViewStyle() {
@@ -224,7 +224,7 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
                 .build();
         final View view = listAdapter.getView(0, null, null);
         final BaseTweetView tv = (BaseTweetView) view;
-        assertEquals(R.style.tw__TweetDarkWithActionsStyle, tv.styleResId);
+        Assert.assertEquals(R.style.tw__TweetDarkWithActionsStyle, tv.styleResId);
     }
 
     static class FakeTweetTimeline implements Timeline<Tweet> {

@@ -61,10 +61,10 @@ public class TweetTimelineRecyclerViewAdapterTest extends TweetUiTestCase {
             final TweetTimelineRecyclerViewAdapter.ReplaceTweetCallback replaceCallback
                     = (TweetTimelineRecyclerViewAdapter.ReplaceTweetCallback)
                     recyclerViewAdapter.actionCallback;
-            assertEquals(mockTimelineDelegate, replaceCallback.delegate);
-            assertNull(replaceCallback.cb);
+            Assert.assertEquals(mockTimelineDelegate, replaceCallback.delegate);
+            Assert.assertNull(replaceCallback.cb);
         } else {
-            fail("Expected default actionCallback to be a ReplaceTweetCallback");
+            Assert.fail("Expected default actionCallback to be a ReplaceTweetCallback");
         }
     }
 
@@ -81,10 +81,10 @@ public class TweetTimelineRecyclerViewAdapterTest extends TweetUiTestCase {
             final TweetTimelineRecyclerViewAdapter.ReplaceTweetCallback replaceCallback
                     = (TweetTimelineRecyclerViewAdapter.ReplaceTweetCallback)
                     recyclerViewAdapter.actionCallback;
-            assertEquals(mockTimelineDelegate, replaceCallback.delegate);
-            assertEquals(mockCallback, replaceCallback.cb);
+            Assert.assertEquals(mockTimelineDelegate, replaceCallback.delegate);
+            Assert.assertEquals(mockCallback, replaceCallback.cb);
         } else {
-            fail("Expected actionCallback to be wrapped in ReplaceTweetCallback");
+            Assert.fail("Expected actionCallback to be wrapped in ReplaceTweetCallback");
         }
     }
 
@@ -96,15 +96,15 @@ public class TweetTimelineRecyclerViewAdapterTest extends TweetUiTestCase {
                 .setOnActionCallback(mockCallback)
                 .setViewStyle(R.style.tw__TweetDarkStyle)
                 .build();
-        assertEquals(R.style.tw__TweetDarkStyle, recyclerViewAdapter.styleResId);
+        Assert.assertEquals(R.style.tw__TweetDarkStyle, recyclerViewAdapter.styleResId);
         if (recyclerViewAdapter.actionCallback instanceof
                 TweetTimelineRecyclerViewAdapter.ReplaceTweetCallback) {
             final TweetTimelineRecyclerViewAdapter.ReplaceTweetCallback replaceCallback
                     = (TweetTimelineRecyclerViewAdapter.ReplaceTweetCallback)
                     recyclerViewAdapter.actionCallback;
-            assertEquals(mockCallback, replaceCallback.cb);
+            Assert.assertEquals(mockCallback, replaceCallback.cb);
         } else {
-            fail("Expected actionCallback to be wrapped in ReplaceTweetCallback");
+            Assert.fail("Expected actionCallback to be wrapped in ReplaceTweetCallback");
         }
     }
 
@@ -114,9 +114,9 @@ public class TweetTimelineRecyclerViewAdapterTest extends TweetUiTestCase {
             recyclerViewAdapter =
                     new TweetTimelineRecyclerViewAdapter.Builder(null).setTimeline(mockTimeline)
                     .build();
-            fail("Null context should throw exception");
+            Assert.fail("Null context should throw exception");
         } catch (IllegalArgumentException e) {
-            assertEquals(NULL_CONTEXT_MESSAGE, e.getMessage());
+            Assert.assertEquals(NULL_CONTEXT_MESSAGE, e.getMessage());
         }
     }
 
@@ -125,9 +125,9 @@ public class TweetTimelineRecyclerViewAdapterTest extends TweetUiTestCase {
             recyclerViewAdapter =
                     new TweetTimelineRecyclerViewAdapter.Builder(getContext()).setTimeline(null)
                     .build();
-            fail("Null timeline should throw exception");
+            Assert.fail("Null timeline should throw exception");
         } catch (IllegalArgumentException e) {
-            assertEquals(NULL_TIMELINE_MESSAGE, e.getMessage());
+            Assert.assertEquals(NULL_TIMELINE_MESSAGE, e.getMessage());
         }
     }
 
@@ -139,7 +139,7 @@ public class TweetTimelineRecyclerViewAdapterTest extends TweetUiTestCase {
                 .setTimelineFilter(mockTimelineFilter)
                 .build();
 
-        assertTrue(recyclerViewAdapter.timelineDelegate instanceof FilterTimelineDelegate);
+        Assert.assertTrue(recyclerViewAdapter.timelineDelegate instanceof FilterTimelineDelegate);
     }
 
     public void testBuilder_withNullTimelineFilter() {
@@ -149,14 +149,14 @@ public class TweetTimelineRecyclerViewAdapterTest extends TweetUiTestCase {
                 .setTimelineFilter(null)
                 .build();
 
-        assertTrue(recyclerViewAdapter.timelineDelegate instanceof TimelineDelegate);
+        Assert.assertTrue(recyclerViewAdapter.timelineDelegate instanceof TimelineDelegate);
     }
 
     public void testItemCount_viaConstructor() {
         final Timeline<Tweet> fakeTimeline = new FakeTweetTimeline(ITEM_COUNT);
         final TweetTimelineRecyclerViewAdapter recyclerViewAdapter = new
                 TweetTimelineRecyclerViewAdapter(getContext(), fakeTimeline);
-        assertEquals(recyclerViewAdapter.getItemCount(), ITEM_COUNT);
+        Assert.assertEquals(ITEM_COUNT, recyclerViewAdapter.getItemCount());
     }
 
     public void testItemCount_viaBuilder() {
@@ -166,7 +166,7 @@ public class TweetTimelineRecyclerViewAdapterTest extends TweetUiTestCase {
                         .setTimeline(fakeTimeline)
                         .setViewStyle(R.style.tw__TweetLightWithActionsStyle)
                         .build();
-        assertEquals(recyclerViewAdapter.getItemCount(), ITEM_COUNT);
+        Assert.assertEquals(ITEM_COUNT, recyclerViewAdapter.getItemCount());
     }
 
     public void testConstructor_scribesImpression() {
@@ -186,23 +186,23 @@ public class TweetTimelineRecyclerViewAdapterTest extends TweetUiTestCase {
         verify(tweetUi).scribe(tfwNamespaceCaptor.capture(), scribeItemsCaptor.capture());
 
         final EventNamespace sdkNs = sdkNamespaceCaptor.getValue();
-        assertEquals(REQUIRED_SDK_IMPRESSION_CLIENT, sdkNs.client);
-        assertEquals(REQUIRED_SDK_IMPRESSION_PAGE, sdkNs.page);
-        assertEquals(TEST_SCRIBE_SECTION, sdkNs.section);
-        assertEquals(REQUIRED_SDK_IMPRESSION_COMPONENT, sdkNs.component);
-        assertEquals(REQUIRED_SDK_IMPRESSION_ELEMENT, sdkNs.element);
-        assertEquals(REQUIRED_IMPRESSION_ACTION, sdkNs.action);
+        Assert.assertEquals(REQUIRED_SDK_IMPRESSION_CLIENT, sdkNs.client);
+        Assert.assertEquals(REQUIRED_SDK_IMPRESSION_PAGE, sdkNs.page);
+        Assert.assertEquals(TEST_SCRIBE_SECTION, sdkNs.section);
+        Assert.assertEquals(REQUIRED_SDK_IMPRESSION_COMPONENT, sdkNs.component);
+        Assert.assertEquals(REQUIRED_SDK_IMPRESSION_ELEMENT, sdkNs.element);
+        Assert.assertEquals(REQUIRED_IMPRESSION_ACTION, sdkNs.action);
 
         final EventNamespace tfwNs = tfwNamespaceCaptor.getValue();
-        assertEquals(REQUIRED_TFW_CLIENT, tfwNs.client);
-        assertEquals(REQUIRED_TFW_PAGE, tfwNs.page);
-        assertEquals(REQUIRED_TFW_SECTION, tfwNs.section);
-        assertEquals(TEST_SCRIBE_SECTION, tfwNs.component);
-        assertEquals(REQUIRED_TFW_ELEMENT, tfwNs.element);
-        assertEquals(REQUIRED_IMPRESSION_ACTION, tfwNs.action);
+        Assert.assertEquals(REQUIRED_TFW_CLIENT, tfwNs.client);
+        Assert.assertEquals(REQUIRED_TFW_PAGE, tfwNs.page);
+        Assert.assertEquals(REQUIRED_TFW_SECTION, tfwNs.section);
+        Assert.assertEquals(TEST_SCRIBE_SECTION, tfwNs.component);
+        Assert.assertEquals(REQUIRED_TFW_ELEMENT, tfwNs.element);
+        Assert.assertEquals(REQUIRED_IMPRESSION_ACTION, tfwNs.action);
 
         final List<ScribeItem> scribeItems = scribeItemsCaptor.getValue();
-        assertNotNull(scribeItems);
+        Assert.assertNotNull(scribeItems);
     }
 
     static class FakeTweetTimeline implements Timeline<Tweet> {

@@ -23,7 +23,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 @RunWith(RobolectricTestRunner.class)
 public class ScribeEventFactoryTest {
@@ -41,7 +41,7 @@ public class ScribeEventFactoryTest {
                 = new EventNamespace.Builder().setClient(TFW_CLIENT_NAME).builder();
         final ScribeEvent event = ScribeEventFactory.newScribeEvent(ns, ANY_TIMESTAMP,
                 ANY_LANGUAGE, ANY_ADVERTISING_ID);
-        assertEquals(SyndicationClientEvent.class, event.getClass());
+        assertSame(SyndicationClientEvent.class, event.getClass());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class ScribeEventFactoryTest {
                 = new EventNamespace.Builder().setClient(SDK_CLIENT_NAME).builder();
         final ScribeEvent event = ScribeEventFactory.newScribeEvent(ns, ANY_TIMESTAMP,
                 ANY_LANGUAGE, ANY_ADVERTISING_ID);
-        assertEquals(SyndicatedSdkImpressionEvent.class, event.getClass());
+        assertSame(SyndicatedSdkImpressionEvent.class, event.getClass());
     }
 
     @Test
@@ -59,7 +59,7 @@ public class ScribeEventFactoryTest {
                 = new EventNamespace.Builder().setClient(OTHER_CLIENT_NAME).builder();
         final ScribeEvent event = ScribeEventFactory.newScribeEvent(ns, ANY_TIMESTAMP,
                 ANY_LANGUAGE, ANY_ADVERTISING_ID);
-        assertEquals(SyndicatedSdkImpressionEvent.class, event.getClass());
+        assertSame(SyndicatedSdkImpressionEvent.class, event.getClass());
     }
 
     @Test
@@ -69,6 +69,6 @@ public class ScribeEventFactoryTest {
         final String eventInfo = "any info";
         final ScribeEvent event = ScribeEventFactory.newScribeEvent(ns, eventInfo, ANY_TIMESTAMP,
                 ANY_LANGUAGE, ANY_ADVERTISING_ID, Collections.emptyList());
-        assertEquals(SyndicatedSdkImpressionEvent.class, event.getClass());
+        assertSame(SyndicatedSdkImpressionEvent.class, event.getClass());
     }
 }

@@ -37,7 +37,12 @@
  */
 package com.twitter.sdk.android.core.internal.scribe;
 
-import java.io.*;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
@@ -203,15 +208,12 @@ public class QueueFile implements Closeable {
     private static void initialize(File file) throws IOException {
         // Use a temp file so we don't leave a partially-initialized file.
         File tempFile = new File(file.getPath() + ".tmp");
-        RandomAccessFile raf = open(tempFile);
-        try {
+        try (RandomAccessFile raf = open(tempFile)) {
             raf.setLength(INITIAL_LENGTH);
             raf.seek(0);
             byte[] headerBuffer = new byte[16];
             writeInts(headerBuffer, INITIAL_LENGTH, 0, 0, 0);
             raf.write(headerBuffer);
-        } finally {
-            raf.close();
         }
 
         // A rename is atomic.

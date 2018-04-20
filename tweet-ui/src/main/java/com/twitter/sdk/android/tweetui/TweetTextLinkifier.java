@@ -118,10 +118,8 @@ final class TweetTextLinkifier {
             if (lhs == null && rhs != null) return -1;
             if (lhs != null && rhs == null) return 1;
             if (lhs == null && rhs == null) return 0;
-            if (lhs.start < rhs.start) return -1;
-            if (lhs.start > rhs.start) return 1;
+            return Integer.compare(lhs.start, rhs.start);
 
-            return 0;
         });
         return combined;
     }

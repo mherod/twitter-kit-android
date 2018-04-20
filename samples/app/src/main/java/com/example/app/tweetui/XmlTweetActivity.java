@@ -18,6 +18,7 @@
 package com.example.app.tweetui;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
@@ -57,8 +58,8 @@ public class XmlTweetActivity extends TweetUiActivity {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
             return inflater.inflate(R.layout.tweetui_fragment_xml_tweet, container, false);
         }
     }

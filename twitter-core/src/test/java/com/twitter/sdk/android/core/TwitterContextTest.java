@@ -33,6 +33,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+@SuppressWarnings("FieldCanBeLocal")
 @RunWith(RobolectricTestRunner.class)
 public class TwitterContextTest {
     private static final String ROOT_DIR = ".Fabric";

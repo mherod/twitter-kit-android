@@ -32,7 +32,7 @@ public class TweetViewXmlTest extends BaseTweetViewXmlTest {
 
     public void testLayout() {
         final TweetView view = getView();
-        assertNotNull(view);
-        assertEquals(R.layout.tw__tweet, view.getLayout());
+        Assert.assertNotNull(view);
+        Assert.assertEquals(R.layout.tw__tweet, view.getLayout());
     }
 }

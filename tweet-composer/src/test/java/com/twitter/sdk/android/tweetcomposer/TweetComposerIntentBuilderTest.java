@@ -24,6 +24,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -33,9 +34,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -49,7 +50,7 @@ public class TweetComposerIntentBuilderTest {
     @Test
     public void testBuilder_constructor() {
         final TweetComposer.Builder builder = new TweetComposer.Builder(mock(Context.class));
-        assertNotNull(builder);
+        Assert.assertThat(builder, notNullValue());
     }
 
     @Test
@@ -58,7 +59,7 @@ public class TweetComposerIntentBuilderTest {
             new TweetComposer.Builder(null);
             fail();
         } catch (IllegalArgumentException e) {
-            assertEquals("Context must not be null.", e.getMessage());
+            Assert.assertThat(e.getMessage(), is("Context must not be null."));
         }
     }
 
@@ -68,7 +69,7 @@ public class TweetComposerIntentBuilderTest {
         final String text = "test";
         final TweetComposer.Builder builder = new TweetComposer.Builder(context).text(text);
         final Intent intent = builder.createTwitterIntent();
-        assertEquals(text, intent.getStringExtra(Intent.EXTRA_TEXT));
+        Assert.assertThat(intent.getStringExtra(Intent.EXTRA_TEXT), is(text));
     }
 
     @Test
@@ -77,7 +78,7 @@ public class TweetComposerIntentBuilderTest {
             new TweetComposer.Builder(mock(Context.class)).text(null);
             fail();
         } catch (IllegalArgumentException ignored) {
-            assertEquals("text must not be null.", ignored.getMessage());
+            Assert.assertThat(ignored.getMessage(), is("text must not be null."));
         }
     }
 
@@ -88,7 +89,7 @@ public class TweetComposerIntentBuilderTest {
             new TweetComposer.Builder(mock(Context.class)).text(text).text(text);
             fail();
         } catch (IllegalStateException ignored) {
-            assertEquals("text already set.", ignored.getMessage());
+            Assert.assertThat(ignored.getMessage(), is("text already set."));
         }
     }
 
@@ -103,7 +104,7 @@ public class TweetComposerIntentBuilderTest {
                 .text(text)
                 .url(url);
         final Intent intent = builder.createTwitterIntent();
-        assertEquals(result, intent.getStringExtra(Intent.EXTRA_TEXT));
+        Assert.assertThat(intent.getStringExtra(Intent.EXTRA_TEXT), is(result));
     }
 
     @Test
@@ -112,7 +113,7 @@ public class TweetComposerIntentBuilderTest {
         final URL url = new URL("http://www.twitter.com");
         final TweetComposer.Builder builder = new TweetComposer.Builder(context).url(url);
         final Intent intent = builder.createTwitterIntent();
-        assertEquals(url.toString(), intent.getStringExtra(Intent.EXTRA_TEXT));
+        Assert.assertThat(intent.getStringExtra(Intent.EXTRA_TEXT), is(url.toString()));
     }
 
     @Test
@@ -121,7 +122,7 @@ public class TweetComposerIntentBuilderTest {
             new TweetComposer.Builder(mock(Context.class)).url(null);
             fail();
         } catch (IllegalArgumentException ignored) {
-            assertEquals("url must not be null.", ignored.getMessage());
+            Assert.assertThat(ignored.getMessage(), is("url must not be null."));
         }
     }
 
@@ -132,7 +133,7 @@ public class TweetComposerIntentBuilderTest {
             new TweetComposer.Builder(mock(Context.class)).url(url).url(url);
             fail();
         } catch (IllegalStateException ignored) {
-            assertEquals("url already set.", ignored.getMessage());
+            Assert.assertThat(ignored.getMessage(), is("url already set."));
         }
     }
 
@@ -142,7 +143,7 @@ public class TweetComposerIntentBuilderTest {
         final Uri uri = Uri.parse("http://www.twitter.com");
         final TweetComposer.Builder builder = new TweetComposer.Builder(context).image(uri);
         final Intent intent = builder.createTwitterIntent();
-        assertEquals(uri, intent.getParcelableExtra(Intent.EXTRA_STREAM));
+        Assert.assertThat(intent.getParcelableExtra(Intent.EXTRA_STREAM), is(uri));
     }
 
     @Test
@@ -151,7 +152,7 @@ public class TweetComposerIntentBuilderTest {
             new TweetComposer.Builder(mock(Context.class)).image(null);
             fail();
         } catch (IllegalArgumentException ignored) {
-            assertEquals("imageUri must not be null.", ignored.getMessage());
+            Assert.assertThat(ignored.getMessage(), is("imageUri must not be null."));
         }
     }
 
@@ -162,7 +163,7 @@ public class TweetComposerIntentBuilderTest {
             new TweetComposer.Builder(mock(Context.class)).image(uri).image(uri);
             fail();
         } catch (IllegalStateException ignored) {
-            assertEquals("imageUri already set.", ignored.getMessage());
+            Assert.assertThat(ignored.getMessage(), is("imageUri already set."));
         }
     }
 
@@ -173,8 +174,8 @@ public class TweetComposerIntentBuilderTest {
         final Intent intentTwitter = builder.createTwitterIntent();
         final Intent intent = builder.createIntent();
 
-        assertNotNull(intent);
-        assertNotNull(intentTwitter);
+        Assert.assertThat(intent, notNullValue());
+        Assert.assertThat(intentTwitter, notNullValue());
         assertIntentEquals(intentTwitter, intent);
     }
 
@@ -186,8 +187,8 @@ public class TweetComposerIntentBuilderTest {
         final Intent intentTwitter = builder.createTwitterIntent();
         final Intent intentWeb = builder.createWebIntent();
 
-        assertNotNull(intent);
-        assertNull(intentTwitter);
+        Assert.assertThat(intent, notNullValue());
+        Assert.assertThat(intentTwitter, nullValue());
         assertIntentEquals(intentWeb, intent);
     }
 
@@ -225,11 +226,9 @@ public class TweetComposerIntentBuilderTest {
     }
 
     private void assertIntentEquals(Intent intent, Intent otherIntent) {
-        assertEquals(intent.getType(), otherIntent.getType());
-        assertEquals(intent.getAction(), otherIntent.getAction());
-        assertEquals(intent.getStringExtra(Intent.EXTRA_TEXT),
-                otherIntent.getStringExtra(Intent.EXTRA_TEXT));
-        assertEquals(intent.getStringExtra(intent.getStringExtra(Intent.EXTRA_STREAM)),
-                otherIntent.getStringExtra(Intent.EXTRA_STREAM));
+        Assert.assertThat(otherIntent.getType(), is(intent.getType()));
+        Assert.assertThat(otherIntent.getAction(), is(intent.getAction()));
+        Assert.assertThat(otherIntent.getStringExtra(Intent.EXTRA_TEXT), is(intent.getStringExtra(Intent.EXTRA_TEXT)));
+        Assert.assertThat(otherIntent.getStringExtra(Intent.EXTRA_STREAM), is(intent.getStringExtra(intent.getStringExtra(Intent.EXTRA_STREAM))));
     }
 }

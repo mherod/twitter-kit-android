@@ -18,12 +18,14 @@
 package com.twitter.sdk.android.core;
 
 import android.test.AndroidTestCase;
+
 import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.services.FavoriteService;
 import com.twitter.sdk.android.core.services.StatusesService;
-import okhttp3.OkHttpClient;
 
 import java.util.concurrent.ExecutorService;
+
+import okhttp3.OkHttpClient;
 
 import static org.mockito.Mockito.mock;
 
@@ -49,38 +51,38 @@ public class TwitterApiClientTest extends AndroidTestCase {
         try {
             TwitterTestUtils.resetTwitter();
             new TwitterApiClient(mock(TwitterSession.class));
-            fail();
+            Assert.fail();
         } catch (IllegalStateException ise) {
-            assertEquals("Must initialize Twitter before using getInstance()", ise.getMessage());
+            Assert.assertEquals("Must initialize Twitter before using getInstance()", ise.getMessage());
         }
     }
 
     public void testConstructor_noSession() {
         try {
             new TwitterApiClient((TwitterSession) null);
-            fail();
+            Assert.fail();
         } catch (IllegalArgumentException ie) {
-            assertEquals("Session must not be null.", ie.getMessage());
+            Assert.assertEquals("Session must not be null.", ie.getMessage());
         }
     }
 
     public void testGetService_cachedService() {
         final TwitterApiClient client = newTwitterApiClient();
         final StatusesService service = client.getService(StatusesService.class);
-        assertSame(service, client.getService(StatusesService.class));
+        Assert.assertSame(service, client.getService(StatusesService.class));
     }
 
     public void testGetService_differentServices() {
         final TwitterApiClient client = newTwitterApiClient();
         final FavoriteService service = client.getService(FavoriteService.class);
-        assertNotSame(service, client.getService(StatusesService.class));
+        Assert.assertNotSame(service, client.getService(StatusesService.class));
     }
 
     public void testApiClient_cachedGuestAuthClient() {
         final TwitterApiClient customApiClient = new TwitterApiClient(newOkHttpClient());
         TwitterCore.getInstance().addGuestApiClient(customApiClient);
 
-        assertEquals(customApiClient, TwitterCore.getInstance().getGuestApiClient());
+        Assert.assertEquals(customApiClient, TwitterCore.getInstance().getGuestApiClient());
     }
 
     public void testApiClient_cachedUserAuthApiClient() {
@@ -89,7 +91,7 @@ public class TwitterApiClientTest extends AndroidTestCase {
                 new TwitterApiClient(mockUserSession, newOkHttpClient());
         TwitterCore.getInstance().addApiClient(mockUserSession, customApiClient);
 
-        assertEquals(customApiClient, TwitterCore.getInstance().getApiClient(mockUserSession));
+        Assert.assertEquals(customApiClient, TwitterCore.getInstance().getApiClient(mockUserSession));
     }
 
     private TwitterApiClient newTwitterApiClient() {

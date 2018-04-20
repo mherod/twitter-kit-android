@@ -157,20 +157,14 @@ public class OAuth1aService extends OAuthService {
             @Override
             public void success(Result<ResponseBody> result) {
                 //Try to get response body
-                BufferedReader reader = null;
                 final StringBuilder sb = new StringBuilder();
                 try {
-                    try {
-                        reader = new BufferedReader(
-                                new InputStreamReader(result.getData().byteStream()));
+                    try (BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(result.getData().byteStream()))) {
                         String line;
 
                         while ((line = reader.readLine()) != null) {
                             sb.append(line);
-                        }
-                    } finally {
-                        if (reader != null) {
-                            reader.close();
                         }
                     }
                     final String responseAsStr = sb.toString();

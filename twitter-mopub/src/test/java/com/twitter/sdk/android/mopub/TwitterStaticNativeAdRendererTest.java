@@ -23,12 +23,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.mopub.nativeads.BaseNativeAd;
 import com.mopub.nativeads.StaticNativeAd;
 import com.mopub.network.MaxWidthImageLoader;
 import com.mopub.network.Networking;
 import com.mopub.volley.toolbox.ImageLoader;
 import com.twitter.sdk.android.mopub.internal.RoundedImageView;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,9 +43,13 @@ import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class TwitterStaticNativeAdRendererTest {

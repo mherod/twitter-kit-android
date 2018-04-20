@@ -79,17 +79,11 @@ class FileUtils {
     }
 
     static String resolveFilePath(Context context, Uri uri, String selection, String[] args) {
-        Cursor cursor = null;
         final String[] projection = {MediaStore.Images.Media.DATA};
-        try {
-            cursor = context.getContentResolver().query(uri, projection, selection, args, null);
+        try (Cursor cursor = context.getContentResolver().query(uri, projection, selection, args, null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 final int i = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 return cursor.getString(i);
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
             }
         }
         return null;

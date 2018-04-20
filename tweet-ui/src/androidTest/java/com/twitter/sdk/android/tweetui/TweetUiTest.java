@@ -55,21 +55,21 @@ public class TweetUiTest extends AndroidTestCase {
     }
 
     public void testGetVersion() {
-        assertEquals(BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER,
+        Assert.assertEquals(BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER,
                 tweetUi.getVersion());
     }
 
     public void testGetIdentifier() {
         final String identifier = BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
-        assertEquals(identifier, tweetUi.getIdentifier());
+        Assert.assertEquals(identifier, tweetUi.getIdentifier());
     }
 
     public void testGetInstance_tweeterStarted() {
         try {
             final TweetUi instance = TweetUi.getInstance();
-            assertNotNull(instance);
+            Assert.assertNotNull(instance);
         } catch (Exception ex) {
-            fail("IllegalStateException was expected");
+            Assert.fail("IllegalStateException was expected");
         }
     }
 
@@ -77,10 +77,10 @@ public class TweetUiTest extends AndroidTestCase {
         TwitterTestUtils.resetTwitter();
         try {
             TweetUi.getInstance();
-            fail("IllegalStateException was expected");
+            Assert.fail("IllegalStateException was expected");
         } catch (Exception ex) {
             if (!(ex instanceof IllegalStateException)) {
-                fail("IllegalStateException was expected");
+                Assert.fail("IllegalStateException was expected");
             }
         }
     }
@@ -92,7 +92,7 @@ public class TweetUiTest extends AndroidTestCase {
             tweetUi.scribeClient = null;
             tweetUi.scribe(ns, ns);
         } catch (NullPointerException e) {
-            fail("should have gracefully ignored events");
+            Assert.fail("should have gracefully ignored events");
         }
     }
 }

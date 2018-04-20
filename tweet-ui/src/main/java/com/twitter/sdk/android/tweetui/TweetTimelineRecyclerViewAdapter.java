@@ -19,6 +19,7 @@ package com.twitter.sdk.android.tweetui;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -128,8 +129,9 @@ public class TweetTimelineRecyclerViewAdapter extends
         previousCount = 0;
     }
 
+    @NonNull
     @Override
-    public TweetViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TweetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final Tweet tweet = new TweetBuilder().build();
         final CompactTweetView compactTweetView = new CompactTweetView(context, tweet, styleResId);
         compactTweetView.setOnActionCallback(actionCallback);
@@ -137,7 +139,7 @@ public class TweetTimelineRecyclerViewAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(TweetViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TweetViewHolder holder, int position) {
         final Tweet tweet = timelineDelegate.getItem(position);
         final CompactTweetView compactTweetView = (CompactTweetView) holder.itemView;
         compactTweetView.setTweet(tweet);
