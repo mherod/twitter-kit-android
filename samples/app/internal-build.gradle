@@ -80,6 +80,7 @@ dependencies {
     implementation project(path: ':sdk:twitter:twitter')
     implementation project(path: ':sdk:twitter:twitter-mopub')
     implementation dependency.appCompat
+    implementation dependency.supportAnnotations
     implementation dependency.design
     implementation dependency.okHttpInterceptor
 

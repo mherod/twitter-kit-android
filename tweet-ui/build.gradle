@@ -72,6 +72,7 @@ dependencies {
 
     implementation dependency.picasso
     implementation dependency.supportCoreV4
+    implementation dependency.supportAnnotations
     implementation dependency.supportCompatV4
     implementation dependency.recyclerview
 

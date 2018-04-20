@@ -8,7 +8,7 @@ buildscript {
 Properties props = new Properties()
 try {
     props.load(file('twitter.properties').newDataInputStream())
-} catch (Exception ex) {
+} catch (Exception ignored) {
     throw new GradleException("Missing twitter.properties, check the twitter.properties.sample file.")
 }
 
@@ -72,16 +72,18 @@ dependencies {
     implementation project(':twitter')
     implementation project(':twitter-mopub')
     implementation dependency.appCompat
+    implementation dependency.supportAnnotations
     implementation dependency.design
     implementation dependency.okHttpInterceptor
 
-    debugCompile dependency.leakCanary
-    releaseCompile dependency.leakCanaryNoOp
+    debugImplementation dependency.leakCanary
+    releaseImplementation dependency.leakCanaryNoOp
 
-    androidTestCompile dependency.spoon
-    androidTestCompile dependency.espresso
-    androidTestCompile dependency.androidTestingSupport
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    androidTestImplementation dependency.spoon
+    androidTestImplementation dependency.espresso
+    androidTestImplementation dependency.androidTestingSupport
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {
     mavenCentral()
