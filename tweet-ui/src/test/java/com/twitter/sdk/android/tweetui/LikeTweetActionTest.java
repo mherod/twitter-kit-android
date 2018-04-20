@@ -138,8 +138,8 @@ public class LikeTweetActionTest {
         final ArgumentCaptor<Result<Tweet>> resultCaptor
                 = ArgumentCaptor.forClass(Result.class);
         verify(mockCallback).success(resultCaptor.capture());
-        assertEquals(tweet.getId(), resultCaptor.getValue().data.getId());
-        assertTrue(resultCaptor.getValue().data.favorited);
+        assertEquals(tweet.getId(), resultCaptor.getValue().getData().getId());
+        assertTrue(resultCaptor.getValue().getData().favorited);
     }
 
     @Test
@@ -160,8 +160,8 @@ public class LikeTweetActionTest {
         final ArgumentCaptor<Result<Tweet>> resultCaptor
                 = ArgumentCaptor.forClass(Result.class);
         verify(mockCallback).success(resultCaptor.capture());
-        assertEquals(tweet.getId(), resultCaptor.getValue().data.getId());
-        assertFalse(resultCaptor.getValue().data.favorited);
+        assertEquals(tweet.getId(), resultCaptor.getValue().getData().getId());
+        assertFalse(resultCaptor.getValue().getData().favorited);
     }
 
     @Test

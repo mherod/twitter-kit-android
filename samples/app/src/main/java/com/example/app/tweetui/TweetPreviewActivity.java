@@ -112,7 +112,7 @@ public class TweetPreviewActivity extends TweetUiActivity {
                     final Context context = getActivity();
                     if (context == null) return;
 
-                    final Tweet tweet = result.data;
+                    final Tweet tweet = result.getData();
                     final CompactTweetView cv = new CompactTweetView(context, tweet, style);
                     container.addView(cv);
 

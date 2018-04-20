@@ -1,3 +1,5 @@
+@file:JvmName("ModelUtils")
+
 /*
  * Copyright (C) 2015 Twitter, Inc.
  *
@@ -15,32 +17,31 @@
  *
  */
 
-package com.twitter.sdk.android.core.models;
+package com.twitter.sdk.android.core.models
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*
 
 /**
  * Util class for twitter-core models
  */
-public final class ModelUtils {
+object ModelUtils {
 
-    private ModelUtils() {}
-
-    public static <T> List<T> getSafeList(List<T> entities) {
-        if (entities == null) {
-            return Collections.emptyList();
+    @JvmStatic
+    fun <T> getSafeList(entities: List<T>?): List<T> {
+        return if (entities == null) {
+            emptyList()
         } else {
-            return Collections.unmodifiableList(entities);
+            Collections.unmodifiableList(entities)
         }
     }
 
-    public static <K, V> Map<K, V> getSafeMap(Map<K, V> entities) {
-        if (entities == null) {
-            return Collections.emptyMap();
+    @JvmStatic
+    fun <K, V> getSafeMap(entities: Map<K, V>?): Map<K, V> {
+        return if (entities == null) {
+            emptyMap()
         } else {
-            return Collections.unmodifiableMap(entities);
+            Collections.unmodifiableMap(entities)
         }
     }
 }

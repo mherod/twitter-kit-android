@@ -58,7 +58,7 @@ public class GuestSessionProvider {
         oAuth2Service.requestGuestAuthToken(new Callback<GuestAuthToken>() {
             @Override
             public void success(Result<GuestAuthToken> result) {
-                sessionManager.setActiveSession(new GuestSession(result.data));
+                sessionManager.setActiveSession(new GuestSession(result.getData()));
                 latch.countDown();
             }
 

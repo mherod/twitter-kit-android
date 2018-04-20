@@ -156,7 +156,7 @@ public class OAuth2ServiceTest  {
         service.requestGuestAuthToken(new Callback<GuestAuthToken>() {
             @Override
             public void success(Result<GuestAuthToken> result) {
-                assertEquals(GUEST_TOKEN, result.data);
+                assertEquals(GUEST_TOKEN, result.getData());
             }
 
             @Override

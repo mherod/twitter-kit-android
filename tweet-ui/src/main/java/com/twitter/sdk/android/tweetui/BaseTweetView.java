@@ -238,7 +238,7 @@ public abstract class BaseTweetView extends AbstractTweetView {
         final Callback<Tweet> repoCb = new Callback<Tweet>() {
             @Override
             public void success(Result<Tweet> result) {
-                setTweet(result.data);
+                setTweet(result.getData());
             }
 
             @Override

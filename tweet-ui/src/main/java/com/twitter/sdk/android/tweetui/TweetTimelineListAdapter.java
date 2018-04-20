@@ -136,7 +136,7 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
 
         @Override
         public void success(Result<Tweet> result) {
-            delegate.setItemById(result.data);
+            delegate.setItemById(result.getData());
             if (cb != null) {
                 cb.success(result);
             }

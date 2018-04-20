@@ -101,13 +101,13 @@ class FilterTimelineDelegate extends TimelineDelegate<Tweet> {
         @Override
         public void success(final Result<TimelineResult<Tweet>> result) {
             final Runnable timelineFilterRunnable = () -> {
-                final List<Tweet> filteredTweets = timelineFilter.filter(result.data.items);
+                final List<Tweet> filteredTweets = timelineFilter.filter(result.getData().items);
                 final TimelineResult<Tweet> filteredTimelineResult =
-                        buildTimelineResult(result.data.timelineCursor, filteredTweets);
+                        buildTimelineResult(result.getData().timelineCursor, filteredTweets);
 
-                handler.post(() -> callback.success(new Result<>(filteredTimelineResult, result.response)));
+                handler.post(() -> callback.success(new Result<>(filteredTimelineResult, result.getResponse())));
 
-                scribeFilteredTimeline(result.data.items, filteredTweets);
+                scribeFilteredTimeline(result.getData().items, filteredTweets);
             };
 
             executorService.execute(timelineFilterRunnable);

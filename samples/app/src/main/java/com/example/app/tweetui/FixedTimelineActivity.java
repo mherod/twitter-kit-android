@@ -84,7 +84,7 @@ public class FixedTimelineActivity extends TweetUiActivity {
                 @Override
                 public void success(Result<List<Tweet>> result) {
                     final FixedTweetTimeline fixedTimeline = new FixedTweetTimeline.Builder()
-                            .setTweets(result.data).build();
+                            .setTweets(result.getData()).build();
                     final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter(getActivity(),
                             fixedTimeline);
                     setListAdapter(adapter);

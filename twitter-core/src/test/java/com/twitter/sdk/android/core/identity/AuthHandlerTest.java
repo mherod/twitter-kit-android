@@ -65,7 +65,7 @@ public class AuthHandlerTest  {
         assertTrue(result);
         final ArgumentCaptor<Result> argCaptor = ArgumentCaptor.forClass(Result.class);
         verify(mockCallback).success(argCaptor.capture());
-        final TwitterSession session = (TwitterSession) argCaptor.getValue().data;
+        final TwitterSession session = (TwitterSession) argCaptor.getValue().getData();
         final TwitterAuthToken authToken = session.getAuthToken();
         assertEquals(TestFixtures.TOKEN, authToken.token);
         assertEquals(TestFixtures.SECRET, authToken.secret);

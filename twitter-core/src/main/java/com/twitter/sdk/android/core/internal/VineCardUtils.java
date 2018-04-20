@@ -29,13 +29,13 @@ public class VineCardUtils {
     private VineCardUtils() {}
 
     public static boolean isVine(Card card) {
-        return (PLAYER_CARD.equals(card.name) || VINE_CARD.equals(card.name)) && isVineUser(card);
+        return (PLAYER_CARD.equals(card.getName()) || VINE_CARD.equals(card.getName())) && isVineUser(card);
     }
 
     private static boolean isVineUser(Card card) {
-        final UserValue user = card.bindingValues.get("site");
+        final UserValue user = card.getBindingValues().get("site");
         try {
-            if (user != null && Long.parseLong(user.idStr) == VINE_USER_ID) {
+            if (user != null && Long.parseLong(user.getIdStr()) == VINE_USER_ID) {
                 return true;
             }
         } catch (NumberFormatException ex) {
@@ -46,15 +46,15 @@ public class VineCardUtils {
     }
 
     public static String getPublisherId(Card card) {
-        final UserValue user_value = card.bindingValues.get("site");
-        return user_value.idStr;
+        final UserValue user_value = card.getBindingValues().get("site");
+        return user_value.getIdStr();
     }
 
     public static String getStreamUrl(Card card) {
-        return card.bindingValues.get("player_stream_url");
+        return card.getBindingValues().get("player_stream_url");
     }
 
     public static ImageValue getImageValue(Card card) {
-        return card.bindingValues.get("player_image");
+        return card.getBindingValues().get("player_image");
     }
 }

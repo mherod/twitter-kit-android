@@ -65,7 +65,7 @@ public class OAuth2Service extends OAuthService {
         final Callback<OAuth2Token> appAuthCallback = new Callback<OAuth2Token>() {
             @Override
             public void success(Result<OAuth2Token> result) {
-                final OAuth2Token appAuthToken = result.data;
+                final OAuth2Token appAuthToken = result.getData();
                 // Got back an app auth token, now request a guest auth token.
                 final Callback<GuestTokenResponse> guestTokenCallback
                         = new Callback<GuestTokenResponse>() {
@@ -74,7 +74,7 @@ public class OAuth2Service extends OAuthService {
                         // Return a GuestAuthToken that includes the guestToken.
                         final GuestAuthToken guestAuthToken = new GuestAuthToken(
                                 appAuthToken.getTokenType(), appAuthToken.getAccessToken(),
-                                result.data.guestToken);
+                                result.getData().guestToken);
                         callback.success(new Result<>(guestAuthToken, null));
                     }
 

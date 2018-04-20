@@ -102,7 +102,7 @@ class TweetRepository {
         getUserSession(new LoggingCallback<TwitterSession>(cb, Twitter.getLogger()) {
             @Override
             public void success(Result<TwitterSession> result) {
-                twitterCore.getApiClient(result.data).getFavoriteService().create(tweetId, false)
+                twitterCore.getApiClient(result.getData()).getFavoriteService().create(tweetId, false)
                         .enqueue(cb);
             }
         });
@@ -112,7 +112,7 @@ class TweetRepository {
         getUserSession(new LoggingCallback<TwitterSession>(cb, Twitter.getLogger()) {
             @Override
             public void success(Result<TwitterSession> result) {
-                twitterCore.getApiClient(result.data).getFavoriteService().destroy(tweetId, false)
+                twitterCore.getApiClient(result.getData()).getFavoriteService().destroy(tweetId, false)
                         .enqueue(cb);
             }
         });
@@ -122,7 +122,7 @@ class TweetRepository {
         getUserSession(new LoggingCallback<TwitterSession>(cb, Twitter.getLogger()) {
             @Override
             public void success(Result<TwitterSession> result) {
-                twitterCore.getApiClient(result.data).getStatusesService().retweet(tweetId, false)
+                twitterCore.getApiClient(result.getData()).getStatusesService().retweet(tweetId, false)
                         .enqueue(cb);
             }
         });
@@ -132,7 +132,7 @@ class TweetRepository {
         getUserSession(new LoggingCallback<TwitterSession>(cb, Twitter.getLogger()) {
             @Override
             public void success(Result<TwitterSession> result) {
-                twitterCore.getApiClient(result.data).getStatusesService().unretweet(tweetId, false)
+                twitterCore.getApiClient(result.getData()).getStatusesService().unretweet(tweetId, false)
                         .enqueue(cb);
             }
         });
@@ -192,10 +192,10 @@ class TweetRepository {
 
         @Override
         public void success(Result<Tweet> result) {
-            final Tweet tweet = result.data;
+            final Tweet tweet = result.getData();
             updateCache(tweet);
             if (cb != null) {
-                cb.success(new Result<>(tweet, result.response));
+                cb.success(new Result<>(tweet, result.getResponse()));
             }
         }
 
@@ -221,8 +221,8 @@ class TweetRepository {
         @Override
         public void success(Result<List<Tweet>> result) {
             if (cb != null) {
-                final List<Tweet> sorted = Utils.orderTweets(tweetIds, result.data);
-                cb.success(new Result<>(sorted, result.response));
+                final List<Tweet> sorted = Utils.orderTweets(tweetIds, result.getData());
+                cb.success(new Result<>(sorted, result.getResponse()));
             }
         }
 

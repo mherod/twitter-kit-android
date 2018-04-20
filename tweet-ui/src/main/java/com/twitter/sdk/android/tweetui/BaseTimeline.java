@@ -56,11 +56,11 @@ abstract class BaseTimeline {
 
         @Override
         public void success(Result<List<Tweet>> result) {
-            final List<Tweet> tweets = result.data;
+            final List<Tweet> tweets = result.getData();
             final TimelineResult<Tweet> timelineResult
                     = new TimelineResult<>(new TimelineCursor(tweets), tweets);
             if (cb != null) {
-                cb.success(new Result<>(timelineResult, result.response));
+                cb.success(new Result<>(timelineResult, result.getResponse()));
             }
         }
 

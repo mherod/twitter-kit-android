@@ -75,7 +75,7 @@ class OAuthController implements OAuthWebViewClient.Listener {
         return new Callback<OAuthResponse>() {
             @Override
             public void success(Result<OAuthResponse> result) {
-                requestToken = result.data.authToken;
+                requestToken = result.getData().authToken;
                 final String authorizeUrl = oAuth1aService.getAuthorizeUrl(requestToken);
                 // Step 2. Redirect user to web view to complete authorization flow.
                 Twitter.getLogger().d(TwitterCore.TAG,
@@ -149,7 +149,7 @@ class OAuthController implements OAuthWebViewClient.Listener {
             @Override
             public void success(Result<OAuthResponse> result) {
                 final Intent data = new Intent();
-                final OAuthResponse response = result.data;
+                final OAuthResponse response = result.getData();
                 data.putExtra(AuthHandler.EXTRA_SCREEN_NAME, response.userName);
                 data.putExtra(AuthHandler.EXTRA_USER_ID, response.userId);
                 data.putExtra(AuthHandler.EXTRA_TOKEN, response.authToken.token);

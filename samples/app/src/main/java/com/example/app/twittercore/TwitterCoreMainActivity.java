@@ -45,6 +45,20 @@ public class TwitterCoreMainActivity extends BaseActivity {
         return new Intent(packageContext, TwitterCoreMainActivity.class);
     }
 
+    private static void requestEmailAddress(final Context context, TwitterSession session) {
+        new TwitterAuthClient().requestEmail(session, new Callback<String>() {
+            @Override
+            public void success(Result<String> result) {
+                Toast.makeText(context, result.getData(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                Toast.makeText(context, exception.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +74,7 @@ public class TwitterCoreMainActivity extends BaseActivity {
         loginButton.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
-                requestEmailAddress(getApplicationContext(), result.data);
+                requestEmailAddress(getApplicationContext(), result.getData());
             }
 
             @Override
@@ -68,20 +82,6 @@ public class TwitterCoreMainActivity extends BaseActivity {
                 // Upon error, show a toast message indicating that authorization request failed.
                 Toast.makeText(getApplicationContext(), exception.getMessage(),
                         Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private static void requestEmailAddress(final Context context, TwitterSession session) {
-        new TwitterAuthClient().requestEmail(session, new Callback<String>() {
-            @Override
-            public void success(Result<String> result) {
-                Toast.makeText(context, result.data, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void failure(TwitterException exception) {
-                Toast.makeText(context, exception.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -113,7 +113,7 @@ public class TweetActivity extends TweetUiActivity {
                 public void success(Result<Tweet> result) {
                     final Context context = getActivity();
                     if (context == null) return;
-                    final Tweet tweet = result.data;
+                    final Tweet tweet = result.getData();
                     final BaseTweetView tv = new TweetView(context, tweet,
                             R.style.tw__TweetLightWithActionsStyle);
                     tv.setOnActionCallback(actionCallback);
@@ -140,8 +140,8 @@ public class TweetActivity extends TweetUiActivity {
                 public void success(Result<List<Tweet>> result) {
                     final Context context = getActivity();
                     if (context == null) return;
-                    for (int i = 0; i < result.data.size(); i++) {
-                        final BaseTweetView tv = new CompactTweetView(context, result.data.get(i),
+                    for (int i = 0; i < result.getData().size(); i++) {
+                        final BaseTweetView tv = new CompactTweetView(context, result.getData().get(i),
                                 R.style.tw__TweetDarkWithActionsStyle);
                         tv.setOnActionCallback(actionCallback);
                         tv.setId(viewIds.get(i));

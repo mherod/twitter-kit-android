@@ -15,17 +15,13 @@
  *
  */
 
-package com.twitter.sdk.android.core.models;
+package com.twitter.sdk.android.core.models
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-public class UserValue {
-
-    @SerializedName("id_str")
-    public final String idStr;
-
-    public UserValue(String idStr) {
-        this.idStr = idStr;
-    }
-}
-
+data class Card(
+        @SerializedName("binding_values")
+        val bindingValues: BindingValues,
+        @SerializedName("name")
+        val name: String
+)

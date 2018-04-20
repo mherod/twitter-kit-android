@@ -191,7 +191,7 @@ public class TwitterAuthClient {
         verifyRequest.enqueue(new Callback<User>() {
             @Override
             public void success(Result<User> result) {
-                callback.success(new Result<>(result.data.email, null));
+                callback.success(new Result<>(result.getData().email, null));
             }
 
             @Override
@@ -234,7 +234,7 @@ public class TwitterAuthClient {
         @Override
         public void success(Result<TwitterSession> result) {
             Twitter.getLogger().d(TwitterCore.TAG, "Authorization completed successfully");
-            sessionManager.setActiveSession(result.data);
+            sessionManager.setActiveSession(result.getData());
             callback.success(result);
         }
 

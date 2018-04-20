@@ -20,6 +20,7 @@ package com.twitter.sdk.android.core.internal.scribe;
 import com.twitter.sdk.android.core.internal.CommonUtils;
 import com.twitter.sdk.android.core.internal.CurrentTimeProvider;
 import com.twitter.sdk.android.core.internal.SystemCurrentTimeProvider;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +38,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class EventsFilesManagerTest {
@@ -117,7 +121,7 @@ public class EventsFilesManagerTest {
     }
 
     @Test
-    public void testParseTimestampFromRolledOverFileName() throws IOException{
+    public void testParseTimestampFromRolledOverFileName() {
         final long startTime = 10000L;
 
         when(mockCurrentTimeProvider.getCurrentTimeMillis()).thenReturn(startTime);

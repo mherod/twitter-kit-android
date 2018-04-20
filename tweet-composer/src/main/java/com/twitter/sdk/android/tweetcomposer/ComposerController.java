@@ -80,7 +80,7 @@ class ComposerController {
                 .verifyCredentials(false, true, false).enqueue(new Callback<User>() {
                     @Override
                     public void success(Result<User> result) {
-                        composerView.setProfilePhotoView(result.data);
+                        composerView.setProfilePhotoView(result.getData());
                     }
 
                     @Override

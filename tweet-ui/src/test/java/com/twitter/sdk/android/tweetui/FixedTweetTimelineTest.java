@@ -64,12 +64,12 @@ public class FixedTweetTimelineTest {
         timeline.next(ANY_ID, new Callback<TimelineResult<Tweet>>() {
             @Override
             public void success(Result<TimelineResult<Tweet>> result) {
-                assertEquals(fixedTweets, result.data.items);
+                assertEquals(fixedTweets, result.getData().items);
                 assertEquals((Long) TestFixtures.TEST_PHOTO_TWEET.getId(),
-                        result.data.timelineCursor.minPosition);
+                        result.getData().timelineCursor.minPosition);
                 assertEquals((Long) TestFixtures.TEST_TWEET.getId(),
-                        result.data.timelineCursor.maxPosition);
-                assertNull(result.response);
+                        result.getData().timelineCursor.maxPosition);
+                assertNull(result.getResponse());
             }
             @Override
             public void failure(TwitterException exception) {
@@ -84,10 +84,10 @@ public class FixedTweetTimelineTest {
         timeline.previous(ANY_ID, new Callback<TimelineResult<Tweet>>() {
             @Override
             public void success(Result<TimelineResult<Tweet>> result) {
-                assertTrue(result.data.items.isEmpty());
-                assertNull(result.data.timelineCursor.maxPosition);
-                assertNull(result.data.timelineCursor.minPosition);
-                assertNull(result.response);
+                assertTrue(result.getData().items.isEmpty());
+                assertNull(result.getData().timelineCursor.maxPosition);
+                assertNull(result.getData().timelineCursor.minPosition);
+                assertNull(result.getResponse());
             }
 
             @Override

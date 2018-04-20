@@ -17,22 +17,36 @@
 
 package com.twitter.sdk.android.core.internal.oauth;
 
-import com.twitter.sdk.android.core.*;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.TwitterApi;
-import okhttp3.MediaType;
-import okhttp3.ResponseBody;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+
+import okhttp3.MediaType;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Header;
 import retrofit2.http.Query;
 import retrofit2.mock.Calls;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @SuppressWarnings("checkstyle:linelength")
@@ -190,7 +204,7 @@ public class OAuth1aServiceTest {
         final Callback<OAuthResponse> callback = new Callback<OAuthResponse>() {
             @Override
             public void success(Result<OAuthResponse> result) {
-                final OAuthResponse authResponse = result.data;
+                final OAuthResponse authResponse = result.getData();
                 assertEquals("7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4",
                         authResponse.authToken.token);
                 assertEquals("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo",

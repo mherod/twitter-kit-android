@@ -162,7 +162,7 @@ public class OAuth1aService extends OAuthService {
                 try {
                     try {
                         reader = new BufferedReader(
-                                new InputStreamReader(result.data.byteStream()));
+                                new InputStreamReader(result.getData().byteStream()));
                         String line;
 
                         while ((line = reader.readLine()) != null) {

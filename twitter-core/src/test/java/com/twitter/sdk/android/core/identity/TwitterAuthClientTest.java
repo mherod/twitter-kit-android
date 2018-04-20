@@ -312,7 +312,7 @@ public class TwitterAuthClientTest {
         authClient.requestEmail(mock(TwitterSession.class), new Callback<String>() {
             @Override
             public void success(Result<String> result) {
-                assertEquals(TEST_EMAIL, result.data);
+                assertEquals(TEST_EMAIL, result.getData());
             }
 
             @Override

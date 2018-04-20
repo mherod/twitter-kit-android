@@ -15,7 +15,7 @@
  *
  */
 
-package com.twitter.sdk.android.core.services.params;
+package com.twitter.sdk.android.core.services.params
 
 /**
  *
@@ -26,35 +26,21 @@ package com.twitter.sdk.android.core.services.params;
  *
  * Example Values: 37.781157,-122.398720,1mi
  *
- * <a href="https://dev.twitter.com/rest/reference/get/search/tweets">GET search/tweets</a>
+ * [GET search/tweets](https://dev.twitter.com/rest/reference/get/search/tweets)
  */
-public class Geocode {
+class Geocode(
+        private val latitude: Double,
+        private val longitude: Double,
+        private val radius: Int,
+        private val distance: Distance
+) {
 
-    public enum Distance {
+    enum class Distance(val identifier: String) {
         MILES("mi"),
-        KILOMETERS("km");
-
-        public final String identifier;
-
-        Distance(String identifier) {
-            this.identifier = identifier;
-        }
+        KILOMETERS("km")
     }
 
-    public final double latitude;
-    public final double longitude;
-    public final int radius;
-    public final Distance distance;
-
-    public Geocode(double latitude, double longitude, int radius, Distance distance) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.radius = radius;
-        this.distance = distance;
-    }
-
-    @Override
-    public String toString() {
-        return latitude + "," + longitude + "," + radius + distance.identifier;
+    override fun toString(): String {
+        return "$latitude,$longitude,$radius${distance.identifier}"
     }
 }

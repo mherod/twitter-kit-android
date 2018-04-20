@@ -40,8 +40,8 @@ class ResetTweetCallback extends Callback<Tweet> {
 
     @Override
     public void success(Result<Tweet> result) {
-        tweetRepository.updateCache(result.data);
-        baseTweetView.setTweet(result.data);
+        tweetRepository.updateCache(result.getData());
+        baseTweetView.setTweet(result.getData());
         if (cb != null) {
             cb.success(result);
         }
