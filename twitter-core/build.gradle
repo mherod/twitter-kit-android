@@ -16,6 +16,7 @@
  */
 
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -90,4 +91,8 @@ dependencies {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
     testCompile dependency.equalsVerifier
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

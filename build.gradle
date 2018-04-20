@@ -17,6 +17,10 @@
 
 apply from: rootProject.file('dependencies.gradle')
 
+buildscript {
+    ext.kotlin_version = '1.2.40'
+}
+
 subprojects {
     buildscript {
         repositories {
@@ -26,6 +30,7 @@ subprojects {
         }
         dependencies {
             classpath dependency.androidGradlePlugin
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         }
     }
 
@@ -34,8 +39,3 @@ subprojects {
         jcenter()
     }
 }
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.2.1'
-}
-

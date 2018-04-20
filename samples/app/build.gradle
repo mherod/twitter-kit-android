@@ -13,6 +13,7 @@ try {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'spoon'
 
 android {
@@ -80,4 +81,8 @@ dependencies {
     androidTestCompile dependency.spoon
     androidTestCompile dependency.espresso
     androidTestCompile dependency.androidTestingSupport
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
