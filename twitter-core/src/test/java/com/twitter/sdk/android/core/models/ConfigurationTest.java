@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.twitter.sdk.android.core.TestResources;
 import com.twitter.sdk.android.core.internal.CommonUtils;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,16 +53,16 @@ public class ConfigurationTest {
             reader = new JsonReader(new InputStreamReader(testResources
                     .getAsStream("model_configuration.json")));
             final Configuration configuration = new Gson().fromJson(reader, Configuration.class);
-            assertEquals(TEST_DM_CHAR_LIMIT, configuration.dmTextCharacterLimit);
-            assertNotNull(configuration.nonUsernamePaths);
-            assertEquals(TEST_NUN_NON_USER_NAME, configuration.nonUsernamePaths.size());
-            assertEquals(TEST_PHOTO_SIZE_LIMIT, configuration.photoSizeLimit);
-            assertNotNull(configuration.photoSizes);
-            MediaEntityTest.assertSizeEquals(TEST_SIZE_THUMB, configuration.photoSizes.thumb);
-            MediaEntityTest.assertSizeEquals(TEST_SIZE_SMALL, configuration.photoSizes.small);
-            MediaEntityTest.assertSizeEquals(TEST_SIZE_MEDIUM, configuration.photoSizes.medium);
-            MediaEntityTest.assertSizeEquals(TEST_SIZE_LARGE, configuration.photoSizes.large);
-            assertEquals(TEST_SHORT_URL_LENGTH, configuration.shortUrlLengthHttps);
+            assertEquals(TEST_DM_CHAR_LIMIT, configuration.getDmTextCharacterLimit());
+            assertNotNull(configuration.getNonUsernamePaths());
+            assertEquals(TEST_NUN_NON_USER_NAME, configuration.getNonUsernamePaths().size());
+            assertEquals(TEST_PHOTO_SIZE_LIMIT, configuration.getPhotoSizeLimit());
+            assertNotNull(configuration.getPhotoSizes());
+            MediaEntityTest.assertSizeEquals(TEST_SIZE_THUMB, configuration.getPhotoSizes().thumb);
+            MediaEntityTest.assertSizeEquals(TEST_SIZE_SMALL, configuration.getPhotoSizes().small);
+            MediaEntityTest.assertSizeEquals(TEST_SIZE_MEDIUM, configuration.getPhotoSizes().medium);
+            MediaEntityTest.assertSizeEquals(TEST_SIZE_LARGE, configuration.getPhotoSizes().large);
+            assertEquals(TEST_SHORT_URL_LENGTH, configuration.getShortUrlLengthHttps());
         } finally {
             CommonUtils.closeQuietly(reader);
         }
