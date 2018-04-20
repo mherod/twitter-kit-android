@@ -17,7 +17,7 @@
 
 apply from: rootProject.file('dependencies.gradle')
 
-subprojects { Project subproject ->
+subprojects {
     buildscript {
         repositories {
             jcenter()
