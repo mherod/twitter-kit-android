@@ -58,6 +58,7 @@ jobs:
     steps:
       - checkout
       - *restore_cache
+      - run: yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
       - run: ./gradlew --stop
       - run:
           name: Download Dependencies
