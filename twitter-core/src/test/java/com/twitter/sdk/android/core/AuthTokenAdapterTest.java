@@ -126,8 +126,8 @@ public class AuthTokenAdapterTest  {
                 AuthTokenWrapper.class);
         assertTrue(authTokenWrapper.authToken instanceof TwitterAuthToken);
         final TwitterAuthToken authToken = (TwitterAuthToken) authTokenWrapper.authToken;
-        assertEquals(TestFixtures.TOKEN, authToken.token);
-        assertEquals(TestFixtures.SECRET, authToken.secret);
+        assertEquals(TestFixtures.TOKEN, authToken.getToken());
+        assertEquals(TestFixtures.SECRET, authToken.getSecret());
     }
 
     @Test
@@ -157,9 +157,9 @@ public class AuthTokenAdapterTest  {
                 JSON_OAUTH1A_TOKEN_MISSING_CREATED_AT, AuthTokenWrapper.class);
         assertTrue(authTokenWrapper.authToken instanceof TwitterAuthToken);
         final TwitterAuthToken authToken = (TwitterAuthToken) authTokenWrapper.authToken;
-        assertEquals(TestFixtures.TOKEN, authToken.token);
-        assertEquals(TestFixtures.SECRET, authToken.secret);
-        assertEquals(0, authToken.createdAt);
+        assertEquals(TestFixtures.TOKEN, authToken.getToken());
+        assertEquals(TestFixtures.SECRET, authToken.getSecret());
+        assertEquals(0, authToken.getCreatedAt());
     }
 
     @Test
@@ -170,7 +170,7 @@ public class AuthTokenAdapterTest  {
         final OAuth2Token authToken = (OAuth2Token) authTokenWrapper.authToken;
         assertEquals(TOKEN_TYPE, authToken.getTokenType());
         assertEquals(ACCESS_TOKEN, authToken.getAccessToken());
-        assertEquals(0, authToken.createdAt);
+        assertEquals(0, authToken.getCreatedAt());
     }
 
     @Test
@@ -182,7 +182,7 @@ public class AuthTokenAdapterTest  {
         assertEquals(GUEST_TOKEN, authToken.getGuestToken());
         assertEquals(TOKEN_TYPE, authToken.getTokenType());
         assertEquals(ACCESS_TOKEN, authToken.getAccessToken());
-        assertEquals(0, authToken.createdAt);
+        assertEquals(0, authToken.getCreatedAt());
     }
 
     private static class AuthTokenWrapper {

@@ -22,7 +22,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Base class for session associated with [com.twitter.sdk.android.core.AuthToken].
  */
-open class Session<out T : AuthToken>(
-        @SerializedName("auth_token") val authToken: T?,
-        @SerializedName("id") val id: Long
+open class Session<out T : AuthToken> constructor(
+        @field:SerializedName("auth_token") open val authToken: T?,
+        @field:SerializedName("id") open val id: Long
 )

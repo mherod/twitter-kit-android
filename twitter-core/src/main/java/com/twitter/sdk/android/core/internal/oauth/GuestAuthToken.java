@@ -51,7 +51,7 @@ public class GuestAuthToken extends OAuth2Token {
     // older than 3 hours are known to have expired and should not be reused.
     @Override
     public boolean isExpired() {
-        return System.currentTimeMillis() >= this.createdAt + EXPIRES_IN_MS;
+        return System.currentTimeMillis() >= this.getCreatedAt() + EXPIRES_IN_MS;
     }
 
     @Override

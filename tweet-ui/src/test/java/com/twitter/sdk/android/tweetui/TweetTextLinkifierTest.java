@@ -90,7 +90,7 @@ public class TweetTextLinkifierTest {
         final UrlEntity urlEntity = new UrlEntity("x z", "y", "z", -1, 30);
         final FormattedTweetText formattedText = new FormattedTweetText();
         formattedText.setText(fullText);
-        formattedText.getUrlEntities().add(FormattedUrlEntity.Companion.createFormattedUrlEntity(urlEntity));
+        formattedText.getUrlEntities().add(FormattedUrlEntity.createFormattedUrlEntity(urlEntity));
 
         final CharSequence linkifiedText
                 = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true, true);
@@ -316,7 +316,7 @@ public class TweetTextLinkifierTest {
 
         final FormattedTweetText formattedText = new FormattedTweetText();
         formattedText.setText(text);
-        formattedText.getUrlEntities().add(FormattedUrlEntity.Companion.createFormattedUrlEntity(urlEntity));
+        formattedText.getUrlEntities().add(FormattedUrlEntity.createFormattedUrlEntity(urlEntity));
         formattedText.getMediaEntities().add(new FormattedMediaEntity(mediaEntity));
 
         return formattedText;

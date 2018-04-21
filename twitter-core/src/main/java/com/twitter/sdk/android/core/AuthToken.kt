@@ -15,34 +15,26 @@
  *
  */
 
-package com.twitter.sdk.android.core;
+package com.twitter.sdk.android.core
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
 /**
  * Base class for authentication tokens.
  */
-public abstract class AuthToken {
-
-    /**
-     * Unit time or epoch time when the token was created (always in UTC). The
-     * time may be 0 if the token is deserialized from data missing the field.
-     */
-    @SerializedName("created_at")
-    protected final long createdAt;
-
-    public AuthToken() {
-        this(System.currentTimeMillis());
-    }
-
-    protected AuthToken(long createdAt) {
-        this.createdAt = createdAt;
-    }
+abstract class AuthToken(
+        /**
+         * Unit time or epoch time when the token was created (always in UTC). The
+         * time may be 0 if the token is deserialized from data missing the field.
+         */
+        @field:SerializedName("created_at") open val createdAt: Long) {
 
     /**
      * Determines whether a token is known to have expired.
      * @return true if the token is known to have expired, otherwise false to indicate the token
      * may or may not be considered expired by the server.
      */
-    public abstract boolean isExpired();
+    abstract val isExpired: Boolean
+
+    constructor() : this(System.currentTimeMillis())
 }

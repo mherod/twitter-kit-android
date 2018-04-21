@@ -22,7 +22,7 @@ package com.twitter.sdk.android.tweetui
  * from the REST API are html escaped for & < and > characters as well as not counting emoji
  * characters correctly in the entity indices.
  */
-internal data class FormattedTweetText @JvmOverloads constructor(
+data class FormattedTweetText @JvmOverloads constructor(
         var text: String? = null,
         val urlEntities: List<FormattedUrlEntity> = arrayListOf(),
         val hashtagEntities: List<FormattedUrlEntity> = arrayListOf(),

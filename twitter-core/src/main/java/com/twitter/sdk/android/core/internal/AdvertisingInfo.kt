@@ -15,18 +15,9 @@
  *
  */
 
-package com.twitter.sdk.android.core.services;
+package com.twitter.sdk.android.core.internal
 
-import com.twitter.sdk.android.core.models.Configuration;
-
-import retrofit2.Call;
-import retrofit2.http.GET;
-
-public interface ConfigurationService {
-    /**
-     * Returns the current configuration used by Twitter including twitter.com slugs which are not
-     * user names, maximum photo resolutions, and t.co URL lengths.
-     */
-    @GET("/1.1/help/configuration.json")
-    Call<Configuration> configuration();
-}
+data class AdvertisingInfo(
+        val advertisingId: String,
+        val limitAdTrackingEnabled: Boolean
+)

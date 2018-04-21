@@ -401,7 +401,7 @@ abstract class AbstractTweetView extends RelativeLayout{
 
         final boolean stripQuoteTweet = TweetUtils.showQuoteTweet(displayTweet);
 
-        return TweetTextLinkifier.linkifyUrls(formattedText, getLinkClickListener(), actionColor,
+        return TweetTextLinkifier.INSTANCE.linkifyUrls(formattedText, getLinkClickListener(), actionColor,
                 actionHighlightColor, stripQuoteTweet, stripVineCard);
     }
 

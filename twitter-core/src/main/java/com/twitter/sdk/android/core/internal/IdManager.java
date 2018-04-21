@@ -190,7 +190,7 @@ public class IdManager {
         if (collectHardwareIds) {
             final AdvertisingInfo advertisingInfo = getAdvertisingInfo();
             if (advertisingInfo != null) {
-                toReturn = advertisingInfo.limitAdTrackingEnabled;
+                toReturn = advertisingInfo.getLimitAdTrackingEnabled();
             }
         }
 
@@ -203,7 +203,7 @@ public class IdManager {
         if (collectHardwareIds) {
             final AdvertisingInfo advertisingInfo = getAdvertisingInfo();
             if (advertisingInfo != null) {
-                toReturn = advertisingInfo.advertisingId;
+                toReturn = advertisingInfo.getAdvertisingId();
             }
         }
 

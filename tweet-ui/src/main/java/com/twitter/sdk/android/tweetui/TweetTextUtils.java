@@ -65,7 +65,7 @@ final class TweetTextUtils {
         if (coreUrls != null) {
             for (UrlEntity entity : coreUrls) {
                 final FormattedUrlEntity formattedUrlEntity =
-                        FormattedUrlEntity.Companion.createFormattedUrlEntity(entity);
+                        FormattedUrlEntity.createFormattedUrlEntity(entity);
                 formattedTweetText.getUrlEntities().add(formattedUrlEntity);
             }
         }

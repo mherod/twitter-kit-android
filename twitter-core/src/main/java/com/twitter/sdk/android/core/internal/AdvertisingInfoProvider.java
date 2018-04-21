@@ -78,8 +78,8 @@ class AdvertisingInfoProvider {
     private void storeInfoToPreferences(AdvertisingInfo infoToReturn) {
         if (isInfoValid(infoToReturn)) {
             preferenceStore.save(preferenceStore.edit()
-                    .putString(PREFKEY_ADVERTISING_ID, infoToReturn.advertisingId)
-                    .putBoolean(PREFKEY_LIMIT_AD_TRACKING, infoToReturn.limitAdTrackingEnabled));
+                    .putString(PREFKEY_ADVERTISING_ID, infoToReturn.getAdvertisingId())
+                    .putBoolean(PREFKEY_LIMIT_AD_TRACKING, infoToReturn.getLimitAdTrackingEnabled()));
         } else {
             // if we get an invalid advertising info, clear out the previous value since it isn't
             // valid now
@@ -101,7 +101,7 @@ class AdvertisingInfoProvider {
     }
 
     private boolean isInfoValid(AdvertisingInfo advertisingInfo) {
-        return advertisingInfo != null && !TextUtils.isEmpty(advertisingInfo.advertisingId);
+        return advertisingInfo != null && !TextUtils.isEmpty(advertisingInfo.getAdvertisingId());
     }
 
     private AdvertisingInfo getAdvertisingInfoFromStrategies() {

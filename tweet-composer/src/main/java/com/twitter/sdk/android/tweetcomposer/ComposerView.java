@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.twitter.sdk.android.core.internal.AvatarSize;
 import com.twitter.sdk.android.core.internal.UserUtils;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.tweetcomposer.internal.util.ObservableScrollView;
@@ -133,8 +134,8 @@ public class ComposerView extends LinearLayout {
      * color.
      */
     void setProfilePhotoView(User user) {
-        final String url = UserUtils.getProfileImageUrlHttps(user,
-                UserUtils.AvatarSize.REASONABLY_SMALL);
+        final String url = UserUtils.INSTANCE.getProfileImageUrlHttps(user,
+                AvatarSize.REASONABLY_SMALL);
         if (imageLoader != null) {
             // Passing null url will not trigger any request, but will set the placeholder bg
             imageLoader.load(url).placeholder(mediaBg).into(avatarView);

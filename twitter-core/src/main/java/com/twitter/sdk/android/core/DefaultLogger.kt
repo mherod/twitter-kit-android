@@ -23,7 +23,7 @@ import android.util.Log
  * Default logger that logs to android.util.Log.
  */
 class DefaultLogger : Logger {
-    private var logLevel: Int = 0
+    override var logLevel: Int = 0
 
     constructor(logLevel: Int) {
         this.logLevel = logLevel
@@ -35,14 +35,6 @@ class DefaultLogger : Logger {
 
     override fun isLoggable(tag: String, level: Int): Boolean {
         return logLevel <= level
-    }
-
-    override fun getLogLevel(): Int {
-        return logLevel
-    }
-
-    override fun setLogLevel(logLevel: Int) {
-        this.logLevel = logLevel
     }
 
     override fun d(tag: String, text: String, throwable: Throwable?) {

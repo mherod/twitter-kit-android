@@ -100,8 +100,8 @@ class OAuth1aParameters {
         params.put(OAuthConstants.PARAM_NONCE, nonce);
         params.put(OAuthConstants.PARAM_SIGNATURE_METHOD, SIGNATURE_METHOD);
         params.put(OAuthConstants.PARAM_TIMESTAMP, timestamp);
-        if (authToken != null && authToken.token != null) {
-            params.put(OAuthConstants.PARAM_TOKEN, authToken.token);
+        if (authToken != null && authToken.getToken() != null) {
+            params.put(OAuthConstants.PARAM_TOKEN, authToken.getToken());
         }
         params.put(OAuthConstants.PARAM_VERSION, VERSION);
 
@@ -157,7 +157,7 @@ class OAuth1aParameters {
     }
 
     private String getSigningKey() {
-        final String tokenSecret = authToken != null ? authToken.secret : null;
+        final String tokenSecret = authToken != null ? authToken.getSecret() : null;
         return new StringBuilder()
                 .append(UrlUtils.urlEncode(authConfig.getConsumerSecret()))
                 .append('&')
@@ -173,7 +173,7 @@ class OAuth1aParameters {
         appendParameter(sb, OAuthConstants.PARAM_SIGNATURE, signature);
         appendParameter(sb, OAuthConstants.PARAM_SIGNATURE_METHOD, SIGNATURE_METHOD);
         appendParameter(sb, OAuthConstants.PARAM_TIMESTAMP, timestamp);
-        final String token = authToken != null ? authToken.token : null;
+        final String token = authToken != null ? authToken.getToken() : null;
         appendParameter(sb, OAuthConstants.PARAM_TOKEN, token);
         appendParameter(sb, OAuthConstants.PARAM_VERSION, VERSION);
         // Remove the extra ',' at the end.

@@ -99,7 +99,7 @@ public class OAuth1aServiceTest {
 
                 assertEquals(verifier, innerVerifier);
                 assertNotNull(auth);
-                assertTrue(auth.contains(token.token));
+                assertTrue(auth.contains(token.getToken()));
 
                 return super.getAccessToken(auth, innerVerifier);
             }
@@ -141,8 +141,8 @@ public class OAuth1aServiceTest {
                 + "screen_name=test&user_id=1";
         final OAuthResponse authResponse = OAuth1aService.parseAuthResponse(response);
         assertEquals("7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4",
-                authResponse.authToken.token);
-        assertEquals("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo", authResponse.authToken.secret);
+                authResponse.authToken.getToken());
+        assertEquals("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo", authResponse.authToken.getSecret());
         assertEquals("test", authResponse.userName);
         assertEquals(1L, authResponse.userId);
     }
@@ -177,8 +177,8 @@ public class OAuth1aServiceTest {
                 + "user_id=1";
         final OAuthResponse authResponse = OAuth1aService.parseAuthResponse(response);
         assertEquals("7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4",
-                authResponse.authToken.token);
-        assertEquals("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo", authResponse.authToken.secret);
+                authResponse.authToken.getToken());
+        assertEquals("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo", authResponse.authToken.getSecret());
         assertNull(authResponse.userName);
         assertEquals(1L, authResponse.userId);
     }
@@ -190,8 +190,8 @@ public class OAuth1aServiceTest {
                 + "screen_name=test";
         final OAuthResponse authResponse = OAuth1aService.parseAuthResponse(response);
         assertEquals("7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4",
-                authResponse.authToken.token);
-        assertEquals("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo", authResponse.authToken.secret);
+                authResponse.authToken.getToken());
+        assertEquals("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo", authResponse.authToken.getSecret());
         assertEquals("test", authResponse.userName);
         assertEquals(0L, authResponse.userId);
     }
@@ -206,9 +206,9 @@ public class OAuth1aServiceTest {
             public void success(Result<OAuthResponse> result) {
                 final OAuthResponse authResponse = result.getData();
                 assertEquals("7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4",
-                        authResponse.authToken.token);
+                        authResponse.authToken.getToken());
                 assertEquals("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo",
-                        authResponse.authToken.secret);
+                        authResponse.authToken.getSecret());
                 assertEquals("test", authResponse.userName);
                 assertEquals(1L, authResponse.userId);
             }

@@ -37,6 +37,7 @@ import com.twitter.sdk.android.core.IntentUtils;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.internal.AvatarSize;
 import com.twitter.sdk.android.core.internal.UserUtils;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
@@ -402,8 +403,8 @@ public abstract class BaseTweetView extends AbstractTweetView {
         if (displayTweet == null || displayTweet.user == null) {
             url = null;
         } else {
-            url = UserUtils.getProfileImageUrlHttps(displayTweet.user,
-                    UserUtils.AvatarSize.REASONABLY_SMALL);
+            url = UserUtils.INSTANCE.getProfileImageUrlHttps(displayTweet.user,
+                    AvatarSize.REASONABLY_SMALL);
         }
 
         imageLoader.load(url).placeholder(avatarMediaBg).into(avatarView);

@@ -22,32 +22,36 @@ import com.twitter.sdk.android.core.models.MentionEntity
 import com.twitter.sdk.android.core.models.SymbolEntity
 import com.twitter.sdk.android.core.models.UrlEntity
 
-internal open class FormattedUrlEntity(
-        var start: Int,
-        var end: Int,
-        val displayUrl: String,
-        val url: String,
-        val expandedUrl: String
+open class FormattedUrlEntity(
+        open var start: Int,
+        open var end: Int,
+        open val displayUrl: String,
+        open val url: String,
+        open val expandedUrl: String
 ) {
     companion object {
 
+        @JvmStatic
         fun createFormattedUrlEntity(entity: UrlEntity): FormattedUrlEntity {
             return FormattedUrlEntity(entity.start, entity.end, entity.displayUrl,
                     entity.url, entity.expandedUrl)
         }
 
+        @JvmStatic
         fun createFormattedUrlEntity(hashtagEntity: HashtagEntity): FormattedUrlEntity {
             val url = TweetUtils.getHashtagPermalink(hashtagEntity.text)
             return FormattedUrlEntity(hashtagEntity.start, hashtagEntity.end,
                     "#" + hashtagEntity.text, url, url)
         }
 
+        @JvmStatic
         fun createFormattedUrlEntity(mentionEntity: MentionEntity): FormattedUrlEntity {
             val url = TweetUtils.getProfilePermalink(mentionEntity.screenName)
             return FormattedUrlEntity(mentionEntity.start, mentionEntity.end,
                     "@" + mentionEntity.screenName, url, url)
         }
 
+        @JvmStatic
         fun createFormattedUrlEntity(symbolEntity: SymbolEntity): FormattedUrlEntity {
             val url = TweetUtils.getSymbolPermalink(symbolEntity.text)
             return FormattedUrlEntity(symbolEntity.start, symbolEntity.end,

@@ -17,14 +17,22 @@
 
 package com.twitter.sdk.android.core
 
-import retrofit2.Response
+import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
- * Encapsulates parsed result for delivery.
- *
- * @param <T> Parsed type, available in the [Result.data]
-</T> */
-data class Result<out T>(
-        val data: T?,
-        val response: Response<*>?
-)
+ * Represents an authorization token and its secret.
+ */
+@Parcelize
+data class TwitterAuthToken @JvmOverloads constructor(
+        @field:SerializedName("token") var token: String?,
+        @field:SerializedName("secret") var secret: String?,
+        override val createdAt: Long = System.currentTimeMillis()
+) : AuthToken(createdAt), Parcelable {
+
+    override val isExpired: Boolean
+        get() = false // Twitter does not expire OAuth1a tokens
+
+    override fun toString(): String = "token=$token,secret=$secret"
+}

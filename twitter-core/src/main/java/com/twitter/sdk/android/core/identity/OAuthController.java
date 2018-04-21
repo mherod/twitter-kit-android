@@ -152,9 +152,9 @@ class OAuthController implements OAuthWebViewClient.Listener {
                 final OAuthResponse response = result.getData();
                 data.putExtra(AuthHandler.EXTRA_SCREEN_NAME, response.userName);
                 data.putExtra(AuthHandler.EXTRA_USER_ID, response.userId);
-                data.putExtra(AuthHandler.EXTRA_TOKEN, response.authToken.token);
+                data.putExtra(AuthHandler.EXTRA_TOKEN, response.authToken.getToken());
                 data.putExtra(AuthHandler.EXTRA_TOKEN_SECRET,
-                        response.authToken.secret);
+                        response.authToken.getSecret());
                 listener.onComplete(Activity.RESULT_OK, data);
             }
 

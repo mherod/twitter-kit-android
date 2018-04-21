@@ -1,3 +1,5 @@
+@file:JvmName("IntentUtils")
+
 /*
  * Copyright (C) 2015 Twitter, Inc.
  *
@@ -15,26 +17,23 @@
  *
  */
 
-package com.twitter.sdk.android.core;
+package com.twitter.sdk.android.core
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
+import android.content.Context
+import android.content.Intent
 
-import java.util.List;
-
-public class IntentUtils {
+object IntentUtils {
     /*
      * Determine if activity is available to handle provided intent.
      * @param context The context through which {@link android.content.pm.PackageManager} can be accessed.
      * @param intent The intent of the activity to start.
      * @returns true if activity is found, otherwise false.
      */
-    public static boolean isActivityAvailable(Context context, Intent intent) {
-        final PackageManager packageManager = context.getPackageManager();
-        final List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, 0);
-        return !activities.isEmpty();
+    @JvmStatic
+    fun isActivityAvailable(context: Context, intent: Intent): Boolean {
+        val packageManager = context.packageManager
+        val activities = packageManager.queryIntentActivities(intent, 0)
+        return !activities.isEmpty()
     }
 
     /*
@@ -43,12 +42,13 @@ public class IntentUtils {
      * @param intent The intent of the activity to start.
      * @returns true if activity is found and startActivity called, otherwise false.
      */
-    public static boolean safeStartActivity(Context context, Intent intent) {
+    @JvmStatic
+    fun safeStartActivity(context: Context, intent: Intent): Boolean {
         if (isActivityAvailable(context, intent)) {
-            context.startActivity(intent);
-            return true;
+            context.startActivity(intent)
+            return true
         }
 
-        return false;
+        return false
     }
 }

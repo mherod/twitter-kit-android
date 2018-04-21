@@ -20,7 +20,7 @@ package com.twitter.sdk.android.tweetcomposer
 /**
  * ComposerScribeClient represents scribe events of Tweet Composer components.
  */
-internal interface ComposerScribeClient {
+interface ComposerScribeClient {
 
 
     /**

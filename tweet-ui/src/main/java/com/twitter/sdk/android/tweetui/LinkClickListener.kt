@@ -20,7 +20,7 @@ package com.twitter.sdk.android.tweetui
 /**
  * Tweet interaction listener
  */
-internal interface LinkClickListener {
+interface LinkClickListener {
     /**
      * A URL was clicked
      *

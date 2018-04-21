@@ -37,7 +37,7 @@ public class TwitterAuthTokenTest  {
         authToken.writeToParcel(parcel, 0);
         parcel.setDataPosition(0);
         final TwitterAuthToken parceledAuthToken
-                = TwitterAuthToken.CREATOR.createFromParcel(parcel);
+                = TwitterAuthToken.Companion.getCREATOR().createFromParcel(parcel);
         assertEquals(authToken, parceledAuthToken);
     }
 

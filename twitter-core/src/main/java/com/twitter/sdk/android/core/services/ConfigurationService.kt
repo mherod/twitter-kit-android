@@ -15,14 +15,18 @@
  *
  */
 
-package com.twitter.sdk.android.core.internal;
+package com.twitter.sdk.android.core.services
 
-class AdvertisingInfo {
-    final String advertisingId;
-    final boolean limitAdTrackingEnabled;
+import com.twitter.sdk.android.core.models.Configuration
 
-    AdvertisingInfo(String advertisingId, boolean limitAdTrackingEnabled) {
-        this.advertisingId = advertisingId;
-        this.limitAdTrackingEnabled = limitAdTrackingEnabled;
-    }
+import retrofit2.Call
+import retrofit2.http.GET
+
+interface ConfigurationService {
+    /**
+     * Returns the current configuration used by Twitter including twitter.com slugs which are not
+     * user names, maximum photo resolutions, and t.co URL lengths.
+     */
+    @GET("/1.1/help/configuration.json")
+    fun configuration(): Call<Configuration>
 }

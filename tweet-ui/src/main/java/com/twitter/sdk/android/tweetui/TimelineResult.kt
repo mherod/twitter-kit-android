@@ -27,4 +27,7 @@ package com.twitter.sdk.android.tweetui
  * @param items timeline items
  */
 
-class TimelineResult<T>(val timelineCursor: TimelineCursor, val items: List<T>)
+open class TimelineResult<T>(
+        open val timelineCursor: TimelineCursor?,
+        open val items: List<T>?
+)

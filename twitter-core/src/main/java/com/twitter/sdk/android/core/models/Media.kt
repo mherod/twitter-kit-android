@@ -15,31 +15,16 @@
  *
  */
 
-package com.twitter.sdk.android.core.models;
+package com.twitter.sdk.android.core.models
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
 /**
  * Represents Media which has been uploaded to Twitter upload endpoints.
  */
-public class Media {
-
-    @SerializedName("media_id")
-    public final long mediaId;
-
-    @SerializedName("media_id_string")
-    public final String mediaIdString;
-
-    @SerializedName("size")
-    public final long size;
-
-    @SerializedName("image")
-    public final Image image;
-
-    public Media(long mediaID, String mediaIdString, long size, Image image) {
-        this.mediaId = mediaID;
-        this.mediaIdString = mediaIdString;
-        this.size = size;
-        this.image = image;
-    }
-}
+data class Media(
+        @SerializedName("media_id") val mediaId: Long,
+        @SerializedName("media_id_string") val mediaIdString: String,
+        @SerializedName("size") val size: Long,
+        @SerializedName("image") val image: Image
+)

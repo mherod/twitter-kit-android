@@ -15,17 +15,17 @@
  *
  */
 
-package com.twitter.sdk.android.core.services;
+package com.twitter.sdk.android.core.services
 
-import com.twitter.sdk.android.core.models.Media;
+import com.twitter.sdk.android.core.models.Media
 
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.http.Multipart;
-import retrofit2.http.POST;
-import retrofit2.http.Part;
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
 
-public interface MediaService {
+interface MediaService {
 
     /**
      * Uploads media (images) to Twitter for use in a Tweet or Twitter-hosted Card. You may
@@ -33,14 +33,15 @@ public interface MediaService {
      * parameters are mutually exclusive. Media uploads for images are limited to 5MB in file
      * size.
      * Supported MIME-types are PNG, JPEG, BMP, WEBP, GIF, and Animated Gif
-     * @param media the raw binary file content to upload. Cannot be used with the mediaData
-     *              parameter.
+     *
+     * @param media     the raw binary file content to upload. Cannot be used with the mediaData
+     * parameter.
      * @param mediaData the base64-encoded file content to upload. Cannot be used with the media
-     *                  parameter
+     * parameter
      */
     @Multipart
     @POST("https://upload.twitter.com/1.1/media/upload.json")
-    Call<Media> upload(@Part("media") RequestBody media,
-                @Part("media_data") RequestBody mediaData,
-                @Part("additional_owners") RequestBody additionalOwners);
+    fun upload(@Part("media") media: RequestBody,
+               @Part("media_data") mediaData: RequestBody,
+               @Part("additional_owners") additionalOwners: RequestBody): Call<Media>
 }

@@ -84,7 +84,7 @@ public class TweetUploadService extends IntentService {
             uploadMedia(session, imageUri, new Callback<Media>() {
                 @Override
                 public void success(Result<Media> result) {
-                    uploadTweetWithMedia(session, text, result.getData().mediaIdString);
+                    uploadTweetWithMedia(session, text, result.getData().getMediaIdString());
                 }
 
                 @Override
