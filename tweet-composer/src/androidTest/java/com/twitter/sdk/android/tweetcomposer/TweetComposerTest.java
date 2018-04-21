@@ -24,6 +24,8 @@ import com.twitter.sdk.android.core.TwitterConfig;
 import com.twitter.sdk.android.core.TwitterCoreTestUtils;
 import com.twitter.sdk.android.core.TwitterTestUtils;
 
+import junit.framework.Assert;
+
 import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.mockito.Mockito.mock;
@@ -42,7 +44,7 @@ public class TweetComposerTest extends AndroidTestCase {
         TweetComposer.instance = tweetComposer;
     }
 
-    public void tearDown()  throws Exception {
+    public void tearDown() throws Exception {
         TwitterTestUtils.resetTwitter();
         TwitterCoreTestUtils.resetTwitterCore();
         TweetComposer.instance = null;
