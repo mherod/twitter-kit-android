@@ -28,6 +28,11 @@ import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.models.TweetEntities;
 import com.twitter.sdk.android.core.models.UserBuilder;
 
+import org.junit.Assert;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+
 public class TweetUtilsTest extends AndroidTestCase {
     static final String NOT_STARTED_ERROR = "Must initialize Twitter before using getInstance()";
     private static final String A_FULL_PERMALINK =
@@ -52,7 +57,7 @@ public class TweetUtilsTest extends AndroidTestCase {
             TweetUtils.loadTweet(TestFixtures.TEST_TWEET_ID, null);
             Assert.fail("IllegalStateException not thrown");
         } catch (IllegalStateException e) {
-            Assert.assertEquals(NOT_STARTED_ERROR, e.getMessage());
+            Assert.assertThat(e.getMessage(), is(NOT_STARTED_ERROR));
         } catch (Exception ex) {
             Assert.fail();
         }
@@ -63,26 +68,26 @@ public class TweetUtilsTest extends AndroidTestCase {
             TweetUtils.loadTweets(TestFixtures.TWEET_IDS, null);
             Assert.fail("IllegalStateException not thrown");
         } catch (IllegalStateException e) {
-            Assert.assertEquals(NOT_STARTED_ERROR, e.getMessage());
+            Assert.assertThat(e.getMessage(), is(NOT_STARTED_ERROR));
         } catch (Exception ex) {
             Assert.fail();
         }
     }
 
     public void testIsTweetResolvable_nullTweet() {
-        Assert.assertFalse(TweetUtils.isTweetResolvable(null));
+        Assert.assertThat(TweetUtils.isTweetResolvable(null), is(false));
     }
 
     public void testIsTweetResolvable_hasInvalidIdAndNullUser() {
         final Tweet tweet = new TweetBuilder().build();
-        Assert.assertNull(tweet.user);
-        Assert.assertFalse(TweetUtils.isTweetResolvable(tweet));
+        Assert.assertThat(tweet.getUser(), nullValue());
+        Assert.assertThat(TweetUtils.isTweetResolvable(tweet), is(false));
     }
 
     public void testIsTweetResolvable_hasValidIdAndNullUser() {
         final Tweet tweet = new TweetBuilder().setId(TestFixtures.TEST_TWEET_ID).build();
-        Assert.assertNull(tweet.user);
-        Assert.assertFalse(TweetUtils.isTweetResolvable(tweet));
+        Assert.assertThat(tweet.getUser(), nullValue());
+        Assert.assertThat(TweetUtils.isTweetResolvable(tweet), is(false));
     }
 
     public void testIsTweetResolvable_hasInvalidIdAndUserWithNullScreenName() {
@@ -95,7 +100,7 @@ public class TweetUtilsTest extends AndroidTestCase {
                                 .setVerified(false)
                                 .build())
                 .build();
-        Assert.assertFalse(TweetUtils.isTweetResolvable(tweet));
+        Assert.assertThat(TweetUtils.isTweetResolvable(tweet), is(false));
     }
 
     public void testIsTweetResolvable_hasValidIdAndUserWithNullScreenName() {
@@ -109,7 +114,7 @@ public class TweetUtilsTest extends AndroidTestCase {
                                 .setVerified(false)
                                 .build()
                 ).build();
-        Assert.assertFalse(TweetUtils.isTweetResolvable(tweet));
+        Assert.assertThat(TweetUtils.isTweetResolvable(tweet), is(false));
     }
 
     public void testIsTweetResolvable_hasInvalidIdAndUserWithEmptyScreenName() {
@@ -121,7 +126,7 @@ public class TweetUtilsTest extends AndroidTestCase {
                         .setVerified(false)
                         .build())
                 .build();
-        Assert.assertFalse(TweetUtils.isTweetResolvable(tweet));
+        Assert.assertThat(TweetUtils.isTweetResolvable(tweet), is(false));
     }
 
     public void testIsTweetResolvable_hasValidIdAndUserWithEmptyScreenName() {
@@ -134,43 +139,40 @@ public class TweetUtilsTest extends AndroidTestCase {
                         .setVerified(false)
                         .build())
                 .build();
-        Assert.assertFalse(TweetUtils.isTweetResolvable(tweet));
+        Assert.assertThat(TweetUtils.isTweetResolvable(tweet), is(false));
     }
 
     public void testIsTweetResolvable_hasUserWithScreenNameAndValidId() {
-        Assert.assertTrue(TweetUtils.isTweetResolvable(TestFixtures.TEST_TWEET));
+        Assert.assertThat(TweetUtils.isTweetResolvable(TestFixtures.TEST_TWEET), is(true));
     }
 
     public void testGetPermalink_nullScreenNameValidId() {
-        Assert.assertEquals(A_PERMALINK_WITH_NO_SCREEN_NAME,
-                TweetUtils.getPermalink(null, A_VALID_TWEET_ID).toString());
+        Assert.assertThat(TweetUtils.getPermalink(null, A_VALID_TWEET_ID).toString(), is(A_PERMALINK_WITH_NO_SCREEN_NAME));
     }
 
     public void testGetPermalink_validScreenNameZeroId() {
-        Assert.assertNull(TweetUtils.getPermalink(A_VALID_SCREEN_NAME, AN_INVALID_TWEET_ID));
+        Assert.assertThat(TweetUtils.getPermalink(A_VALID_SCREEN_NAME, AN_INVALID_TWEET_ID), nullValue());
     }
 
     public void testGetPermalink_validScreenNameAndId() {
-        Assert.assertEquals(A_FULL_PERMALINK,
-                TweetUtils.getPermalink(A_VALID_SCREEN_NAME, A_VALID_TWEET_ID).toString());
+        Assert.assertThat(TweetUtils.getPermalink(A_VALID_SCREEN_NAME, A_VALID_TWEET_ID).toString(), is(A_FULL_PERMALINK));
     }
 
     public void testGetPermalink_emptyScreenName() {
         final Uri permalink = TweetUtils.getPermalink("", 20);
-        Assert.assertEquals(A_PERMALINK_WITH_NO_SCREEN_NAME, permalink.toString());
+        Assert.assertThat(permalink.toString(), is(A_PERMALINK_WITH_NO_SCREEN_NAME));
     }
 
     public void testGetDisplayTweet_nullTweet() {
-        Assert.assertNull(TweetUtils.getDisplayTweet(null));
+        Assert.assertThat(TweetUtils.getDisplayTweet(null), nullValue());
     }
 
     public void testGetDisplayTweet_retweet() {
-        Assert.assertEquals(TestFixtures.TEST_RETWEET.retweetedStatus,
-                TweetUtils.getDisplayTweet(TestFixtures.TEST_RETWEET));
+        Assert.assertThat(TweetUtils.getDisplayTweet(TestFixtures.TEST_RETWEET), is(TestFixtures.TEST_RETWEET.getRetweetedStatus()));
     }
 
     public void testGetDisplayTweet_nonRetweet() {
-        Assert.assertEquals(TestFixtures.TEST_TWEET, TweetUtils.getDisplayTweet(TestFixtures.TEST_TWEET));
+        Assert.assertThat(TweetUtils.getDisplayTweet(TestFixtures.TEST_TWEET), is(TestFixtures.TEST_TWEET));
     }
 
     public void testShowQuoteTweet() {
@@ -178,7 +180,7 @@ public class TweetUtilsTest extends AndroidTestCase {
                 .copy(TestFixtures.TEST_TWEET)
                 .setQuotedStatus(TestFixtures.TEST_TWEET)
                 .build();
-        Assert.assertTrue(TweetUtils.showQuoteTweet(tweet));
+        Assert.assertThat(TweetUtils.showQuoteTweet(tweet), is(true));
     }
 
     public void testShowQuoteTweet_withCardAndQuoteTweet() {
@@ -187,7 +189,7 @@ public class TweetUtilsTest extends AndroidTestCase {
                 .setCard(new Card(null, "Vine"))
                 .setEntities(new TweetEntities(null, null, null, null, null))
                 .build();
-        Assert.assertFalse(TweetUtils.showQuoteTweet(tweet));
+        Assert.assertThat(TweetUtils.showQuoteTweet(tweet), is(false));
     }
 
     public void testShowQuoteTweet_withMediaAndQuoteTweet() {
@@ -195,7 +197,7 @@ public class TweetUtilsTest extends AndroidTestCase {
                 .copy(TestFixtures.TEST_PHOTO_TWEET)
                 .setQuotedStatus(TestFixtures.TEST_TWEET)
                 .build();
-        Assert.assertFalse(TweetUtils.showQuoteTweet(tweet));
+        Assert.assertThat(TweetUtils.showQuoteTweet(tweet), is(false));
     }
 
     public void testShowQuoteTweet_nullEntity() {
@@ -204,6 +206,6 @@ public class TweetUtilsTest extends AndroidTestCase {
                 .setQuotedStatus(TestFixtures.TEST_TWEET)
                 .setEntities(null)
                 .build();
-        Assert.assertTrue(TweetUtils.showQuoteTweet(tweet));
+        Assert.assertThat(TweetUtils.showQuoteTweet(tweet), is(true));
     }
 }

@@ -19,13 +19,13 @@ package com.twitter.sdk.android.core;
 
 import android.os.Parcel;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 
 @RunWith(RobolectricTestRunner.class)
@@ -47,30 +47,30 @@ public class TwitterAuthConfigTest {
         parcel.setDataPosition(0);
         final TwitterAuthConfig parceledAuthConfig
                 = TwitterAuthConfig.CREATOR.createFromParcel(parcel);
-        assertEquals(TestFixtures.KEY, parceledAuthConfig.getConsumerKey());
-        assertEquals(TestFixtures.SECRET, parceledAuthConfig.getConsumerSecret());
+        Assert.assertThat(parceledAuthConfig.getConsumerKey(), is(TestFixtures.KEY));
+        Assert.assertThat(parceledAuthConfig.getConsumerSecret(), is(TestFixtures.SECRET));
     }
 
     @Test
     public void testGetRequestCode() {
-        assertEquals(TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE, authConfig.getRequestCode());
+        Assert.assertThat(authConfig.getRequestCode(), is(TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE));
     }
 
     @Test
     public void testSanitizeAttribute_nullAttribute() {
-        assertNull(TwitterAuthConfig.sanitizeAttribute(null));
+        Assert.assertThat(TwitterAuthConfig.sanitizeAttribute(null), nullValue());
     }
 
     @Test
     public void testSanitizeAttribute_sanitizedString() {
         final String test = "test";
-        assertEquals(test, TwitterAuthConfig.sanitizeAttribute(test));
+        Assert.assertThat(TwitterAuthConfig.sanitizeAttribute(test), is(test));
     }
 
     @Test
     public void testSanitizeAttribute_withWhitespace() {
         final String test = "\ttest    ";
-        assertEquals("test", TwitterAuthConfig.sanitizeAttribute(test));
+        Assert.assertThat(TwitterAuthConfig.sanitizeAttribute(test), is("test"));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class TwitterAuthConfigTest {
             new TwitterAuthConfig(null, "secret");
             fail();
         } catch (IllegalArgumentException ie) {
-            assertEquals(NO_PARAM_ERROR_MSG, ie.getMessage());
+            Assert.assertThat(ie.getMessage(), is(NO_PARAM_ERROR_MSG));
         }
     }
 
@@ -89,7 +89,7 @@ public class TwitterAuthConfigTest {
             new TwitterAuthConfig("key", null);
             fail();
         } catch (IllegalArgumentException ie) {
-            assertEquals(NO_PARAM_ERROR_MSG, ie.getMessage());
+            Assert.assertThat(ie.getMessage(), is(NO_PARAM_ERROR_MSG));
         }
     }
 
@@ -99,7 +99,7 @@ public class TwitterAuthConfigTest {
             new TwitterAuthConfig(null, null);
             fail();
         } catch (IllegalArgumentException ie) {
-            assertEquals(NO_PARAM_ERROR_MSG, ie.getMessage());
+            Assert.assertThat(ie.getMessage(), is(NO_PARAM_ERROR_MSG));
         }
     }
 }

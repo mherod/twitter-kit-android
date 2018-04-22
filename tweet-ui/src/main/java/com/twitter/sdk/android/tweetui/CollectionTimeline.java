@@ -145,14 +145,14 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
 
     static Tweet mapTweetToUsers(Tweet trimmedTweet, Map<Long, User> userMap) {
         // read user id from the trimmed Tweet
-        final Long userId = trimmedTweet.user.id;
+        final Long userId = trimmedTweet.getUser().getId();
         // lookup User in the collection response's UserMap
         final User user = userMap.get(userId);
         // build the Tweet with the User
         final TweetBuilder builder = new TweetBuilder().copy(trimmedTweet).setUser(user);
         // Repeat process for any quote tweets
-        if (trimmedTweet.quotedStatus != null) {
-            final Tweet quoteStatus = mapTweetToUsers(trimmedTweet.quotedStatus, userMap);
+        if (trimmedTweet.getQuotedStatus() != null) {
+            final Tweet quoteStatus = mapTweetToUsers(trimmedTweet.getQuotedStatus(), userMap);
             builder.setQuotedStatus(quoteStatus);
         }
 

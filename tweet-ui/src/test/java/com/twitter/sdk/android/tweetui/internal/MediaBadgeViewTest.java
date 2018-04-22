@@ -24,13 +24,14 @@ import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.VideoInfo;
 import com.twitter.sdk.android.tweetui.TestFixtures;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class MediaBadgeViewTest {
@@ -43,8 +44,8 @@ public class MediaBadgeViewTest {
 
     @Test
     public void testInitialViewState() {
-        assertEquals(View.GONE, view.badge.getVisibility());
-        assertEquals(View.GONE, view.videoDuration.getVisibility());
+        Assert.assertThat(view.badge.getVisibility(), is(View.GONE));
+        Assert.assertThat(view.videoDuration.getVisibility(), is(View.GONE));
     }
 
     @Test
@@ -52,8 +53,8 @@ public class MediaBadgeViewTest {
         final MediaEntity entity = TestFixtures.createEntityWithAnimatedGif(null);
         view.setMediaEntity(entity);
 
-        assertEquals(View.VISIBLE, view.badge.getVisibility());
-        assertEquals(View.GONE, view.videoDuration.getVisibility());
+        Assert.assertThat(view.badge.getVisibility(), is(View.VISIBLE));
+        Assert.assertThat(view.videoDuration.getVisibility(), is(View.GONE));
     }
 
     @Test
@@ -62,9 +63,9 @@ public class MediaBadgeViewTest {
         final MediaEntity entity = TestFixtures.createEntityWithVideo(videoInfo);
         view.setMediaEntity(entity);
 
-        assertEquals(View.GONE, view.badge.getVisibility());
-        assertEquals(View.VISIBLE, view.videoDuration.getVisibility());
-        assertEquals("0:01", view.videoDuration.getText());
+        Assert.assertThat(view.badge.getVisibility(), is(View.GONE));
+        Assert.assertThat(view.videoDuration.getVisibility(), is(View.VISIBLE));
+        Assert.assertThat(view.videoDuration.getText(), is("0:01"));
     }
 
     @Test
@@ -72,9 +73,9 @@ public class MediaBadgeViewTest {
         final MediaEntity entity = TestFixtures.createEntityWithVideo(null);
         view.setMediaEntity(entity);
 
-        assertEquals(View.GONE, view.badge.getVisibility());
-        assertEquals(View.VISIBLE, view.videoDuration.getVisibility());
-        assertEquals("0:00", view.videoDuration.getText());
+        Assert.assertThat(view.badge.getVisibility(), is(View.GONE));
+        Assert.assertThat(view.videoDuration.getVisibility(), is(View.VISIBLE));
+        Assert.assertThat(view.videoDuration.getText(), is("0:00"));
     }
 
     @Test
@@ -82,8 +83,8 @@ public class MediaBadgeViewTest {
         final MediaEntity entity = TestFixtures.createMediaEntityWithPhoto(null);
         view.setMediaEntity(entity);
 
-        assertEquals(View.GONE, view.badge.getVisibility());
-        assertEquals(View.GONE, view.videoDuration.getVisibility());
+        Assert.assertThat(view.badge.getVisibility(), is(View.GONE));
+        Assert.assertThat(view.videoDuration.getVisibility(), is(View.GONE));
     }
 
     @Test
@@ -91,8 +92,8 @@ public class MediaBadgeViewTest {
         final Card vineCard = TestFixtures.sampleValidVineCard();
         view.setCard(vineCard);
 
-        assertEquals(View.VISIBLE, view.badge.getVisibility());
-        assertEquals(View.GONE, view.videoDuration.getVisibility());
+        Assert.assertThat(view.badge.getVisibility(), is(View.VISIBLE));
+        Assert.assertThat(view.videoDuration.getVisibility(), is(View.GONE));
     }
 
     @Test
@@ -100,7 +101,7 @@ public class MediaBadgeViewTest {
         final Card vineCard = TestFixtures.sampleInvalidVineCard();
         view.setCard(vineCard);
 
-        assertEquals(View.GONE, view.badge.getVisibility());
-        assertEquals(View.GONE, view.videoDuration.getVisibility());
+        Assert.assertThat(view.badge.getVisibility(), is(View.GONE));
+        Assert.assertThat(view.videoDuration.getVisibility(), is(View.GONE));
     }
 }

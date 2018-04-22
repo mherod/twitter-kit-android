@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -24,7 +25,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class TimelineCursorTest {
@@ -34,8 +35,8 @@ public class TimelineCursorTest {
     @Test
     public void testConstructor() {
         final TimelineCursor cursor = new TimelineCursor(TEST_MIN_POSITION, TEST_MAX_POSITION);
-        assertEquals(TEST_MIN_POSITION, cursor.minPosition);
-        assertEquals(TEST_MAX_POSITION, cursor.maxPosition);
+        Assert.assertThat(cursor.minPosition, is(TEST_MIN_POSITION));
+        Assert.assertThat(cursor.maxPosition, is(TEST_MAX_POSITION));
     }
 
     @Test
@@ -44,7 +45,7 @@ public class TimelineCursorTest {
         testItems.add(new TestItem(TEST_MAX_POSITION));
         testItems.add(new TestItem(TEST_MIN_POSITION));
         final TimelineCursor cursor = new TimelineCursor(testItems);
-        assertEquals(TEST_MIN_POSITION, cursor.minPosition);
-        assertEquals(TEST_MAX_POSITION, cursor.maxPosition);
+        Assert.assertThat(cursor.minPosition, is(TEST_MIN_POSITION));
+        Assert.assertThat(cursor.maxPosition, is(TEST_MAX_POSITION));
     }
 }

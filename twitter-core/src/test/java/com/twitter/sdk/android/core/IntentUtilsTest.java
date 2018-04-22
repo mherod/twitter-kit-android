@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,8 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -60,7 +60,7 @@ public class IntentUtilsTest {
         when(pm.queryIntentActivities(intent, 0)).thenReturn(activities);
         when(context.getPackageManager()).thenReturn(pm);
 
-        assertTrue(IntentUtils.isActivityAvailable(context, intent));
+        Assert.assertThat(IntentUtils.isActivityAvailable(context, intent), is(true));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class IntentUtilsTest {
         when(context.getPackageManager()).thenReturn(pm);
 
         final Intent intent = new Intent("com.twitter.is.awesome");
-        assertFalse(IntentUtils.safeStartActivity(context, intent));
+        Assert.assertThat(IntentUtils.safeStartActivity(context, intent), is(false));
         verify(context).getPackageManager();
         verify(pm).queryIntentActivities(intent, 0);
     }
@@ -81,7 +81,7 @@ public class IntentUtilsTest {
                 .thenReturn(Collections.EMPTY_LIST);
         when(context.getPackageManager()).thenReturn(pm);
 
-        assertFalse(IntentUtils.isActivityAvailable(context, intent));
+        Assert.assertThat(IntentUtils.isActivityAvailable(context, intent), is(false));
         verify(context).getPackageManager();
         verify(pm).queryIntentActivities(intent, 0);
     }
@@ -94,7 +94,7 @@ public class IntentUtilsTest {
         when(pm.queryIntentActivities(intent, 0)).thenReturn(activities);
         when(context.getPackageManager()).thenReturn(pm);
 
-        assertTrue(IntentUtils.isActivityAvailable(context, intent));
+        Assert.assertThat(IntentUtils.isActivityAvailable(context, intent), is(true));
         verify(context).getPackageManager();
         verify(pm).queryIntentActivities(intent, 0);
     }

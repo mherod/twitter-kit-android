@@ -17,15 +17,13 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
@@ -47,18 +45,18 @@ public class TimelineStateHolderTest {
     @Test
     public void testConstructor() {
         final TimelineStateHolder holder = new TimelineStateHolder();
-        assertNull(holder.nextCursor);
-        assertNull(holder.previousCursor);
-        assertFalse(holder.requestInFlight.get());
+        Assert.assertThat(holder.nextCursor, nullValue());
+        Assert.assertThat(holder.previousCursor, nullValue());
+        Assert.assertThat(holder.requestInFlight.get(), is(false));
     }
 
     @Test
     public void testInternalConstructor() {
         final TimelineStateHolder holder = new TimelineStateHolder(TEST_TIMELINE_CURSOR,
                 TEST_TIMELINE_CURSOR);
-        assertEquals(TEST_TIMELINE_CURSOR, holder.previousCursor);
-        assertEquals(TEST_TIMELINE_CURSOR, holder.nextCursor);
-        assertFalse(holder.requestInFlight.get());
+        Assert.assertThat(holder.previousCursor, is(TEST_TIMELINE_CURSOR));
+        Assert.assertThat(holder.nextCursor, is(TEST_TIMELINE_CURSOR));
+        Assert.assertThat(holder.requestInFlight.get(), is(false));
     }
 
     @Test
@@ -66,21 +64,21 @@ public class TimelineStateHolderTest {
         final TimelineStateHolder holder = new TimelineStateHolder(TEST_TIMELINE_CURSOR,
                 TEST_TIMELINE_CURSOR);
         holder.resetCursors();
-        assertNull(holder.nextCursor);
-        assertNull(holder.previousCursor);
+        Assert.assertThat(holder.nextCursor, nullValue());
+        Assert.assertThat(holder.previousCursor, nullValue());
     }
 
     @Test
     public void testPositionForNext() {
         final TimelineStateHolder holder = new TimelineStateHolder(new TimelineCursor(ANY_POSITION,
                 TEST_MAX_POSITION), mockTimelineCursor);
-        assertEquals(TEST_MAX_POSITION, holder.positionForNext());
+        Assert.assertThat(holder.positionForNext(), is(TEST_MAX_POSITION));
     }
 
     @Test
     public void testPositionForNext_nullCursor() {
         final TimelineStateHolder holder = new TimelineStateHolder(null, mockTimelineCursor);
-        assertNull(holder.positionForNext());
+        Assert.assertThat(holder.positionForNext(), nullValue());
     }
 
     @Test
@@ -90,8 +88,8 @@ public class TimelineStateHolderTest {
                 new TimelineCursor(ANY_POSITION, ANY_POSITION),
                 previousCursor);
         holder.setNextCursor(TEST_TIMELINE_CURSOR);
-        assertEquals(TEST_TIMELINE_CURSOR, holder.nextCursor);
-        assertEquals(previousCursor, holder.previousCursor);
+        Assert.assertThat(holder.nextCursor, is(TEST_TIMELINE_CURSOR));
+        Assert.assertThat(holder.previousCursor, is(previousCursor));
     }
 
     // first next load will set both nextCursor and previousCursor
@@ -99,21 +97,21 @@ public class TimelineStateHolderTest {
     public void testSetNextCursor_firstLoad() {
         final TimelineStateHolder holder = new TimelineStateHolder();
         holder.setNextCursor(TEST_TIMELINE_CURSOR);
-        assertEquals(TEST_TIMELINE_CURSOR, holder.nextCursor);
-        assertEquals(TEST_TIMELINE_CURSOR, holder.previousCursor);
+        Assert.assertThat(holder.nextCursor, is(TEST_TIMELINE_CURSOR));
+        Assert.assertThat(holder.previousCursor, is(TEST_TIMELINE_CURSOR));
     }
 
     @Test
     public void testPositionForPrevious() {
         final TimelineStateHolder holder = new TimelineStateHolder(mockTimelineCursor,
                 new TimelineCursor(TEST_MIN_POSITION, ANY_POSITION));
-        assertEquals(TEST_MIN_POSITION, holder.positionForPrevious());
+        Assert.assertThat(holder.positionForPrevious(), is(TEST_MIN_POSITION));
     }
 
     @Test
     public void testPositionForPrevious_nullCursor() {
         final TimelineStateHolder holder = new TimelineStateHolder(mockTimelineCursor, null);
-        assertNull(holder.positionForPrevious());
+        Assert.assertThat(holder.positionForPrevious(), nullValue());
     }
 
     @Test
@@ -122,8 +120,8 @@ public class TimelineStateHolderTest {
         final TimelineStateHolder holder = new TimelineStateHolder(nextCursor,
                 new TimelineCursor(ANY_POSITION, ANY_POSITION));
         holder.setPreviousCursor(TEST_TIMELINE_CURSOR);
-        assertEquals(TEST_TIMELINE_CURSOR, holder.previousCursor);
-        assertEquals(nextCursor, holder.nextCursor);
+        Assert.assertThat(holder.previousCursor, is(TEST_TIMELINE_CURSOR));
+        Assert.assertThat(holder.nextCursor, is(nextCursor));
     }
 
     // first previous load will set both nextCursor and previousCursor
@@ -131,17 +129,17 @@ public class TimelineStateHolderTest {
     public void testSetPreviousCursor_firstLoad() {
         final TimelineStateHolder holder = new TimelineStateHolder();
         holder.setPreviousCursor(TEST_TIMELINE_CURSOR);
-        assertEquals(TEST_TIMELINE_CURSOR, holder.nextCursor);
-        assertEquals(TEST_TIMELINE_CURSOR, holder.previousCursor);
+        Assert.assertThat(holder.nextCursor, is(TEST_TIMELINE_CURSOR));
+        Assert.assertThat(holder.previousCursor, is(TEST_TIMELINE_CURSOR));
     }
 
     @Test
     public void testStartTimelineRequest() {
         final TimelineStateHolder holder = new TimelineStateHolder();
-        assertFalse(holder.requestInFlight.get());
-        assertTrue(holder.startTimelineRequest());
-        assertTrue(holder.requestInFlight.get());
-        assertFalse(holder.startTimelineRequest());
+        Assert.assertThat(holder.requestInFlight.get(), is(false));
+        Assert.assertThat(holder.startTimelineRequest(), is(true));
+        Assert.assertThat(holder.requestInFlight.get(), is(true));
+        Assert.assertThat(holder.startTimelineRequest(), is(false));
     }
 
     @Test
@@ -149,6 +147,6 @@ public class TimelineStateHolderTest {
         final TimelineStateHolder holder = new TimelineStateHolder();
         holder.requestInFlight.set(true);
         holder.finishTimelineRequest();
-        assertFalse(holder.requestInFlight.get());
+        Assert.assertThat(holder.requestInFlight.get(), is(false));
     }
 }

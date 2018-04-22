@@ -66,7 +66,7 @@ public class ScribeEventTransformTest extends AndroidTestCase {
     }
 
     public void testToBytes_withItems() throws IOException {
-        final ScribeItem scribeItem = ScribeItem.fromMessage(TEST_MESSAGE);
+        final ScribeItem scribeItem = ScribeItem.Companion.fromMessage(TEST_MESSAGE);
         final List<ScribeItem> itemList = Arrays.asList(scribeItem);
         final ScribeEvent scribeEvent =
                 new ScribeEvent("testcategory", eventNamespace, 1404426136717L, itemList);

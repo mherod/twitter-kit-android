@@ -19,9 +19,10 @@ package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 public class ScribeConstantsTest {
     static final String REQUIRED_TFW_SCRIBE_CLIENT = "tfw";
@@ -41,23 +42,23 @@ public class ScribeConstantsTest {
     public void testGetSyndicatedSdkTimelineNamespace() {
         final EventNamespace ns = ScribeConstants.getSyndicatedSdkTimelineNamespace(TEST_VIEW_NAME);
 
-        assertEquals(REQUIRED_SDK_SCRIBE_CLIENT, ns.client);
-        assertEquals(REQUIRED_SCRIBE_TIMELINE_PAGE, ns.page);
-        assertEquals(TEST_VIEW_NAME, ns.section);
-        assertEquals(REQUIRED_SCRIBE_INITIAL_COMPONENT, ns.component);
-        assertEquals(REQUIRED_SDK_SCRIBE_ELEMENT, ns.element);
-        assertEquals(REQUIRED_SCRIBE_IMPRESSION_ACTION, ns.action);
+        Assert.assertThat(ns.client, is(REQUIRED_SDK_SCRIBE_CLIENT));
+        Assert.assertThat(ns.page, is(REQUIRED_SCRIBE_TIMELINE_PAGE));
+        Assert.assertThat(ns.section, is(TEST_VIEW_NAME));
+        Assert.assertThat(ns.component, is(REQUIRED_SCRIBE_INITIAL_COMPONENT));
+        Assert.assertThat(ns.element, is(REQUIRED_SDK_SCRIBE_ELEMENT));
+        Assert.assertThat(ns.action, is(REQUIRED_SCRIBE_IMPRESSION_ACTION));
     }
 
     @Test
     public void testGetTfwClientTimelineNamespace() {
         final EventNamespace ns = ScribeConstants.getTfwClientTimelineNamespace(TEST_VIEW_NAME);
 
-        assertEquals(REQUIRED_TFW_SCRIBE_CLIENT, ns.client);
-        assertEquals(REQUIRED_TFW_SCRIBE_PAGE, ns.page);
-        assertEquals(REQUIRED_SCRIBE_TIMELINE_SECTION, ns.section);
-        assertEquals(TEST_VIEW_NAME, ns.component);
-        assertEquals(REQUIRED_SCRIBE_INITIAL_ELEMENT, ns.element);
-        assertEquals(REQUIRED_SCRIBE_IMPRESSION_ACTION, ns.action);
+        Assert.assertThat(ns.client, is(REQUIRED_TFW_SCRIBE_CLIENT));
+        Assert.assertThat(ns.page, is(REQUIRED_TFW_SCRIBE_PAGE));
+        Assert.assertThat(ns.section, is(REQUIRED_SCRIBE_TIMELINE_SECTION));
+        Assert.assertThat(ns.component, is(TEST_VIEW_NAME));
+        Assert.assertThat(ns.element, is(REQUIRED_SCRIBE_INITIAL_ELEMENT));
+        Assert.assertThat(ns.action, is(REQUIRED_SCRIBE_IMPRESSION_ACTION));
     }
 }

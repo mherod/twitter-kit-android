@@ -96,16 +96,16 @@ public class BasicTimelineFilter implements TimelineFilter {
     }
 
     boolean shouldFilterTweet(Tweet tweet) {
-        if (tweet.user != null &&
-                containsMatchingScreenName(tweet.user.screenName)) {
+        if (tweet.getUser() != null &&
+                containsMatchingScreenName(tweet.getUser().getScreenName())) {
             return true;
         }
 
-        if (tweet.entities != null &&
-                (containsMatchingHashtag(tweet.entities.hashtags) ||
-                        containsMatchingSymbol(tweet.entities.symbols) ||
-                        containsMatchingUrl(tweet.entities.urls) ||
-                        containsMatchingMention(tweet.entities.userMentions))) {
+        if (tweet.getEntities() != null &&
+                (containsMatchingHashtag(tweet.getEntities().getHashtags()) ||
+                        containsMatchingSymbol(tweet.getEntities().getSymbols()) ||
+                        containsMatchingUrl(tweet.getEntities().getUrls()) ||
+                        containsMatchingMention(tweet.getEntities().getUserMentions()))) {
             return true;
         }
 
@@ -113,12 +113,12 @@ public class BasicTimelineFilter implements TimelineFilter {
     }
 
     boolean containsMatchingText(Tweet tweet) {
-        wordIterator.setText(tweet.text);
+        wordIterator.setText(tweet.getText());
         int start = wordIterator.first();
         for (int end = wordIterator.next();
              end != BreakIterator.DONE;
              start = end, end = wordIterator.next()) {
-            final String word = tweet.text.substring(start, end);
+            final String word = tweet.getText().substring(start, end);
 
             if (keywordConstraints.contains(word)) {
                 return true;
@@ -150,7 +150,7 @@ public class BasicTimelineFilter implements TimelineFilter {
 
     boolean containsMatchingUrl(List<UrlEntity> urls) {
         for (UrlEntity entity : urls) {
-            final String url = normalizeUrl(entity.expandedUrl);
+            final String url = normalizeUrl(entity.getExpandedUrl());
             if (urlConstraints.contains(url)) {
                 return true;
             }

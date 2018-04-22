@@ -49,19 +49,16 @@ import static org.mockito.Mockito.when;
 public class TweetRepositoryTest {
     private static final Long anyId = 123L;
     private static final List<Long> anyIds = new ArrayList<>();
-    private TwitterCore mockTwitterCore;
-    private TwitterApiClient mockApiClient;
     private FavoriteService mockFavoriteService;
     private StatusesService mockStatusesService;
     private SessionManager<TwitterSession> mockSessionManager;
-    private Handler mockHandler;
     private TweetRepository tweetRepository;
 
     @Before
     public void setUp() throws Exception {
         anyIds.add(anyId);
-        mockTwitterCore = mock(TwitterCore.class);
-        mockApiClient = mock(TwitterApiClient.class);
+        TwitterCore mockTwitterCore = mock(TwitterCore.class);
+        TwitterApiClient mockApiClient = mock(TwitterApiClient.class);
         mockStatusesService = mock(StatusesService.class, Mockito.RETURNS_MOCKS);
         when(mockApiClient.getStatusesService()).thenReturn(mockStatusesService);
         mockFavoriteService = mock(FavoriteService.class, Mockito.RETURNS_MOCKS);
@@ -70,7 +67,7 @@ public class TweetRepositoryTest {
         when(mockTwitterCore.getApiClient()).thenReturn(mockApiClient);
         mockSessionManager = mock(SessionManager.class);
         when(mockSessionManager.getActiveSession()).thenReturn(mock(TwitterSession.class));
-        mockHandler = mock(Handler.class);
+        Handler mockHandler = mock(Handler.class);
         tweetRepository = new TweetRepository(mockHandler, mockSessionManager, mockTwitterCore);
     }
 

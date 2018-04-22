@@ -28,20 +28,19 @@ import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(RobolectricTestRunner.class)
-public class AuthHandlerTest  {
+public class AuthHandlerTest {
     private static final TwitterAuthConfig AUTH_CONFIG
             = new TwitterAuthConfig("consumerKey", "consumerSecret");
     private static final int TEST_REQUEST_CODE = 1;
@@ -62,15 +61,15 @@ public class AuthHandlerTest  {
                         .putExtra(AuthHandler.EXTRA_SCREEN_NAME, TestFixtures.SCREEN_NAME)
                         .putExtra(AuthHandler.EXTRA_USER_ID, TestFixtures.USER_ID));
 
-        assertTrue(result);
+        Assert.assertThat(result, is(true));
         final ArgumentCaptor<Result> argCaptor = ArgumentCaptor.forClass(Result.class);
         verify(mockCallback).success(argCaptor.capture());
         final TwitterSession session = (TwitterSession) argCaptor.getValue().getData();
         final TwitterAuthToken authToken = session.getAuthToken();
-        assertEquals(TestFixtures.TOKEN, authToken.getToken());
-        assertEquals(TestFixtures.SECRET, authToken.getSecret());
-        assertEquals(TestFixtures.SCREEN_NAME, session.getUserName());
-        assertEquals(TestFixtures.USER_ID, session.getUserId());
+        Assert.assertThat(authToken.getToken(), is(TestFixtures.TOKEN));
+        Assert.assertThat(authToken.getSecret(), is(TestFixtures.SECRET));
+        Assert.assertThat(session.getUserName(), is(TestFixtures.SCREEN_NAME));
+        Assert.assertThat(session.getUserId(), is(TestFixtures.USER_ID));
     }
 
     @Test
@@ -85,16 +84,16 @@ public class AuthHandlerTest  {
                 Activity.RESULT_CANCELED, new Intent().putExtra(AuthHandler.EXTRA_AUTH_ERROR,
                         authException));
 
-        assertTrue(result);
+        Assert.assertThat(result, is(true));
         assertCallbackFailureErrorMsg(mockCallback, authException.getMessage());
     }
 
     private void assertCallbackFailureErrorMsg(Callback<TwitterSession> mockCallback,
-            String expectedErrorMsg) {
+                                               String expectedErrorMsg) {
         final ArgumentCaptor<TwitterAuthException> argCaptor
                 = ArgumentCaptor.forClass(TwitterAuthException.class);
         verify(mockCallback).failure(argCaptor.capture());
-        assertEquals(expectedErrorMsg, argCaptor.getValue().getMessage());
+        Assert.assertThat(argCaptor.getValue().getMessage(), is(expectedErrorMsg));
     }
 
     @Test
@@ -109,7 +108,7 @@ public class AuthHandlerTest  {
                 AuthHandler.RESULT_CODE_ERROR, new Intent().putExtra(AuthHandler.EXTRA_AUTH_ERROR,
                         authException));
 
-        assertTrue(result);
+        Assert.assertThat(result, is(true));
         assertCallbackFailureErrorMsg(mockCallback, authException.getMessage());
     }
 
@@ -123,7 +122,7 @@ public class AuthHandlerTest  {
         final boolean result = authHandler.handleOnActivityResult(TEST_REQUEST_CODE,
                 AuthHandler.RESULT_CODE_ERROR, null);
 
-        assertTrue(result);
+        Assert.assertThat(result, is(true));
         assertCallbackFailureErrorMsg(mockCallback, "Authorize failed.");
     }
 
@@ -137,7 +136,7 @@ public class AuthHandlerTest  {
         final boolean result = authHandler.handleOnActivityResult(TEST_REQUEST_CODE,
                 AuthHandler.RESULT_CODE_ERROR, new Intent());
 
-        assertTrue(result);
+        Assert.assertThat(result, is(true));
         assertCallbackFailureErrorMsg(mockCallback, "Authorize failed.");
     }
 
@@ -151,7 +150,7 @@ public class AuthHandlerTest  {
         final boolean result = authHandler.handleOnActivityResult(TEST_REQUEST_CODE + 1,
                 Activity.RESULT_CANCELED, null);
 
-        assertFalse(result);
+        Assert.assertThat(result, is(false));
         verifyZeroInteractions(mockCallback);
     }
 
@@ -161,7 +160,7 @@ public class AuthHandlerTest  {
         final boolean result = authHandler.handleOnActivityResult(TEST_REQUEST_CODE,
                 Activity.RESULT_OK, null);
 
-        assertTrue(result);
+        Assert.assertThat(result, is(true));
     }
 
     private AuthHandler newAuthHandler(Callback<TwitterSession> callback) {

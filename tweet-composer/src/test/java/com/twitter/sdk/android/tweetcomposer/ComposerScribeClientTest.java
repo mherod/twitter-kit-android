@@ -18,6 +18,8 @@ package com.twitter.sdk.android.tweetcomposer;
 
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +32,9 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
@@ -55,7 +59,7 @@ public class ComposerScribeClientTest {
     @Test
     public void testConstructor() {
         composerScribeClient = new ComposerScribeClientImpl(mockClient);
-        assertNotNull(composerScribeClient);
+        Assert.assertThat(composerScribeClient, notNullValue());
     }
 
     @Test
@@ -64,7 +68,7 @@ public class ComposerScribeClientTest {
             new ComposerScribeClientImpl(null);
             fail("expected scribeClient NullPointerException");
         } catch (NullPointerException npe) {
-            assertEquals("scribeClient must not be null", npe.getMessage());
+            Assert.assertThat(npe.getMessage(), is("scribeClient must not be null"));
         }
     }
 
@@ -73,8 +77,8 @@ public class ComposerScribeClientTest {
         composerScribeClient.impression();
         verify(mockClient).scribe(eventNamespaceCaptor.capture(), scribeItemsCaptor.capture());
         final EventNamespace eventNamespace = eventNamespaceCaptor.getValue();
-        assertEquals(expectedImpression(), eventNamespace);
-        assertEquals(Collections.EMPTY_LIST, scribeItemsCaptor.getValue());
+        Assert.assertThat(eventNamespace, is(expectedImpression()));
+        Assert.assertThat(scribeItemsCaptor.getValue(), is(Collections.EMPTY_LIST));
     }
 
     @Test
@@ -82,8 +86,8 @@ public class ComposerScribeClientTest {
         composerScribeClient.click(ScribeConstants.SCRIBE_TWEET_ELEMENT);
         verify(mockClient).scribe(eventNamespaceCaptor.capture(), scribeItemsCaptor.capture());
         final EventNamespace eventNamespace = eventNamespaceCaptor.getValue();
-        assertEquals(expectedTweetClick(), eventNamespace);
-        assertEquals(Collections.EMPTY_LIST, scribeItemsCaptor.getValue());
+        Assert.assertThat(eventNamespace, is(expectedTweetClick()));
+        Assert.assertThat(scribeItemsCaptor.getValue(), is(Collections.EMPTY_LIST));
     }
 
     @Test
@@ -91,8 +95,8 @@ public class ComposerScribeClientTest {
         composerScribeClient.click(ScribeConstants.SCRIBE_CANCEL_ELEMENT);
         verify(mockClient).scribe(eventNamespaceCaptor.capture(), scribeItemsCaptor.capture());
         final EventNamespace eventNamespace = eventNamespaceCaptor.getValue();
-        assertEquals(expectedCancelClick(), eventNamespace);
-        assertEquals(Collections.EMPTY_LIST, scribeItemsCaptor.getValue());
+        Assert.assertThat(eventNamespace, is(expectedCancelClick()));
+        Assert.assertThat(scribeItemsCaptor.getValue(), is(Collections.EMPTY_LIST));
     }
 
     private EventNamespace expectedImpression() {

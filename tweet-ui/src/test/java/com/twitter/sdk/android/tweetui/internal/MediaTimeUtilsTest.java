@@ -17,9 +17,10 @@
 
 package com.twitter.sdk.android.tweetui.internal;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 public class MediaTimeUtilsTest {
     static final int SECOND_IN_MS = 1000;
@@ -28,9 +29,9 @@ public class MediaTimeUtilsTest {
 
     @Test
     public void testFormatPlaybackTime() {
-        assertEquals("0:01", MediaTimeUtils.getPlaybackTime(SECOND_IN_MS));
-        assertEquals("1:01", MediaTimeUtils.getPlaybackTime(MINUTE_IN_MS + SECOND_IN_MS));
-        assertEquals("1:01:01", MediaTimeUtils
-                .getPlaybackTime(HOUR_IN_MS + MINUTE_IN_MS + SECOND_IN_MS));
+        Assert.assertThat(MediaTimeUtils.getPlaybackTime(SECOND_IN_MS), is("0:01"));
+        Assert.assertThat(MediaTimeUtils.getPlaybackTime(MINUTE_IN_MS + SECOND_IN_MS), is("1:01"));
+        Assert.assertThat(MediaTimeUtils
+                .getPlaybackTime(HOUR_IN_MS + MINUTE_IN_MS + SECOND_IN_MS), is("1:01:01"));
     }
 }

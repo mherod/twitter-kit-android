@@ -15,60 +15,53 @@
  *
  */
 
-package com.twitter.sdk.android.core.models;
+package com.twitter.sdk.android.core.models
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
+import com.google.gson.annotations.SerializedName
 
 /**
  * Provides metadata and additional contextual information about content posted in a tweet.
  */
-public class TweetEntities {
-
-    static final TweetEntities EMPTY = new TweetEntities(null, null, null, null, null);
+class TweetEntities(
+        urls: List<UrlEntity>?,
+        userMentions: List<MentionEntity>?,
+        media: List<MediaEntity>?,
+        hashtags: List<HashtagEntity>?,
+        symbols: List<SymbolEntity>?
+) {
 
     /**
      * Represents URLs included in the text of a Tweet or within textual fields of a user object.
      */
     @SerializedName("urls")
-    public final List<UrlEntity> urls;
+    val urls: List<UrlEntity> = ModelUtils.getSafeList(urls)
 
     /**
      * Represents other Twitter users mentioned in the text of the Tweet.
      */
     @SerializedName("user_mentions")
-    public final List<MentionEntity> userMentions;
+    val userMentions: List<MentionEntity> = ModelUtils.getSafeList(userMentions)
 
     /**
      * Represents media elements uploaded with the Tweet.
      */
     @SerializedName("media")
-    public final List<MediaEntity> media;
+    val media: List<MediaEntity> = ModelUtils.getSafeList(media)
 
     /**
      * Represents hashtags which have been parsed out of the Tweet text.
      */
     @SerializedName("hashtags")
-    public final List<HashtagEntity> hashtags;
+    val hashtags: List<HashtagEntity> = ModelUtils.getSafeList(hashtags)
 
     /**
      * Represents symbols which have been parsed out of the Tweet text.
      */
     @SerializedName("symbols")
-    public final List<SymbolEntity> symbols;
+    val symbols: List<SymbolEntity> = ModelUtils.getSafeList(symbols)
 
-    private TweetEntities() {
-        this(null, null, null, null, null);
+    companion object {
+        @JvmStatic
+        internal val EMPTY = TweetEntities(null, null, null, null, null)
     }
-
-    public TweetEntities(List<UrlEntity> urls, List<MentionEntity> userMentions,
-            List<MediaEntity> media, List<HashtagEntity> hashtags, List<SymbolEntity> symbols) {
-        this.urls = ModelUtils.getSafeList(urls);
-        this.userMentions = ModelUtils.getSafeList(userMentions);
-        this.media = ModelUtils.getSafeList(media);
-        this.hashtags = ModelUtils.getSafeList(hashtags);
-        this.symbols = ModelUtils.getSafeList(symbols);
-    }
-
 }

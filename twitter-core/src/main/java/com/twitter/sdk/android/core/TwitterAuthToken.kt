@@ -25,7 +25,7 @@ import kotlinx.android.parcel.Parcelize
  * Represents an authorization token and its secret.
  */
 @Parcelize
-data class TwitterAuthToken @JvmOverloads constructor(
+open class TwitterAuthToken @JvmOverloads constructor(
         @field:SerializedName("token") var token: String?,
         @field:SerializedName("secret") var secret: String?,
         override val createdAt: Long = System.currentTimeMillis()

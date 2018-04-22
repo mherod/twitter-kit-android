@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,7 @@ import org.robolectric.RuntimeEnvironment;
 
 import java.util.concurrent.ScheduledExecutorService;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -58,6 +59,6 @@ public class ScribeHandlerTest {
     @Test
     public void testGetDisabledEventsStrategy() {
         final EventsStrategy<ScribeEvent> strategy = scribeHandler.getDisabledEventsStrategy();
-        assertTrue(strategy instanceof DisabledEventsStrategy);
+        Assert.assertThat(strategy instanceof DisabledEventsStrategy, is(true));
     }
 }

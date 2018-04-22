@@ -23,6 +23,7 @@ import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
 import com.twitter.sdk.android.core.internal.oauth.OAuthConstants;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,8 +36,7 @@ import org.robolectric.RobolectricTestRunner;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -86,9 +86,8 @@ public class GuestAuthInterceptorTest {
         verify(mockChain).proceed(requestCaptor.capture());
 
         final Request signedRequest = requestCaptor.getValue();
-        assertEquals(TEST_HEADER_AUTHORIZATION,
-                signedRequest.header(OAuthConstants.HEADER_AUTHORIZATION));
-        assertEquals(TEST_GUEST_TOKEN, signedRequest.header(OAuthConstants.HEADER_GUEST_TOKEN));
+        Assert.assertThat(signedRequest.header(OAuthConstants.HEADER_AUTHORIZATION), is(TEST_HEADER_AUTHORIZATION));
+        Assert.assertThat(signedRequest.header(OAuthConstants.HEADER_GUEST_TOKEN), is(TEST_GUEST_TOKEN));
     }
 
     @Test
@@ -102,7 +101,7 @@ public class GuestAuthInterceptorTest {
         verify(mockChain).proceed(requestCaptor.capture());
 
         final Request unsignedRequest = requestCaptor.getValue();
-        assertSame(request, unsignedRequest);
+        Assert.assertThat(unsignedRequest, sameInstance(request));
     }
 
     @Test
@@ -111,9 +110,8 @@ public class GuestAuthInterceptorTest {
         GuestAuthInterceptor.addAuthHeaders(builder, mockAuthToken);
         final Request request = builder.build();
 
-        assertEquals(TEST_HEADER_AUTHORIZATION,
-                request.header(OAuthConstants.HEADER_AUTHORIZATION));
-        assertEquals(TEST_GUEST_TOKEN, request.header(OAuthConstants.HEADER_GUEST_TOKEN));
+        Assert.assertThat(request.header(OAuthConstants.HEADER_AUTHORIZATION), is(TEST_HEADER_AUTHORIZATION));
+        Assert.assertThat(request.header(OAuthConstants.HEADER_GUEST_TOKEN), is(TEST_GUEST_TOKEN));
     }
 
     @Test
@@ -125,9 +123,8 @@ public class GuestAuthInterceptorTest {
         GuestAuthInterceptor.addAuthHeaders(builder, mockAuthToken);
         final Request request = builder.build();
 
-        assertEquals(TEST_HEADER_AUTHORIZATION,
-                request.header(OAuthConstants.HEADER_AUTHORIZATION));
-        assertEquals(TEST_GUEST_TOKEN, request.header(OAuthConstants.HEADER_GUEST_TOKEN));
-        assertEquals(TEST_HEADER, request.header(TEST_HEADER));
+        Assert.assertThat(request.header(OAuthConstants.HEADER_AUTHORIZATION), is(TEST_HEADER_AUTHORIZATION));
+        Assert.assertThat(request.header(OAuthConstants.HEADER_GUEST_TOKEN), is(TEST_GUEST_TOKEN));
+        Assert.assertThat(request.header(TEST_HEADER), is(TEST_HEADER));
     }
 }

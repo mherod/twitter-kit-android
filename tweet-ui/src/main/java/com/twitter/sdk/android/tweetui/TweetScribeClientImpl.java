@@ -54,7 +54,7 @@ class TweetScribeClientImpl implements TweetScribeClient {
     @Override
     public void impression(Tweet tweet, String viewName, boolean actionEnabled) {
         final List<ScribeItem> items = new ArrayList<>();
-        items.add(ScribeItem.fromTweet(tweet));
+        items.add(ScribeItem.Companion.fromTweet(tweet));
 
         tweetUi.scribe(getTfwImpressionNamespace(viewName, actionEnabled), items);
         tweetUi.scribe(getSyndicatedImpressionNamespace(viewName), items);
@@ -63,7 +63,7 @@ class TweetScribeClientImpl implements TweetScribeClient {
     @Override
     public void share(Tweet tweet) {
         final List<ScribeItem> items = new ArrayList<>();
-        items.add(ScribeItem.fromTweet(tweet));
+        items.add(ScribeItem.Companion.fromTweet(tweet));
 
         tweetUi.scribe(getTfwShareNamespace(), items);
     }
@@ -71,7 +71,7 @@ class TweetScribeClientImpl implements TweetScribeClient {
     @Override
     public void favorite(Tweet tweet) {
         final List<ScribeItem> items = new ArrayList<>();
-        items.add(ScribeItem.fromTweet(tweet));
+        items.add(ScribeItem.Companion.fromTweet(tweet));
 
         tweetUi.scribe(getTfwFavoriteNamespace(), items);
     }
@@ -79,7 +79,7 @@ class TweetScribeClientImpl implements TweetScribeClient {
     @Override
     public void unfavorite(Tweet tweet) {
         final List<ScribeItem> items = new ArrayList<>();
-        items.add(ScribeItem.fromTweet(tweet));
+        items.add(ScribeItem.Companion.fromTweet(tweet));
 
         tweetUi.scribe(getTfwUnfavoriteNamespace(), items);
     }
@@ -87,7 +87,7 @@ class TweetScribeClientImpl implements TweetScribeClient {
     @Override
     public void click(Tweet tweet, String viewName) {
         final List<ScribeItem> items = new ArrayList<>();
-        items.add(ScribeItem.fromTweet(tweet));
+        items.add(ScribeItem.Companion.fromTweet(tweet));
 
         tweetUi.scribe(getTfwClickNamespace(viewName), items);
     }

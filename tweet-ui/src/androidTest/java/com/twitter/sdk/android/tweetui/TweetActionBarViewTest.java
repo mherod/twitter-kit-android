@@ -22,8 +22,11 @@ import android.widget.ImageButton;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Tweet;
 
+import org.junit.Assert;
 import org.mockito.ArgumentCaptor;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -34,7 +37,7 @@ public class TweetActionBarViewTest extends TweetUiTestCase {
         final TweetActionBarView view = createView();
         final Callback<Tweet> actionCallback = mock(Callback.class);
         view.setOnActionCallback(actionCallback);
-        Assert.assertEquals(actionCallback, view.actionCallback);
+        Assert.assertThat(view.actionCallback, is(actionCallback));
     }
 
     public void testSetLike() {
@@ -44,12 +47,12 @@ public class TweetActionBarViewTest extends TweetUiTestCase {
 
         final ArgumentCaptor<LikeTweetAction> likeCaptor
                 = ArgumentCaptor.forClass(LikeTweetAction.class);
-        verify(view.likeButton).setToggledOn(TestFixtures.TEST_TWEET.favorited);
+        verify(view.likeButton).setToggledOn(TestFixtures.TEST_TWEET.getFavorited());
         verify(view.likeButton).setOnClickListener(likeCaptor.capture());
         final LikeTweetAction likeAction = likeCaptor.getValue();
-        Assert.assertNotNull(likeAction);
-        Assert.assertEquals(TestFixtures.TEST_TWEET, likeAction.tweet);
-        Assert.assertEquals(tweetRepository, likeAction.tweetRepository);
+        Assert.assertThat(likeAction, notNullValue());
+        Assert.assertThat(likeAction.tweet, is(TestFixtures.TEST_TWEET));
+        Assert.assertThat(likeAction.tweetRepository, is(tweetRepository));
     }
 
     public void testSetLike_handlesNullTweet() {
@@ -66,8 +69,8 @@ public class TweetActionBarViewTest extends TweetUiTestCase {
                 = ArgumentCaptor.forClass(ShareTweetAction.class);
         verify(view.shareButton).setOnClickListener(shareCaptor.capture());
         final ShareTweetAction shareAction = shareCaptor.getValue();
-        Assert.assertNotNull(shareAction);
-        Assert.assertEquals(TestFixtures.TEST_TWEET, shareAction.tweet);
+        Assert.assertThat(shareAction, notNullValue());
+        Assert.assertThat(shareAction.tweet, is(TestFixtures.TEST_TWEET));
     }
 
     public void testSetShare_handlesNullTweet() {

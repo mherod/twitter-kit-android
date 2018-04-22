@@ -45,7 +45,7 @@ public class XmlTweetViewIdlingResource implements IdlingResource {
         // TODO: BaseTweetView should provide an indication that rendering has completed to use here
         // XML TweetViews set a Tweet with only an id, before a Tweet is loaded from the network,
         // checking getTweet() is non-null is not sufficient.
-        if (view.getTweet() != null && view.getTweet().text != null) {
+        if (view.getTweet() != null && view.getTweet().getText() != null) {
             callback.onTransitionToIdle();
             return true;
         }

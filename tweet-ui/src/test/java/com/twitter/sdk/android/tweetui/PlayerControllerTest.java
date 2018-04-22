@@ -27,6 +27,7 @@ import com.twitter.sdk.android.tweetui.internal.SwipeToDismissTouchListener;
 import com.twitter.sdk.android.tweetui.internal.VideoControlView;
 import com.twitter.sdk.android.tweetui.internal.VideoView;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +38,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
@@ -215,8 +216,8 @@ public class PlayerControllerTest {
 
         verify(videoView).getCurrentPosition();
         verify(videoView).isPlaying();
-        assertEquals(true, subject.isPlaying);
-        assertEquals(TEST_SEEK_POSITION, subject.seekPosition);
+        Assert.assertThat(subject.isPlaying, is(true));
+        Assert.assertThat(subject.seekPosition, is(TEST_SEEK_POSITION));
     }
 
     @Test

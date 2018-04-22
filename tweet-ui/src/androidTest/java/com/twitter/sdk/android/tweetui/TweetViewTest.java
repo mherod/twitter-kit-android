@@ -22,6 +22,10 @@ import android.widget.ImageView;
 
 import com.twitter.sdk.android.core.models.Tweet;
 
+import org.junit.Assert;
+
+import static org.hamcrest.CoreMatchers.is;
+
 public class TweetViewTest extends BaseTweetViewTest {
     @Override
     TweetView createView(Context context, Tweet tweet) {
@@ -60,25 +64,25 @@ public class TweetViewTest extends BaseTweetViewTest {
     public void testInit() {
         super.testInit();
         final TweetView view = createView(context, TestFixtures.TEST_TWEET);
-        Assert.assertEquals(ImageView.GONE, view.mediaContainer.getVisibility());
+        Assert.assertThat(view.mediaContainer.getVisibility(), is(ImageView.GONE));
     }
 
     @Override
     public void testInit_withEmptyTweet() {
         super.testInit();
         final TweetView view = createView(context, TestFixtures.TEST_TWEET);
-        Assert.assertEquals(ImageView.GONE, view.mediaContainer.getVisibility());
+        Assert.assertThat(view.mediaContainer.getVisibility(), is(ImageView.GONE));
     }
 
     public void testInit_withPhotoTweet() {
         final TweetView view = createView(context, TestFixtures.TEST_PHOTO_TWEET);
-        Assert.assertEquals(ImageView.VISIBLE, view.mediaContainer.getVisibility());
+        Assert.assertThat(view.mediaContainer.getVisibility(), is(ImageView.VISIBLE));
     }
 
     // Layout
     public void testLayout() {
         final TweetView tweetView = new TweetView(context, TestFixtures.TEST_TWEET);
-        Assert.assertEquals(R.layout.tw__tweet, tweetView.getLayout());
+        Assert.assertThat(tweetView.getLayout(), is(R.layout.tw__tweet));
     }
 
     public void testGetAspectRatio() {
@@ -95,9 +99,9 @@ public class TweetViewTest extends BaseTweetViewTest {
     public void testGetAspectRatioForPhotoEntity() {
         final TweetView tweetView = createView(context, TestFixtures.TEST_PHOTO_TWEET);
 
-        Assert.assertEquals(1.5, tweetView.getAspectRatioForPhotoEntity(1));
-        Assert.assertEquals(1.5, tweetView.getAspectRatioForPhotoEntity(2));
-        Assert.assertEquals(1.5, tweetView.getAspectRatioForPhotoEntity(3));
-        Assert.assertEquals(1.0, tweetView.getAspectRatioForPhotoEntity(4));
+        Assert.assertEquals(1.5, tweetView.getAspectRatioForPhotoEntity(1), 0.0);
+        Assert.assertEquals(1.5, tweetView.getAspectRatioForPhotoEntity(2), 0.0);
+        Assert.assertEquals(1.5, tweetView.getAspectRatioForPhotoEntity(3), 0.0);
+        Assert.assertEquals(1.0, tweetView.getAspectRatioForPhotoEntity(4), 0.0);
     }
 }

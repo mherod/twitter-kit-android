@@ -20,10 +20,12 @@ package com.twitter.sdk.android.core.internal;
 import android.net.Uri;
 import android.os.Build;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricTestRunner.class)
@@ -34,7 +36,7 @@ public class TwitterApiTest  {
         final String baseHost = "testbasehost";
         final TwitterApi api = new TwitterApi(baseHost);
         final Uri.Builder builder = api.buildUponBaseHostUrl("path1");
-        assertEquals(baseHost + "/path1", builder.build().toString());
+        Assert.assertThat(builder.build().toString(), is(baseHost + "/path1"));
     }
 
     @Test
@@ -42,7 +44,7 @@ public class TwitterApiTest  {
         final String baseHost = "testbasehost";
         final TwitterApi api = new TwitterApi(baseHost);
         final Uri.Builder builder = api.buildUponBaseHostUrl("path1", "path2");
-        assertEquals(baseHost + "/path1/path2", builder.build().toString());
+        Assert.assertThat(builder.build().toString(), is(baseHost + "/path1/path2"));
     }
 
     @Test
@@ -60,6 +62,6 @@ public class TwitterApiTest  {
 
     @Test
     public void testNormalizeString() {
-        assertEquals("Twitter", TwitterApi.normalizeString("Tw" + '\u00ED' + "tter\r\n\t"));
+        Assert.assertThat(TwitterApi.normalizeString("Tw" + '\u00ED' + "tter\r\n\t"), is("Twitter"));
     }
 }

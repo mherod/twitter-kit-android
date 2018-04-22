@@ -17,13 +17,14 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.Collections;
 
-import static org.junit.Assert.assertSame;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class ScribeEventFactoryTest {
@@ -41,7 +42,7 @@ public class ScribeEventFactoryTest {
                 = new EventNamespace.Builder().setClient(TFW_CLIENT_NAME).builder();
         final ScribeEvent event = ScribeEventFactory.newScribeEvent(ns, ANY_TIMESTAMP,
                 ANY_LANGUAGE, ANY_ADVERTISING_ID);
-        assertSame(SyndicationClientEvent.class, event.getClass());
+        Assert.assertThat(event.getClass(), sameInstance(SyndicationClientEvent.class));
     }
 
     @Test
@@ -50,7 +51,7 @@ public class ScribeEventFactoryTest {
                 = new EventNamespace.Builder().setClient(SDK_CLIENT_NAME).builder();
         final ScribeEvent event = ScribeEventFactory.newScribeEvent(ns, ANY_TIMESTAMP,
                 ANY_LANGUAGE, ANY_ADVERTISING_ID);
-        assertSame(SyndicatedSdkImpressionEvent.class, event.getClass());
+        Assert.assertThat(event.getClass(), sameInstance(SyndicatedSdkImpressionEvent.class));
     }
 
     @Test
@@ -59,7 +60,7 @@ public class ScribeEventFactoryTest {
                 = new EventNamespace.Builder().setClient(OTHER_CLIENT_NAME).builder();
         final ScribeEvent event = ScribeEventFactory.newScribeEvent(ns, ANY_TIMESTAMP,
                 ANY_LANGUAGE, ANY_ADVERTISING_ID);
-        assertSame(SyndicatedSdkImpressionEvent.class, event.getClass());
+        Assert.assertThat(event.getClass(), sameInstance(SyndicatedSdkImpressionEvent.class));
     }
 
     @Test
@@ -69,6 +70,6 @@ public class ScribeEventFactoryTest {
         final String eventInfo = "any info";
         final ScribeEvent event = ScribeEventFactory.newScribeEvent(ns, eventInfo, ANY_TIMESTAMP,
                 ANY_LANGUAGE, ANY_ADVERTISING_ID, Collections.emptyList());
-        assertSame(SyndicatedSdkImpressionEvent.class, event.getClass());
+        Assert.assertThat(event.getClass(), sameInstance(SyndicatedSdkImpressionEvent.class));
     }
 }

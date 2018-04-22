@@ -24,6 +24,8 @@ import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 
+import org.hamcrest.MatcherAssert;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,12 +37,9 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.isNull;
@@ -78,6 +77,7 @@ public class TimelineDelegateTest {
 
     @Before
     public void setUp() throws Exception {
+        //noinspection unchecked,unchecked
         mockTimeline = mock(Timeline.class);
         mockObservable = mock(DataSetObservable.class);
         // lists of items ordered from larger id to smaller
@@ -92,25 +92,25 @@ public class TimelineDelegateTest {
     @Test
     public void testConstructor() {
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, testItems);
-        assertEquals(mockTimeline, delegate.timeline);
-        assertEquals(mockObservable, delegate.listAdapterObservable);
-        assertEquals(testItems, delegate.itemList);
-        assertNotNull(delegate.timelineStateHolder);
+        Assert.assertThat(delegate.timeline, is(mockTimeline));
+        Assert.assertThat(delegate.listAdapterObservable, is(mockObservable));
+        Assert.assertThat(delegate.itemList, is(testItems));
+        Assert.assertThat(delegate.timelineStateHolder, notNullValue());
         // initial positions must be null
-        assertNull(delegate.timelineStateHolder.positionForNext());
-        assertNull(delegate.timelineStateHolder.positionForPrevious());
+        Assert.assertThat(delegate.timelineStateHolder.positionForNext(), nullValue());
+        Assert.assertThat(delegate.timelineStateHolder.positionForPrevious(), nullValue());
     }
 
     @Test
     public void testConstructor_defaults() {
         delegate = new TimelineDelegate<>(mockTimeline);
-        assertEquals(mockTimeline, delegate.timeline);
-        assertNotNull(delegate.listAdapterObservable);
-        assertNotNull(delegate.itemList);
-        assertNotNull(delegate.timelineStateHolder);
+        Assert.assertThat(delegate.timeline, is(mockTimeline));
+        Assert.assertThat(delegate.listAdapterObservable, notNullValue());
+        Assert.assertThat(delegate.itemList, notNullValue());
+        Assert.assertThat(delegate.timelineStateHolder, notNullValue());
         // initial positions must be null
-        assertNull(delegate.timelineStateHolder.positionForNext());
-        assertNull(delegate.timelineStateHolder.positionForPrevious());
+        Assert.assertThat(delegate.timelineStateHolder.positionForNext(), nullValue());
+        Assert.assertThat(delegate.timelineStateHolder.positionForPrevious(), nullValue());
     }
 
     @Test
@@ -119,23 +119,23 @@ public class TimelineDelegateTest {
             delegate = new TimelineDelegate<>(null);
             fail("IllegalArgumentException expected");
         } catch (IllegalArgumentException e) {
-            assertEquals("Timeline must not be null", e.getMessage());
+            Assert.assertThat(e.getMessage(), is("Timeline must not be null"));
         }
     }
 
     @Test
     public void testGetCount() {
         delegate = new TimelineDelegate<>(mockTimeline);
-        assertEquals(0, delegate.getCount());
+        Assert.assertThat(delegate.getCount(), is(0));
         delegate = new TimelineDelegate<>(mockTimeline, null, testItems);
-        assertEquals(testItems.size(), delegate.getCount());
+        Assert.assertThat(delegate.getCount(), is(testItems.size()));
     }
 
     @Test
     public void testGetItem() {
         delegate = new TimelineDelegate<>(mockTimeline, null, testItems);
-        assertEquals(TEST_ITEM_2, delegate.getItem(0));
-        assertEquals(TEST_ITEM_1, delegate.getItem(1));
+        Assert.assertThat(delegate.getItem(0), is(TEST_ITEM_2));
+        Assert.assertThat(delegate.getItem(1), is(TEST_ITEM_1));
     }
 
     @Test
@@ -148,7 +148,7 @@ public class TimelineDelegateTest {
         verify(mockObservable).notifyChanged();
         delegate.getItem(NUM_ITEMS - 1);
         // assert items are added and notifyChanged is called again
-        assertEquals(2 * NUM_ITEMS, delegate.getCount());
+        Assert.assertThat(delegate.getCount(), is(2 * NUM_ITEMS));
         verify(mockObservable, times(2)).notifyChanged();
     }
 
@@ -160,40 +160,40 @@ public class TimelineDelegateTest {
         delegate.refresh(null);
         // refresh loads latest items (notifyChange)
         verify(mockObservable).notifyChanged();
-        assertEquals(NUM_ITEMS, delegate.getCount());
+        Assert.assertThat(delegate.getCount(), is(NUM_ITEMS));
         delegate.getItem(1);
         // assert no items added and notifyChanged is not called again
-        assertEquals(NUM_ITEMS, delegate.getCount());
+        Assert.assertThat(delegate.getCount(), is(NUM_ITEMS));
         verify(mockObservable, times(1)).notifyChanged();
     }
 
     @Test
     public void testGetItemId() {
         delegate = new TimelineDelegate<>(mockTimeline, null, testItems);
-        assertEquals(TEST_ITEM_2.getId(), delegate.getItemId(0));
-        assertEquals(TEST_ITEM_1.getId(), delegate.getItemId(1));
+        Assert.assertThat(delegate.getItemId(0), is(TEST_ITEM_2.getId()));
+        Assert.assertThat(delegate.getItemId(1), is(TEST_ITEM_1.getId()));
     }
 
     @Test
     public void testSetItemById() {
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, testItems);
-        assertEquals(TEST_ITEM_2, delegate.getItem(0));
-        assertEquals(TEST_ITEM_1, delegate.getItem(1));
+        Assert.assertThat(delegate.getItem(0), is(TEST_ITEM_2));
+        Assert.assertThat(delegate.getItem(1), is(TEST_ITEM_1));
         final TestItem differentItemSameId = new TestItem(TEST_ITEM_2.getId());
         delegate.setItemById(differentItemSameId);
-        assertThat(TEST_ITEM_2, not(delegate.getItem(0)));
-        assertEquals(differentItemSameId, delegate.getItem(0));
-        assertEquals(TEST_ITEM_1, delegate.getItem(1));
+        MatcherAssert.assertThat(TEST_ITEM_2, not(delegate.getItem(0)));
+        Assert.assertThat(delegate.getItem(0), is(differentItemSameId));
+        Assert.assertThat(delegate.getItem(1), is(TEST_ITEM_1));
         verify(mockObservable).notifyChanged();
     }
 
     @Test
     public void testWithinMaxCapacity() {
         delegate = new TimelineDelegate<>(mockTimeline);
-        assertTrue(delegate.withinMaxCapacity());
+        Assert.assertThat(delegate.withinMaxCapacity(), is(true));
         TestItem.populateList(testItems, TimelineDelegate.CAPACITY);
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, testItems);
-        assertFalse(delegate.withinMaxCapacity());
+        Assert.assertThat(delegate.withinMaxCapacity(), is(false));
     }
 
     @Test
@@ -201,9 +201,9 @@ public class TimelineDelegateTest {
         testItems = new ArrayList<>();
         TestItem.populateList(testItems, NUM_ITEMS);
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, testItems);
-        assertFalse(delegate.isLastPosition(0));
-        assertFalse(delegate.isLastPosition(NUM_ITEMS - 2));
-        assertTrue(delegate.isLastPosition(NUM_ITEMS - 1));
+        Assert.assertThat(delegate.isLastPosition(0), is(false));
+        Assert.assertThat(delegate.isLastPosition(NUM_ITEMS - 2), is(false));
+        Assert.assertThat(delegate.isLastPosition(NUM_ITEMS - 1), is(true));
     }
 
     // reset, next, previous
@@ -215,8 +215,8 @@ public class TimelineDelegateTest {
         delegate.timelineStateHolder.setPreviousCursor(new TimelineCursor(ANY_POSITION,
                 ANY_POSITION));
         delegate.refresh(null);
-        assertNull(delegate.timelineStateHolder.positionForNext());
-        assertNull(delegate.timelineStateHolder.positionForPrevious());
+        Assert.assertThat(delegate.timelineStateHolder.positionForNext(), nullValue());
+        Assert.assertThat(delegate.timelineStateHolder.positionForPrevious(), nullValue());
     }
 
     @Test
@@ -232,10 +232,10 @@ public class TimelineDelegateTest {
         final Timeline<TestItem> fakeTimeline = new FakeItemTimeline(NUM_ITEMS, ANY_POSITION,
                 ANY_POSITION);
         delegate = new TimelineDelegate<>(fakeTimeline, mockObservable, testItems);
-        assertEquals(testItems, delegate.itemList);
+        Assert.assertThat(delegate.itemList, is(testItems));
         delegate.refresh(null);
         // assert that items were replaced and notifyChanged called
-        assertEquals(NUM_ITEMS, delegate.itemList.size());
+        Assert.assertThat(delegate.itemList.size(), is(NUM_ITEMS));
         verify(mockObservable).notifyChanged();
     }
 
@@ -248,7 +248,7 @@ public class TimelineDelegateTest {
         // refresh loads latest items (notifyChange)
         delegate.next(null);
         // assert items are added and notifyChanges is called again
-        assertEquals(2 * NUM_ITEMS, delegate.getCount());
+        Assert.assertThat(delegate.getCount(), is(2 * NUM_ITEMS));
         verify(mockObservable, times(2)).notifyChanged();
     }
 
@@ -263,7 +263,7 @@ public class TimelineDelegateTest {
         delegate = new TimelineDelegate<>(fakeEndTimeline, mockObservable, initialItems);
         delegate.next(null);
         // assert no items are added and notifyChanged is not called
-        assertEquals(INITIAL_COUNT, delegate.getCount());
+        Assert.assertThat(delegate.getCount(), is(INITIAL_COUNT));
         verifyZeroInteractions(mockObservable);
     }
 
@@ -272,9 +272,9 @@ public class TimelineDelegateTest {
         final Timeline<TestItem> fakeTimeline = new FakeItemTimeline(NUM_ITEMS, ANY_POSITION,
                 TEST_MAX_POSITION);
         delegate = new TimelineDelegate<>(fakeTimeline);
-        assertNull(delegate.timelineStateHolder.positionForPrevious());
+        Assert.assertThat(delegate.timelineStateHolder.positionForPrevious(), nullValue());
         delegate.next(null);
-        assertEquals(TEST_MAX_POSITION, delegate.timelineStateHolder.positionForNext());
+        Assert.assertThat(delegate.timelineStateHolder.positionForNext(), is(TEST_MAX_POSITION));
     }
 
     @Test
@@ -284,7 +284,7 @@ public class TimelineDelegateTest {
         delegate = new TimelineDelegate<>(fakeEndTimeline);
         delegate.timelineStateHolder.setPreviousCursor(new TimelineCursor(null, null));
         delegate.next(null);
-        assertNull(delegate.timelineStateHolder.positionForNext());
+        Assert.assertThat(delegate.timelineStateHolder.positionForNext(), nullValue());
     }
 
     @Test
@@ -296,7 +296,7 @@ public class TimelineDelegateTest {
         // refresh loads latest items (notifyChange)
         delegate.previous();
         // assert items are added and notifyChanges is called again
-        assertEquals(2 * NUM_ITEMS, delegate.getCount());
+        Assert.assertThat(delegate.getCount(), is(2 * NUM_ITEMS));
         verify(mockObservable, times(2)).notifyChanged();
     }
 
@@ -311,7 +311,7 @@ public class TimelineDelegateTest {
         delegate = new TimelineDelegate<>(fakeEndTimeline, mockObservable, initialItems);
         delegate.previous();
         // assert no items are added and notifyChanged is not called
-        assertEquals(INITIAL_COUNT, delegate.getCount());
+        Assert.assertThat(delegate.getCount(), is(INITIAL_COUNT));
         verifyZeroInteractions(mockObservable);
     }
 
@@ -320,9 +320,9 @@ public class TimelineDelegateTest {
         final Timeline<TestItem> fakeTimeline = new FakeItemTimeline(NUM_ITEMS, TEST_MIN_POSITION,
                 ANY_POSITION);
         delegate = new TimelineDelegate<>(fakeTimeline);
-        assertNull(delegate.timelineStateHolder.positionForPrevious());
+        Assert.assertThat(delegate.timelineStateHolder.positionForPrevious(), nullValue());
         delegate.previous();
-        assertEquals(TEST_MIN_POSITION, delegate.timelineStateHolder.positionForPrevious());
+        Assert.assertThat(delegate.timelineStateHolder.positionForPrevious(), is(TEST_MIN_POSITION));
     }
 
     @Test
@@ -332,7 +332,7 @@ public class TimelineDelegateTest {
         delegate = new TimelineDelegate<>(fakeEndTimeline);
         delegate.timelineStateHolder.setPreviousCursor(new TimelineCursor(null, null));
         delegate.previous();
-        assertNull(delegate.timelineStateHolder.positionForPrevious());
+        Assert.assertThat(delegate.timelineStateHolder.positionForPrevious(), nullValue());
     }
 
     // loadNext, loadPrevious
@@ -356,7 +356,7 @@ public class TimelineDelegateTest {
                 = ArgumentCaptor.forClass(TwitterException.class);
         verifyZeroInteractions(mockTimeline);
         verify(mockCallback).failure(exceptionCaptor.capture());
-        assertEquals(REQUIRED_MAX_CAPACITY_ERROR, exceptionCaptor.getValue().getMessage());
+        Assert.assertThat(exceptionCaptor.getValue().getMessage(), is(REQUIRED_MAX_CAPACITY_ERROR));
     }
 
     @Test
@@ -369,7 +369,7 @@ public class TimelineDelegateTest {
                 = ArgumentCaptor.forClass(TwitterException.class);
         verifyZeroInteractions(mockTimeline);
         verify(mockCallback).failure(exceptionCaptor.capture());
-        assertEquals(REQUIRED_REQUEST_IN_FLIGHT_ERROR, exceptionCaptor.getValue().getMessage());
+        Assert.assertThat(exceptionCaptor.getValue().getMessage(), is(REQUIRED_REQUEST_IN_FLIGHT_ERROR));
     }
 
     @Test
@@ -391,7 +391,7 @@ public class TimelineDelegateTest {
                 = ArgumentCaptor.forClass(TwitterException.class);
         verifyZeroInteractions(mockTimeline);
         verify(mockCallback).failure(exceptionCaptor.capture());
-        assertEquals(REQUIRED_MAX_CAPACITY_ERROR, exceptionCaptor.getValue().getMessage());
+        Assert.assertThat(exceptionCaptor.getValue().getMessage(), is(REQUIRED_MAX_CAPACITY_ERROR));
     }
 
     @Test
@@ -404,7 +404,7 @@ public class TimelineDelegateTest {
                 = ArgumentCaptor.forClass(TwitterException.class);
         verifyZeroInteractions(mockTimeline);
         verify(mockCallback).failure(exceptionCaptor.capture());
-        assertEquals(REQUIRED_REQUEST_IN_FLIGHT_ERROR, exceptionCaptor.getValue().getMessage());
+        Assert.assertThat(exceptionCaptor.getValue().getMessage(), is(REQUIRED_REQUEST_IN_FLIGHT_ERROR));
     }
 
     /* nested Callbacks */
@@ -484,14 +484,14 @@ public class TimelineDelegateTest {
                 timelineStateHolder);
         cb.success(new Result<>(new TimelineResult<>(TEST_TIMELINE_CURSOR, testExtraItems), null));
         // assert the next TimelineCursor is set on the ScrollStateHolder, previous unchanged
-        assertEquals(TEST_MAX_POSITION, timelineStateHolder.positionForNext());
-        assertEquals(ANY_POSITION, timelineStateHolder.positionForPrevious());
+        Assert.assertThat(timelineStateHolder.positionForNext(), is(TEST_MAX_POSITION));
+        Assert.assertThat(timelineStateHolder.positionForPrevious(), is(ANY_POSITION));
         // assert that extra items were prepended in reverse order
-        assertEquals(TOTAL_ITEMS, delegate.itemList.size());
-        assertEquals(TEST_ITEM_4, delegate.getItem(0));
-        assertEquals(TEST_ITEM_3, delegate.getItem(1));
-        assertEquals(TEST_ITEM_2, delegate.getItem(2));
-        assertEquals(TEST_ITEM_1, delegate.getItem(3));
+        Assert.assertThat(delegate.itemList.size(), is(TOTAL_ITEMS));
+        Assert.assertThat(delegate.getItem(0), is(TEST_ITEM_4));
+        Assert.assertThat(delegate.getItem(1), is(TEST_ITEM_3));
+        Assert.assertThat(delegate.getItem(2), is(TEST_ITEM_2));
+        Assert.assertThat(delegate.getItem(3), is(TEST_ITEM_1));
         // assert observer's notifyChanged is called
         verify(mockObservable).notifyChanged();
     }
@@ -505,8 +505,8 @@ public class TimelineDelegateTest {
                 timelineStateHolder);
         cb.success(new Result<>(new TimelineResult<>(TEST_TIMELINE_CURSOR, testExtraItems), null));
         // assert the next TimelineCursor is set on the ScrollStateHolder, previous unchanged
-        assertEquals(TEST_MAX_POSITION, timelineStateHolder.positionForNext());
-        assertEquals(TEST_MIN_POSITION, timelineStateHolder.positionForPrevious());
+        Assert.assertThat(timelineStateHolder.positionForNext(), is(TEST_MAX_POSITION));
+        Assert.assertThat(timelineStateHolder.positionForPrevious(), is(TEST_MIN_POSITION));
     }
 
     // should do nothing
@@ -519,9 +519,9 @@ public class TimelineDelegateTest {
         cb.success(new Result<>(new TimelineResult<>(TEST_TIMELINE_CURSOR, Collections.emptyList()),
                 null));
         // assert that the cursors and itemList are left unmodified
-        assertNull(timelineStateHolder.positionForNext());
-        assertNull(timelineStateHolder.positionForPrevious());
-        assertEquals(testItems.size(), delegate.itemList.size());
+        Assert.assertThat(timelineStateHolder.positionForNext(), nullValue());
+        Assert.assertThat(timelineStateHolder.positionForPrevious(), nullValue());
+        Assert.assertThat(delegate.itemList.size(), is(testItems.size()));
         verifyZeroInteractions(mockObservable);
     }
 
@@ -536,12 +536,12 @@ public class TimelineDelegateTest {
                 timelineStateHolder);
         cb.success(new Result<>(new TimelineResult<>(TEST_TIMELINE_CURSOR, testExtraItems), null));
         // assert the next TimelineCursor is set on the ScrollStateHolder, previous unchanged
-        assertEquals(TEST_MAX_POSITION, timelineStateHolder.positionForNext());
-        assertEquals(ANY_POSITION, timelineStateHolder.positionForPrevious());
+        Assert.assertThat(timelineStateHolder.positionForNext(), is(TEST_MAX_POSITION));
+        Assert.assertThat(timelineStateHolder.positionForPrevious(), is(ANY_POSITION));
         // assert that extra items replaced the old items
-        assertEquals(testExtraItems.size(), delegate.itemList.size());
-        assertEquals(TEST_ITEM_4, delegate.getItem(0));
-        assertEquals(TEST_ITEM_3, delegate.getItem(1));
+        Assert.assertThat(delegate.itemList.size(), is(testExtraItems.size()));
+        Assert.assertThat(delegate.getItem(0), is(TEST_ITEM_4));
+        Assert.assertThat(delegate.getItem(1), is(TEST_ITEM_3));
         // assert observer's notifyChanged is called
         verify(mockObservable).notifyChanged();
     }
@@ -556,9 +556,9 @@ public class TimelineDelegateTest {
         cb.success(new Result<>(new TimelineResult<>(TEST_TIMELINE_CURSOR, Collections.emptyList()),
                 null));
         // assert that the cursors and itemList are left unmodified
-        assertNull(timelineStateHolder.positionForNext());
-        assertNull(timelineStateHolder.positionForPrevious());
-        assertEquals(testItems.size(), delegate.itemList.size());
+        Assert.assertThat(timelineStateHolder.positionForNext(), nullValue());
+        Assert.assertThat(timelineStateHolder.positionForPrevious(), nullValue());
+        Assert.assertThat(delegate.itemList.size(), is(testItems.size()));
         verifyZeroInteractions(mockObservable);
     }
 
@@ -573,14 +573,14 @@ public class TimelineDelegateTest {
                 = delegate.new PreviousCallback(timelineStateHolder);
         cb.success(new Result<>(new TimelineResult<>(TEST_TIMELINE_CURSOR, testExtraItems), null));
         // assert the previous TimelineCursor is set on the ScrollStateHolder
-        assertEquals(TEST_MIN_POSITION, timelineStateHolder.positionForPrevious());
-        assertEquals(ANY_POSITION, timelineStateHolder.positionForNext());
+        Assert.assertThat(timelineStateHolder.positionForPrevious(), is(TEST_MIN_POSITION));
+        Assert.assertThat(timelineStateHolder.positionForNext(), is(ANY_POSITION));
         // assert that extra items were appended in order received
-        assertEquals(TOTAL_ITEMS, delegate.itemList.size());
-        assertEquals(TEST_ITEM_2, delegate.getItem(0));
-        assertEquals(TEST_ITEM_1, delegate.getItem(1));
-        assertEquals(TEST_ITEM_4, delegate.getItem(2));
-        assertEquals(TEST_ITEM_3, delegate.getItem(3));
+        Assert.assertThat(delegate.itemList.size(), is(TOTAL_ITEMS));
+        Assert.assertThat(delegate.getItem(0), is(TEST_ITEM_2));
+        Assert.assertThat(delegate.getItem(1), is(TEST_ITEM_1));
+        Assert.assertThat(delegate.getItem(2), is(TEST_ITEM_4));
+        Assert.assertThat(delegate.getItem(3), is(TEST_ITEM_3));
         // assert observer's notifyChanged is called
         verify(mockObservable).notifyChanged();
     }
@@ -594,8 +594,8 @@ public class TimelineDelegateTest {
                 = delegate.new PreviousCallback(timelineStateHolder);
         cb.success(new Result<>(new TimelineResult<>(TEST_TIMELINE_CURSOR, testExtraItems), null));
         // assert the previous TimelineCursor is set on the ScrollStateHolder
-        assertEquals(TEST_MAX_POSITION, timelineStateHolder.positionForNext());
-        assertEquals(TEST_MIN_POSITION, timelineStateHolder.positionForPrevious());
+        Assert.assertThat(timelineStateHolder.positionForNext(), is(TEST_MAX_POSITION));
+        Assert.assertThat(timelineStateHolder.positionForPrevious(), is(TEST_MIN_POSITION));
     }
 
 
@@ -609,9 +609,9 @@ public class TimelineDelegateTest {
         cb.success(new Result<>(new TimelineResult<>(TEST_TIMELINE_CURSOR, Collections.emptyList()),
                 null));
         // assert that the cursors and itemList are left unmodified
-        assertNull(timelineStateHolder.positionForNext());
-        assertNull(timelineStateHolder.positionForPrevious());
-        assertEquals(testItems.size(), delegate.itemList.size());
+        Assert.assertThat(timelineStateHolder.positionForNext(), nullValue());
+        Assert.assertThat(timelineStateHolder.positionForPrevious(), nullValue());
+        Assert.assertThat(delegate.itemList.size(), is(testItems.size()));
         verifyZeroInteractions(mockObservable);
     }
 
@@ -656,7 +656,8 @@ public class TimelineDelegateTest {
 
         /**
          * Constructs a FakeItemTimeline
-         * @param numItems the number of TestItems to return per call to next/previous
+         *
+         * @param numItems    the number of TestItems to return per call to next/previous
          * @param minPosition the TimelineCursor minPosition returned by calls to next/previous
          * @param maxPosition the TimelineCursor maxPosition returned by calls to next/previous
          */

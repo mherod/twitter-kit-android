@@ -92,8 +92,9 @@ public class TweetPojoActivity extends TweetUiActivity {
             InputStreamReader reader = null;
             try {
                 reader = new InputStreamReader(getResources().openRawResource(R.raw.tweets));
-                return gson.fromJson(reader, new TypeToken<ArrayList<Tweet>>() {}.getType());
-            }finally {
+                return gson.fromJson(reader, new TypeToken<ArrayList<Tweet>>() {
+                }.getType());
+            } finally {
                 CommonUtils.closeQuietly(reader);
             }
         }

@@ -19,6 +19,7 @@ package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.models.Tweet;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -26,59 +27,59 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class UtilsTest {
 
     @Test
     public void testNumberOrDefault_validNumber() {
-        assertEquals(Long.valueOf(123), Utils.numberOrDefault("123", -1L));
+        Assert.assertThat(Utils.numberOrDefault("123", -1L), is(Long.valueOf(123)));
     }
 
     @Test
     public void testNumberOrDefault_invalidNumber() {
-        assertEquals(Long.valueOf(-1L), Utils.numberOrDefault("abc", -1L));
+        Assert.assertThat(Utils.numberOrDefault("abc", -1L), is(Long.valueOf(-1L)));
     }
 
     @Test
     public void testStringOrEmpty_validString() {
-        assertEquals("string", Utils.stringOrEmpty("string"));
+        Assert.assertThat(Utils.stringOrEmpty("string"), is("string"));
     }
 
     @Test
     public void testStringOrEmpty_nullString() {
-        assertEquals("", Utils.stringOrEmpty(null));
+        Assert.assertThat(Utils.stringOrEmpty(null), is(""));
     }
 
     @Test
     public void testStringOrDefault_validString() {
-        assertEquals("string", Utils.stringOrDefault("string", "default"));
+        Assert.assertThat(Utils.stringOrDefault("string", "default"), is("string"));
     }
 
     @Test
     public void testStringOrDefault_nullString() {
-        assertEquals("default", Utils.stringOrDefault(null, "default"));
+        Assert.assertThat(Utils.stringOrDefault(null, "default"), is("default"));
     }
 
     @Test
     public void testCharSeqOrEmpty_validCharSeq() {
-        assertEquals("string", Utils.charSeqOrEmpty("string"));
+        Assert.assertThat(Utils.charSeqOrEmpty("string"), is("string"));
     }
 
     @Test
     public void testCharSeqOrEmpty_nullCharSeq() {
-        assertEquals("", Utils.charSeqOrEmpty(null));
+        Assert.assertThat(Utils.charSeqOrEmpty(null), is(""));
     }
 
     @Test
     public void testCharSeqOrDefault_validCharSeq() {
-        assertEquals("string", Utils.charSeqOrDefault("string", "default"));
+        Assert.assertThat(Utils.charSeqOrDefault("string", "default"), is("string"));
     }
 
     @Test
     public void testCharSeqOrDefault_nullCharSeq() {
-        assertEquals("default", Utils.charSeqOrDefault(null, "default"));
+        Assert.assertThat(Utils.charSeqOrDefault(null, "default"), is("default"));
     }
 
     @Test
@@ -87,7 +88,7 @@ public class UtilsTest {
         final List<Tweet> tweets = new ArrayList<>();
         tweets.addAll(TestFixtures.UNORDERED_TWEETS);
         final List<Tweet> ordered = Utils.orderTweets(requestedIds, tweets);
-        assertEquals(TestFixtures.ORDERED_TWEETS, ordered);
+        Assert.assertThat(ordered, is(TestFixtures.ORDERED_TWEETS));
     }
 
     // Tweet results will match the requested Tweet ids, duplicate requested ids duplicate Tweets.
@@ -97,7 +98,7 @@ public class UtilsTest {
         final List<Tweet> tweets = new ArrayList<>();
         tweets.addAll(TestFixtures.UNORDERED_TWEETS);
         final List<Tweet> ordered = Utils.orderTweets(requestedIds, tweets);
-        assertEquals(TestFixtures.ORDERED_DUPLICATE_TWEETS, ordered);
+        Assert.assertThat(ordered, is(TestFixtures.ORDERED_DUPLICATE_TWEETS));
     }
 
     // Tweet results will match the requested Tweet ids, duplicate results ignored.
@@ -107,7 +108,7 @@ public class UtilsTest {
         final List<Tweet> tweets = new ArrayList<>();
         tweets.addAll(TestFixtures.UNORDERED_DUPLICATE_TWEETS);
         final List<Tweet> ordered = Utils.orderTweets(requestedIds, tweets);
-        assertEquals(TestFixtures.ORDERED_TWEETS, ordered);
+        Assert.assertThat(ordered, is(TestFixtures.ORDERED_TWEETS));
     }
 
     @Test
@@ -116,7 +117,7 @@ public class UtilsTest {
         final List<Tweet> tweets = new ArrayList<>();
         tweets.addAll(TestFixtures.UNORDERED_MISSING_TWEETS);
         final List<Tweet> ordered = Utils.orderTweets(requestedIds, tweets);
-        assertEquals(TestFixtures.ORDERED_MISSING_TWEETS, ordered);
+        Assert.assertThat(ordered, is(TestFixtures.ORDERED_MISSING_TWEETS));
     }
 
     // Tweet result with an extra, unrequested Tweet, not included in the result.
@@ -128,7 +129,7 @@ public class UtilsTest {
         tweets.add(TestFixtures.TEST_TWEET);
 
         final List<Tweet> ordered = Utils.orderTweets(requestedIds, tweets);
-        assertEquals(TestFixtures.ORDERED_TWEETS, ordered);
+        Assert.assertThat(ordered, is(TestFixtures.ORDERED_TWEETS));
     }
 }
 

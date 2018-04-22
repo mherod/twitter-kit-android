@@ -23,6 +23,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.res.Resources;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,10 +34,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -96,12 +94,12 @@ public class TwitterTest {
 
         Twitter.initialize(config);
 
-        assertEquals(mockExecutorService, Twitter.getInstance().getExecutorService());
-        assertEquals(mockLogger, Twitter.getLogger());
-        assertEquals(mockTwitterAuthConfig, Twitter.getInstance().getTwitterAuthConfig());
-        assertNotNull(Twitter.getInstance().getIdManager());
-        assertNotNull(Twitter.getInstance().getActivityLifecycleManager());
-        assertTrue(Twitter.getInstance().isDebug());
+        Assert.assertThat(Twitter.getInstance().getExecutorService(), is(mockExecutorService));
+        Assert.assertThat(Twitter.getLogger(), is(mockLogger));
+        Assert.assertThat(Twitter.getInstance().getTwitterAuthConfig(), is(mockTwitterAuthConfig));
+        Assert.assertThat(Twitter.getInstance().getIdManager(), notNullValue());
+        Assert.assertThat(Twitter.getInstance().getActivityLifecycleManager(), notNullValue());
+        Assert.assertThat(Twitter.getInstance().isDebug(), is(true));
 
         verifyContext(Twitter.getInstance().getContext(TEST_PACKAGE_NAME));
     }
@@ -110,24 +108,24 @@ public class TwitterTest {
     public void testInitialize_withDefaults() {
         Twitter.initialize(mockContext);
 
-        assertNotNull(Twitter.getInstance().getExecutorService());
-        assertNotNull(Twitter.getInstance().getIdManager());
-        assertNotNull(Twitter.getInstance().getActivityLifecycleManager());
-        assertEquals(Twitter.DEFAULT_LOGGER, Twitter.getLogger());
-        assertFalse(Twitter.getInstance().isDebug());
+        Assert.assertThat(Twitter.getInstance().getExecutorService(), notNullValue());
+        Assert.assertThat(Twitter.getInstance().getIdManager(), notNullValue());
+        Assert.assertThat(Twitter.getInstance().getActivityLifecycleManager(), notNullValue());
+        Assert.assertThat(Twitter.getLogger(), is(Twitter.DEFAULT_LOGGER));
+        Assert.assertThat(Twitter.getInstance().isDebug(), is(false));
 
         final TwitterAuthConfig authConfig = Twitter.getInstance().getTwitterAuthConfig();
-        assertNotNull(authConfig);
-        assertEquals(TestFixtures.KEY, authConfig.getConsumerKey());
-        assertEquals(TestFixtures.SECRET, authConfig.getConsumerSecret());
+        Assert.assertThat(authConfig, notNullValue());
+        Assert.assertThat(authConfig.getConsumerKey(), is(TestFixtures.KEY));
+        Assert.assertThat(authConfig.getConsumerSecret(), is(TestFixtures.SECRET));
 
         verifyContext(Twitter.getInstance().getContext(TEST_PACKAGE_NAME));
     }
 
     private void verifyContext(Context context) {
-        assertNotNull(context);
-        assertTrue(context instanceof TwitterContext);
-        assertTrue(context.getFilesDir().getAbsolutePath().endsWith(TEST_PATH_SUFFIX));
+        Assert.assertThat(context, notNullValue());
+        Assert.assertThat(context instanceof TwitterContext, is(true));
+        Assert.assertThat(context.getFilesDir().getAbsolutePath().endsWith(TEST_PATH_SUFFIX), is(true));
     }
 
     @Test(expected = IllegalStateException.class)

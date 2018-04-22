@@ -72,20 +72,20 @@ class TweetRepository {
     FormattedTweetText formatTweetText(final Tweet tweet) {
         if (tweet == null) return null;
 
-        final FormattedTweetText cached = formatCache.get(tweet.id);
+        final FormattedTweetText cached = formatCache.get(tweet.getId());
 
         if (cached != null) return cached;
 
         final FormattedTweetText formattedTweetText = TweetTextUtils.formatTweetText(tweet);
         if (formattedTweetText != null && !TextUtils.isEmpty(formattedTweetText.getText())) {
-            formatCache.put(tweet.id, formattedTweetText);
+            formatCache.put(tweet.getId(), formattedTweetText);
         }
 
         return formattedTweetText;
     }
 
     void updateCache(final Tweet tweet) {
-        tweetCache.put(tweet.id, tweet);
+        tweetCache.put(tweet.getId(), tweet);
     }
 
     /**

@@ -24,7 +24,7 @@ import com.twitter.sdk.android.core.internal.scribe.ScribeItem
 /**
  * ScribeClientImpl is a ScribeClient that writes scribes using a twitter-core DefaultScribeClient.
  */
-internal class ScribeClientImpl(private val scribeClient: DefaultScribeClient?) : ScribeClient {
+class ScribeClientImpl(private val scribeClient: DefaultScribeClient?) : ScribeClient {
 
     override fun scribe(eventNamespace: EventNamespace, items: List<ScribeItem>) {
         scribeClient?.scribe(eventNamespace, items)

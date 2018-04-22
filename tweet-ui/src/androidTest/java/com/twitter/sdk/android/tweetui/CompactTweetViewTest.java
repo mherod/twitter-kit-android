@@ -23,6 +23,8 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 import com.twitter.sdk.android.core.models.Tweet;
 
+import org.junit.Assert;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -107,9 +109,9 @@ public class CompactTweetViewTest extends BaseTweetViewTest {
 
     public void testGetAspectRatioForPhotoEntity() {
         final CompactTweetView compactView = createView(context, TestFixtures.TEST_PHOTO_TWEET);
-        Assert.assertEquals(1.6, compactView.getAspectRatioForPhotoEntity(1));
-        Assert.assertEquals(1.6, compactView.getAspectRatioForPhotoEntity(2));
-        Assert.assertEquals(1.6, compactView.getAspectRatioForPhotoEntity(3));
-        Assert.assertEquals(1.6, compactView.getAspectRatioForPhotoEntity(4));
+        Assert.assertEquals(1.6, compactView.getAspectRatioForPhotoEntity(1), 0.0);
+        Assert.assertEquals(1.6, compactView.getAspectRatioForPhotoEntity(2), 0.0);
+        Assert.assertEquals(1.6, compactView.getAspectRatioForPhotoEntity(3), 0.0);
+        Assert.assertEquals(1.6, compactView.getAspectRatioForPhotoEntity(4), 0.0);
     }
 }

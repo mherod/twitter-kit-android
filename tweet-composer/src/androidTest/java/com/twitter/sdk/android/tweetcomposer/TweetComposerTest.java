@@ -24,10 +24,11 @@ import com.twitter.sdk.android.core.TwitterConfig;
 import com.twitter.sdk.android.core.TwitterCoreTestUtils;
 import com.twitter.sdk.android.core.TwitterTestUtils;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.mock;
 
 public class TweetComposerTest extends AndroidTestCase {
@@ -54,12 +55,12 @@ public class TweetComposerTest extends AndroidTestCase {
 
     public void testGetVersion() {
         final String version = BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER;
-        Assert.assertEquals(version, tweetComposer.getVersion());
+        Assert.assertThat(tweetComposer.getVersion(), is(version));
     }
 
     public void testGetIdentifier() {
         final String identifier = BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
-        Assert.assertEquals(identifier, tweetComposer.getIdentifier());
+        Assert.assertThat(tweetComposer.getIdentifier(), is(identifier));
     }
 
     public void testGetInstance_twitterNotInitialized() {
@@ -71,7 +72,7 @@ public class TweetComposerTest extends AndroidTestCase {
             TweetComposer.getInstance();
             Assert.fail("Should fail if Twitter is not initialized");
         } catch (IllegalStateException e) {
-            Assert.assertEquals(TWITTER_NOT_INIT_ERROR_MSG, e.getMessage());
+            Assert.assertThat(e.getMessage(), is(TWITTER_NOT_INIT_ERROR_MSG));
         }
     }
 }

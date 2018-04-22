@@ -22,9 +22,11 @@ import com.twitter.sdk.android.core.*;
 import com.twitter.sdk.android.core.internal.CommonUtils;
 import com.twitter.sdk.android.core.internal.IdManager;
 import okhttp3.*;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricTestRunner.class)
@@ -68,7 +70,6 @@ public class ScribeFilesSenderTest {
     private Context context;
 
     private ScribeFilesSender filesSender;
-    private String[] filenames;
     private List<File> tempFiles;
 
     @Rule
@@ -96,7 +97,7 @@ public class ScribeFilesSenderTest {
                 mockGuestSessionProvider, mock(ExecutorService.class), mockIdManager);
         filesSender.setScribeService(mockService);
 
-        filenames = new String[] {
+        String[] filenames = new String[]{
                 "se_c9666213-d768-45a1-a3ca-5941e4c35f26_1404423214376.tap",
                 "se_f6a58964-88aa-4e52-8bf8-d1d461b64392_1404423154382.tap"
         };
@@ -160,33 +161,33 @@ public class ScribeFilesSenderTest {
 
     // tests follow
     @Test
-    public void testGetScribeEventsAsJsonArrayString() throws IOException, JSONException {
+    public void testGetScribeEventsAsJsonArrayString() throws Exception {
         final String jsonArrayString = filesSender.getScribeEventsAsJsonArrayString(tempFiles);
 
         // Assert that we got back valid json
         final JSONArray jsonArray = new JSONArray(jsonArrayString);
-        assertNotNull(jsonArray);
-        assertEquals(NUM_SCRIBE_EVENTS, jsonArray.length());
+        Assert.assertThat(jsonArray, notNullValue());
+        Assert.assertThat(jsonArray.length(), is(NUM_SCRIBE_EVENTS));
     }
 
     @Test
     public void testGetApiAdapter_nullUserSession() {
         filesSender.setScribeService(null); // set api adapter to null since we pre-set it in setUp
         when(mockSessionMgr.getSession(anyLong())).thenReturn(null);
-        assertNotNull(filesSender.getScribeService());
+        Assert.assertThat(filesSender.getScribeService(), notNullValue());
     }
 
     @Test
     public void testGetApiAdapter_validSession() {
         when(mockSessionMgr.getSession(anyLong())).thenReturn(mockSession);
-        assertNotNull(filesSender.getScribeService());
+        Assert.assertThat(filesSender.getScribeService(), notNullValue());
     }
 
     @Test
     public void testGetApiAdapter_multipleCalls() {
         when(mockSessionMgr.getSession(anyLong())).thenReturn(mockSession);
         final ScribeFilesSender.ScribeService service = filesSender.getScribeService();
-        assertEquals(service, filesSender.getScribeService());
+        Assert.assertThat(filesSender.getScribeService(), is(service));
     }
 
     @Test
@@ -211,27 +212,27 @@ public class ScribeFilesSenderTest {
     @Test
     public void testSend_uploadSucceeds() {
         setUpMockServiceResponse(successResponse());
-        assertTrue(filesSender.send(tempFiles));
+        Assert.assertThat(filesSender.send(tempFiles), is(true));
     }
 
     @Test
     public void testSend_uploadFailsInternalServerError() {
         setUpMockServiceResponse(errorResponse(HttpURLConnection.HTTP_INTERNAL_ERROR));
-        assertTrue(filesSender.send(tempFiles));
+        Assert.assertThat(filesSender.send(tempFiles), is(true));
         verify(mockService, times(1)).upload(anyString(), anyString(), anyString());
     }
 
     @Test
     public void testSend_uploadFailsBadRequest() {
         setUpMockServiceResponse(errorResponse(HttpURLConnection.HTTP_BAD_REQUEST));
-        assertTrue(filesSender.send(tempFiles));
+        Assert.assertThat(filesSender.send(tempFiles), is(true));
         verify(mockService, times(1)).upload(anyString(), anyString(), anyString());
     }
 
     @Test
     public void testSend_uploadFailsForbidden() {
         setUpMockServiceResponse(errorResponse(HttpURLConnection.HTTP_FORBIDDEN));
-        assertFalse(filesSender.send(tempFiles));
+        Assert.assertThat(filesSender.send(tempFiles), is(false));
     }
 
     public Interceptor.Chain createMockChain() throws IOException{
@@ -258,7 +259,7 @@ public class ScribeFilesSenderTest {
 
         final Request request = interceptor.intercept(createMockChain()).request();
 
-        assertEquals(REQUIRED_TWITTER_POLLING_HEADER_VALUE, request.header(TWITTER_POLLING_HEADER));
+        Assert.assertThat(request.header(TWITTER_POLLING_HEADER), is(REQUIRED_TWITTER_POLLING_HEADER_VALUE));
     }
 
     @Test
@@ -271,7 +272,7 @@ public class ScribeFilesSenderTest {
 
         final Request request = interceptor.intercept(createMockChain()).request();
 
-        assertNull(request.header(USER_AGENT_HEADER));
+        Assert.assertThat(request.header(USER_AGENT_HEADER), nullValue());
     }
 
     @Test
@@ -284,7 +285,7 @@ public class ScribeFilesSenderTest {
 
         final Request request = interceptor.intercept(createMockChain()).request();
 
-        assertEquals(ANY_USER_AGENT, request.header(USER_AGENT_HEADER));
+        Assert.assertThat(request.header(USER_AGENT_HEADER), is(ANY_USER_AGENT));
     }
 
     @Test
@@ -295,7 +296,7 @@ public class ScribeFilesSenderTest {
 
         final Request request = interceptor.intercept(createMockChain()).request();
 
-        assertNull(request.header(DEVICE_ID_HEADER));
+        Assert.assertThat(request.header(DEVICE_ID_HEADER), nullValue());
     }
 
     @Test
@@ -307,6 +308,6 @@ public class ScribeFilesSenderTest {
 
         final Request request = interceptor.intercept(createMockChain()).request();
 
-        assertEquals(ANY_DEVICE_ID, request.header(DEVICE_ID_HEADER));
+        Assert.assertThat(request.header(DEVICE_ID_HEADER), is(ANY_DEVICE_ID));
     }
 }

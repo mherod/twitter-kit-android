@@ -27,6 +27,7 @@ import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.services.AccountService;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,9 +37,7 @@ import org.robolectric.RobolectricTestRunner;
 import retrofit2.Call;
 
 import static com.twitter.sdk.android.tweetcomposer.TweetUploadService.TWEET_COMPOSE_CANCEL;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
@@ -93,7 +92,7 @@ public class ComposerControllerTest {
     public void testComposerController() {
         controller = new ComposerController(mockComposerView, mockTwitterSession, Uri.EMPTY,
                 ANY_TEXT, ANY_HASHTAG, mockFinisher, mockDependencyProvider);
-        assertEquals(mockTwitterSession, controller.session);
+        Assert.assertThat(controller.session, is(mockTwitterSession));
         // assert that
         // - sets callbacks on the view
         // - sets initial Tweet text and cursor position
@@ -113,36 +112,36 @@ public class ComposerControllerTest {
         controller = new ComposerController(mockComposerView, mockTwitterSession, Uri.EMPTY,
                 ANY_TEXT, ANY_HASHTAG, mockFinisher, mockDependencyProvider);
 
-        assertEquals(0, controller.tweetTextLength(null));
-        assertEquals(0, controller.tweetTextLength(""));
-        assertEquals(1, controller.tweetTextLength("☃"));
-        assertEquals(5, controller.tweetTextLength("tweet"));
-        assertEquals(39, controller.tweetTextLength("tweet with link https://example.com"));
-        assertEquals(23, controller.tweetTextLength("https://example.com/foo/bar/foo"));
+        Assert.assertThat(controller.tweetTextLength(null), is(0));
+        Assert.assertThat(controller.tweetTextLength(""), is(0));
+        Assert.assertThat(controller.tweetTextLength("☃"), is(1));
+        Assert.assertThat(controller.tweetTextLength("tweet"), is(5));
+        Assert.assertThat(controller.tweetTextLength("tweet with link https://example.com"), is(39));
+        Assert.assertThat(controller.tweetTextLength("https://example.com/foo/bar/foo"), is(23));
     }
 
     @Test
     public void testRemainingCharCount() {
-        assertEquals(140, ComposerController.remainingCharCount(0));
-        assertEquals(139, ComposerController.remainingCharCount(1));
-        assertEquals(0, ComposerController.remainingCharCount(140));
-        assertEquals(-1, ComposerController.remainingCharCount(141));
+        Assert.assertThat(ComposerController.remainingCharCount(0), is(140));
+        Assert.assertThat(ComposerController.remainingCharCount(1), is(139));
+        Assert.assertThat(ComposerController.remainingCharCount(140), is(0));
+        Assert.assertThat(ComposerController.remainingCharCount(141), is(-1));
     }
 
     @Test
     public void testIsPostEnabled() {
-        assertFalse(ComposerController.isPostEnabled(0));
-        assertTrue(ComposerController.isPostEnabled(1));
-        assertTrue(ComposerController.isPostEnabled(140));
-        assertFalse(ComposerController.isPostEnabled(141));
+        Assert.assertThat(ComposerController.isPostEnabled(0), is(false));
+        Assert.assertThat(ComposerController.isPostEnabled(1), is(true));
+        Assert.assertThat(ComposerController.isPostEnabled(140), is(true));
+        Assert.assertThat(ComposerController.isPostEnabled(141), is(false));
     }
 
     @Test
     public void testIsTweetTextOverflow() {
-        assertFalse(ComposerController.isTweetTextOverflow(0));
-        assertFalse(ComposerController.isTweetTextOverflow(1));
-        assertFalse(ComposerController.isTweetTextOverflow(140));
-        assertTrue(ComposerController.isTweetTextOverflow(141));
+        Assert.assertThat(ComposerController.isTweetTextOverflow(0), is(false));
+        Assert.assertThat(ComposerController.isTweetTextOverflow(1), is(false));
+        Assert.assertThat(ComposerController.isTweetTextOverflow(140), is(false));
+        Assert.assertThat(ComposerController.isTweetTextOverflow(141), is(true));
     }
 
     @Test
@@ -192,10 +191,9 @@ public class ComposerControllerTest {
         final ArgumentCaptor<Intent> intentCaptor = ArgumentCaptor.forClass(Intent.class);
         verify(mockContext).startService(intentCaptor.capture());
         final Intent intent = intentCaptor.getValue();
-        assertEquals(TweetUploadService.class.getCanonicalName(),
-                intent.getComponent().getClassName());
-        assertEquals(mockAuthToken, intent.getParcelableExtra(TweetUploadService.EXTRA_USER_TOKEN));
-        assertEquals(Uri.EMPTY, intent.getParcelableExtra(TweetUploadService.EXTRA_IMAGE_URI));
+        Assert.assertThat(intent.getComponent().getClassName(), is(TweetUploadService.class.getCanonicalName()));
+        Assert.assertThat(intent.getParcelableExtra(TweetUploadService.EXTRA_USER_TOKEN), is(mockAuthToken));
+        Assert.assertThat(intent.getParcelableExtra(TweetUploadService.EXTRA_IMAGE_URI), is(Uri.EMPTY));
         verify(mockComposerScribeClient).click(eq(ScribeConstants.SCRIBE_TWEET_ELEMENT));
     }
 
@@ -222,6 +220,6 @@ public class ComposerControllerTest {
         verify(mockContext).sendBroadcast(intentCaptor.capture());
 
         final Intent capturedIntent = intentCaptor.getValue();
-        assertEquals(TWEET_COMPOSE_CANCEL, capturedIntent.getAction());
+        Assert.assertThat(capturedIntent.getAction(), is(TWEET_COMPOSE_CANCEL));
     }
 }

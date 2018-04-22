@@ -22,15 +22,14 @@ import android.app.Activity;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -52,9 +51,9 @@ public class AuthStateTest  {
     public void testBeginAuthorize() {
         final AuthState authState = new AuthState();
         final boolean result = authState.beginAuthorize(mockActivity, mockAuthHandler);
-        assertTrue(result);
-        assertTrue(authState.isAuthorizeInProgress());
-        assertEquals(mockAuthHandler, authState.getAuthHandler());
+        Assert.assertThat(result, is(true));
+        Assert.assertThat(authState.isAuthorizeInProgress(), is(true));
+        Assert.assertThat(authState.getAuthHandler(), is(mockAuthHandler));
     }
 
     @Test
@@ -65,18 +64,18 @@ public class AuthStateTest  {
         final boolean result = authState.beginAuthorize(mockActivity, mockAuthHandler);
         // Verify that attempting to begin authorize fails if the AuthHandler#authorize returns
         // false.
-        assertFalse(result);
-        assertFalse(authState.isAuthorizeInProgress());
-        assertNull(authState.getAuthHandler());
+        Assert.assertThat(result, is(false));
+        Assert.assertThat(authState.isAuthorizeInProgress(), is(false));
+        Assert.assertThat(authState.getAuthHandler(), nullValue());
     }
 
     @Test
     public void testBeginAuthorize_authorizeInProgress() {
         final AuthState authState = new AuthState();
         final boolean result = authState.beginAuthorize(mockActivity, mockAuthHandler);
-        assertTrue(result);
+        Assert.assertThat(result, is(true));
         // Verify that attempting to begin another authorize fails since one is already in progress.
-        assertFalse(authState.beginAuthorize(mockActivity, mockAuthHandler));
+        Assert.assertThat(authState.beginAuthorize(mockActivity, mockAuthHandler), is(false));
     }
 
     @Test
@@ -94,22 +93,22 @@ public class AuthStateTest  {
                         return true;
                     }
                 });
-        assertFalse(result);
+        Assert.assertThat(result, is(false));
     }
 
     @Test
     public void testEndAuthorize() {
         final AuthState authState = new AuthState();
         final boolean result = authState.beginAuthorize(mockActivity, mockAuthHandler);
-        assertTrue(result);
-        assertTrue(authState.isAuthorizeInProgress());
-        assertEquals(mockAuthHandler, authState.getAuthHandler());
+        Assert.assertThat(result, is(true));
+        Assert.assertThat(authState.isAuthorizeInProgress(), is(true));
+        Assert.assertThat(authState.getAuthHandler(), is(mockAuthHandler));
 
         authState.endAuthorize();
 
         // Verify that end authorize resets everything.
-        assertFalse(authState.isAuthorizeInProgress());
-        assertNull(authState.getAuthHandler());
+        Assert.assertThat(authState.isAuthorizeInProgress(), is(false));
+        Assert.assertThat(authState.getAuthHandler(), nullValue());
     }
 
     @Test

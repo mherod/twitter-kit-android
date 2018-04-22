@@ -166,6 +166,7 @@ public class DefaultScribeClient extends ScribeClient {
      * interface.
      */
     private static boolean isEnabled() {
+        //noinspection ConstantConditions
         return !BuildConfig.BUILD_TYPE.equals(DEBUG_BUILD);
     }
 

@@ -17,6 +17,10 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import org.junit.Assert;
+
+import static org.hamcrest.CoreMatchers.notNullValue;
+
 public class TweetViewXmlTest extends BaseTweetViewXmlTest {
     @Override
     TweetView getView() {
@@ -32,7 +36,7 @@ public class TweetViewXmlTest extends BaseTweetViewXmlTest {
 
     public void testLayout() {
         final TweetView view = getView();
-        Assert.assertNotNull(view);
-        Assert.assertEquals(R.layout.tw__tweet, view.getLayout());
+        Assert.assertThat(view, notNullValue());
+        Assert.assertThat(view.getLayout(), is(R.layout.tw__tweet));
     }
 }

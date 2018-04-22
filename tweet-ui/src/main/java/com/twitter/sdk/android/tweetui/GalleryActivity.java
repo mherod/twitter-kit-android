@@ -131,7 +131,7 @@ public class GalleryActivity extends Activity {
 
     void scribeImpressionEvent(int mediaEntityPosition) {
         final MediaEntity mediaEntity = galleryItem.mediaEntities.get(mediaEntityPosition);
-        final ScribeItem scribeItem = ScribeItem.fromMediaEntity(galleryItem.tweetId, mediaEntity);
+        final ScribeItem scribeItem = ScribeItem.Companion.fromMediaEntity(galleryItem.tweetId, mediaEntity);
         galleryScribeClient.impression(scribeItem);
     }
 

@@ -25,8 +25,11 @@ import com.twitter.sdk.android.core.TwitterCoreTestUtils;
 import com.twitter.sdk.android.core.TwitterTestUtils;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 
+import org.junit.Assert;
+
 import java.util.concurrent.ExecutorService;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.Mockito.mock;
 
 public class TweetUiTest extends AndroidTestCase {
@@ -55,19 +58,18 @@ public class TweetUiTest extends AndroidTestCase {
     }
 
     public void testGetVersion() {
-        Assert.assertEquals(BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER,
-                tweetUi.getVersion());
+        Assert.assertThat(tweetUi.getVersion(), is(BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER));
     }
 
     public void testGetIdentifier() {
         final String identifier = BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
-        Assert.assertEquals(identifier, tweetUi.getIdentifier());
+        Assert.assertThat(tweetUi.getIdentifier(), is(identifier));
     }
 
     public void testGetInstance_tweeterStarted() {
         try {
             final TweetUi instance = TweetUi.getInstance();
-            Assert.assertNotNull(instance);
+            Assert.assertThat(instance, notNullValue());
         } catch (Exception ex) {
             Assert.fail("IllegalStateException was expected");
         }

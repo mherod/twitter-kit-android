@@ -52,7 +52,7 @@ class ShareTweetAction implements View.OnClickListener {
     }
 
     void onClick(Context context, Resources resources) {
-        if (tweet == null || tweet.user == null) return;
+        if (tweet == null || tweet.getUser() == null) return;
 
         scribeShareAction();
 
@@ -66,12 +66,12 @@ class ShareTweetAction implements View.OnClickListener {
 
     String getShareContent(Resources resources) {
         return resources.getString(R.string.tw__share_content_format,
-                tweet.user.screenName, Long.toString(tweet.id));
+                tweet.getUser().getScreenName(), Long.toString(tweet.getId()));
     }
 
     String getShareSubject(Resources resources) {
-        return resources.getString(R.string.tw__share_subject_format, tweet.user.name,
-                tweet.user.screenName);
+        return resources.getString(R.string.tw__share_subject_format, tweet.getUser().getName(),
+                tweet.getUser().getScreenName());
     }
 
     void launchShareIntent(Intent chooser, Context context) {

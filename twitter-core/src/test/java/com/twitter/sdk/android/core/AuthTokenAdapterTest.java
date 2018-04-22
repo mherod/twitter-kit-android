@@ -23,13 +23,13 @@ import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
 import com.twitter.sdk.android.core.internal.oauth.OAuthUtils;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class AuthTokenAdapterTest  {
@@ -87,12 +87,12 @@ public class AuthTokenAdapterTest  {
 
     @Test
     public void testGetAuthTypeString() {
-        assertEquals("oauth1a", AuthTokenAdapter.getAuthTypeString(TwitterAuthToken.class));
+        Assert.assertThat(AuthTokenAdapter.getAuthTypeString(TwitterAuthToken.class), is("oauth1a"));
     }
 
     @Test
     public void testGetAuthTypeString_unregisteredAuthType() {
-        assertEquals("", AuthTokenAdapter.getAuthTypeString(TestAuthToken.class));
+        Assert.assertThat(AuthTokenAdapter.getAuthTypeString(TestAuthToken.class), is(""));
     }
 
     @Test
@@ -100,7 +100,7 @@ public class AuthTokenAdapterTest  {
         final AuthTokenWrapper authTokenWrapper = new AuthTokenWrapper(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET, CREATED_AT));
         final String json = gson.toJson(authTokenWrapper);
-        assertEquals(json, JSON_OAUTH1A_TOKEN, json);
+        Assert.assertThat(json, json, is(JSON_OAUTH1A_TOKEN));
     }
 
     @Test
@@ -108,7 +108,7 @@ public class AuthTokenAdapterTest  {
         final AuthTokenWrapper test = new AuthTokenWrapper(
                 OAuthUtils.createOAuth2Token(TOKEN_TYPE, ACCESS_TOKEN, CREATED_AT));
         final String json = gson.toJson(test);
-        assertEquals(json, JSON_OAUTH2_TOKEN, json);
+        Assert.assertThat(json, json, is(JSON_OAUTH2_TOKEN));
     }
 
     @Test
@@ -117,72 +117,72 @@ public class AuthTokenAdapterTest  {
                 OAuthUtils.createGuestAuthToken(TOKEN_TYPE, ACCESS_TOKEN, GUEST_TOKEN,
                         CREATED_AT));
         final String json = gson.toJson(test);
-        assertEquals(json, JSON_GUEST_AUTH_TOKEN, json);
+        Assert.assertThat(json, json, is(JSON_GUEST_AUTH_TOKEN));
     }
 
     @Test
     public void testDeserialize_oauth1aToken() {
         final AuthTokenWrapper authTokenWrapper = gson.fromJson(JSON_OAUTH1A_TOKEN,
                 AuthTokenWrapper.class);
-        assertTrue(authTokenWrapper.authToken instanceof TwitterAuthToken);
+        Assert.assertThat(authTokenWrapper.authToken instanceof TwitterAuthToken, is(true));
         final TwitterAuthToken authToken = (TwitterAuthToken) authTokenWrapper.authToken;
-        assertEquals(TestFixtures.TOKEN, authToken.getToken());
-        assertEquals(TestFixtures.SECRET, authToken.getSecret());
+        Assert.assertThat(authToken.getToken(), is(TestFixtures.TOKEN));
+        Assert.assertThat(authToken.getSecret(), is(TestFixtures.SECRET));
     }
 
     @Test
     public void testDeserialize_oauth2Token() {
         final AuthTokenWrapper authTokenWrapper = gson.fromJson(JSON_OAUTH2_TOKEN,
                 AuthTokenWrapper.class);
-        assertTrue(authTokenWrapper.authToken instanceof OAuth2Token);
+        Assert.assertThat(authTokenWrapper.authToken instanceof OAuth2Token, is(true));
         final OAuth2Token authToken = (OAuth2Token) authTokenWrapper.authToken;
-        assertEquals(TOKEN_TYPE, authToken.getTokenType());
-        assertEquals(ACCESS_TOKEN, authToken.getAccessToken());
+        Assert.assertThat(authToken.getTokenType(), is(TOKEN_TYPE));
+        Assert.assertThat(authToken.getAccessToken(), is(ACCESS_TOKEN));
     }
 
     @Test
     public void testDeserialize_guestAuthToken() {
         final AuthTokenWrapper authTokenWrapper = gson.fromJson(JSON_GUEST_AUTH_TOKEN,
                 AuthTokenWrapper.class);
-        assertTrue(authTokenWrapper.authToken instanceof GuestAuthToken);
+        Assert.assertThat(authTokenWrapper.authToken instanceof GuestAuthToken, is(true));
         final GuestAuthToken authToken = (GuestAuthToken) authTokenWrapper.authToken;
-        assertEquals(GUEST_TOKEN, authToken.getGuestToken());
-        assertEquals(TOKEN_TYPE, authToken.getTokenType());
-        assertEquals(ACCESS_TOKEN, authToken.getAccessToken());
+        Assert.assertThat(authToken.getGuestToken(), is(GUEST_TOKEN));
+        Assert.assertThat(authToken.getTokenType(), is(TOKEN_TYPE));
+        Assert.assertThat(authToken.getAccessToken(), is(ACCESS_TOKEN));
     }
 
     @Test
     public void testDeserialize_oauth1aTokenMissingCreatedAt() {
         final AuthTokenWrapper authTokenWrapper = gson.fromJson(
                 JSON_OAUTH1A_TOKEN_MISSING_CREATED_AT, AuthTokenWrapper.class);
-        assertTrue(authTokenWrapper.authToken instanceof TwitterAuthToken);
+        Assert.assertThat(authTokenWrapper.authToken instanceof TwitterAuthToken, is(true));
         final TwitterAuthToken authToken = (TwitterAuthToken) authTokenWrapper.authToken;
-        assertEquals(TestFixtures.TOKEN, authToken.getToken());
-        assertEquals(TestFixtures.SECRET, authToken.getSecret());
-        assertEquals(0, authToken.getCreatedAt());
+        Assert.assertThat(authToken.getToken(), is(TestFixtures.TOKEN));
+        Assert.assertThat(authToken.getSecret(), is(TestFixtures.SECRET));
+        Assert.assertThat(authToken.getCreatedAt(), is(0));
     }
 
     @Test
     public void testDeserialize_oauth2TokenMissingCreatedAt() {
         final AuthTokenWrapper authTokenWrapper = gson.fromJson(
                 JSON_OAUTH2_TOKEN_MISSING_CREATED_AT, AuthTokenWrapper.class);
-        assertTrue(authTokenWrapper.authToken instanceof OAuth2Token);
+        Assert.assertThat(authTokenWrapper.authToken instanceof OAuth2Token, is(true));
         final OAuth2Token authToken = (OAuth2Token) authTokenWrapper.authToken;
-        assertEquals(TOKEN_TYPE, authToken.getTokenType());
-        assertEquals(ACCESS_TOKEN, authToken.getAccessToken());
-        assertEquals(0, authToken.getCreatedAt());
+        Assert.assertThat(authToken.getTokenType(), is(TOKEN_TYPE));
+        Assert.assertThat(authToken.getAccessToken(), is(ACCESS_TOKEN));
+        Assert.assertThat(authToken.getCreatedAt(), is(0));
     }
 
     @Test
     public void testDeserialize_guestAuthTokenMissingCreatedAt() {
         final AuthTokenWrapper authTokenWrapper = gson.fromJson(
                 JSON_GUEST_AUTH_TOKEN_MISSING_CREATED_AT, AuthTokenWrapper.class);
-        assertTrue(authTokenWrapper.authToken instanceof GuestAuthToken);
+        Assert.assertThat(authTokenWrapper.authToken instanceof GuestAuthToken, is(true));
         final GuestAuthToken authToken = (GuestAuthToken) authTokenWrapper.authToken;
-        assertEquals(GUEST_TOKEN, authToken.getGuestToken());
-        assertEquals(TOKEN_TYPE, authToken.getTokenType());
-        assertEquals(ACCESS_TOKEN, authToken.getAccessToken());
-        assertEquals(0, authToken.getCreatedAt());
+        Assert.assertThat(authToken.getGuestToken(), is(GUEST_TOKEN));
+        Assert.assertThat(authToken.getTokenType(), is(TOKEN_TYPE));
+        Assert.assertThat(authToken.getAccessToken(), is(ACCESS_TOKEN));
+        Assert.assertThat(authToken.getCreatedAt(), is(0));
     }
 
     private static class AuthTokenWrapper {

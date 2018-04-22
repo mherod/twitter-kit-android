@@ -22,6 +22,7 @@ import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.internal.scribe.SyndicationClientEvent;
 import com.twitter.sdk.android.core.models.MediaEntity;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -31,9 +32,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.verify;
 
 public class GalleryScribeClientImplTest {
@@ -70,19 +69,19 @@ public class GalleryScribeClientImplTest {
 
         final EventNamespace ns = namespaceArgumentCaptor.getValue();
         assertBaseNamespace(ns);
-        assertEquals(TEST_SCRIBE_SHOW_ACTION, ns.action);
+        Assert.assertThat(ns.action, is(TEST_SCRIBE_SHOW_ACTION));
     }
 
     @Test
     public void testImpression() {
-        final ScribeItem scribeItem = ScribeItem.fromMediaEntity(TestFixtures.TEST_TWEET_ID,
+        final ScribeItem scribeItem = ScribeItem.Companion.fromMediaEntity(TestFixtures.TEST_TWEET_ID,
                 createTestEntity());
         galleryScribeClient.impression(scribeItem);
         verify(tweetUi).scribe(namespaceArgumentCaptor.capture(), itemsArgumentCaptor.capture());
 
         final EventNamespace ns = namespaceArgumentCaptor.getValue();
         assertBaseNamespace(ns);
-        assertEquals(TEST_SCRIBE_IMPRESSION_ACTION, ns.action);
+        Assert.assertThat(ns.action, is(TEST_SCRIBE_IMPRESSION_ACTION));
 
         final List<ScribeItem> items = itemsArgumentCaptor.getValue();
         assertItems(items);
@@ -95,7 +94,7 @@ public class GalleryScribeClientImplTest {
 
         final EventNamespace ns = namespaceArgumentCaptor.getValue();
         assertBaseNamespace(ns);
-        assertEquals(TEST_SCRIBE_NAVIGATE_ACTION, ns.action);
+        Assert.assertThat(ns.action, is(TEST_SCRIBE_NAVIGATE_ACTION));
     }
 
     @Test
@@ -105,33 +104,33 @@ public class GalleryScribeClientImplTest {
 
         final EventNamespace ns = namespaceArgumentCaptor.getValue();
         assertBaseNamespace(ns);
-        assertEquals(TEST_SCRIBE_DISMISS_ACTION, ns.action);
+        Assert.assertThat(ns.action, is(TEST_SCRIBE_DISMISS_ACTION));
     }
 
 
     static void assertItems(List<ScribeItem> items) {
-        assertNotNull(items);
-        assertEquals(1, items.size());
-        assertEquals(TestFixtures.TEST_TWEET_ID, items.get(0).id.longValue());
-        assertEquals(ScribeItem.TYPE_TWEET, items.get(0).itemType.intValue());
+        Assert.assertThat(items, notNullValue());
+        Assert.assertThat(items.size(), is(1));
+        Assert.assertThat(items.get(0).getId().longValue(), is(TestFixtures.TEST_TWEET_ID));
+        Assert.assertThat(items.get(0).getItemType().intValue(), is(ScribeItem.TYPE_TWEET));
 
-        assertMediaDetails(items.get(0).mediaDetails, TEST_TYPE_CONSUMER_ID);
+        assertMediaDetails(items.get(0).getMediaDetails(), TEST_TYPE_CONSUMER_ID);
     }
 
     static void assertMediaDetails(ScribeItem.MediaDetails mediaDetails, int type) {
-        assertNotNull(mediaDetails);
-        assertEquals(TestFixtures.TEST_TWEET_ID, mediaDetails.contentId);
-        assertEquals(type, mediaDetails.mediaType);
-        assertEquals(TEST_MEDIA_ID, mediaDetails.publisherId);
+        Assert.assertThat(mediaDetails, notNullValue());
+        Assert.assertThat(mediaDetails.getContentId(), is(TestFixtures.TEST_TWEET_ID));
+        Assert.assertThat(mediaDetails.getMediaType(), is(type));
+        Assert.assertThat(mediaDetails.getPublisherId(), is(TEST_MEDIA_ID));
     }
 
 
     static void assertBaseNamespace(EventNamespace ns) {
-        assertEquals(SyndicationClientEvent.CLIENT_NAME, ns.client);
-        assertEquals(TEST_TFW_CLIENT_EVENT_PAGE, ns.page);
-        assertEquals(TEST_TFW_CLIENT_EVENT_SECTION, ns.section);
-        assertNull(ns.element);
-        assertNull(ns.component);
+        Assert.assertThat(ns.client, is(SyndicationClientEvent.CLIENT_NAME));
+        Assert.assertThat(ns.page, is(TEST_TFW_CLIENT_EVENT_PAGE));
+        Assert.assertThat(ns.section, is(TEST_TFW_CLIENT_EVENT_SECTION));
+        Assert.assertThat(ns.element, nullValue());
+        Assert.assertThat(ns.component, nullValue());
     }
 
     private MediaEntity createTestEntity() {

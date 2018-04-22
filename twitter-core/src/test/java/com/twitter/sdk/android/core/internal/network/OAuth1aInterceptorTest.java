@@ -23,6 +23,7 @@ import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.oauth.OAuthConstants;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,8 +39,7 @@ import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -90,8 +90,8 @@ public class OAuth1aInterceptorTest {
         verify(mockChain).proceed(requestCaptor.capture());
 
         final Request signedRequest = requestCaptor.getValue();
-        assertNotNull(signedRequest.header(OAuthConstants.HEADER_AUTHORIZATION));
-        assertEquals(TEST_HEADER, signedRequest.header(TEST_HEADER));
+        Assert.assertThat(signedRequest.header(OAuthConstants.HEADER_AUTHORIZATION), notNullValue());
+        Assert.assertThat(signedRequest.header(TEST_HEADER), is(TEST_HEADER));
     }
 
     @Test
@@ -100,7 +100,7 @@ public class OAuth1aInterceptorTest {
 
         final String header = interceptor.getAuthorizationHeader(request);
 
-        assertNotNull(header);
+        Assert.assertThat(header, notNullValue());
     }
 
     @Test
@@ -117,9 +117,9 @@ public class OAuth1aInterceptorTest {
 
         final Map<String, String> params = interceptor.getPostParams(request);
 
-        assertEquals(2, params.size());
-        assertEquals(POST_VALUE, params.get(POST_KEY));
-        assertEquals(POST_VALUE_2, params.get(POST_KEY_2_ENCODED));
+        Assert.assertThat(params.size(), is(2));
+        Assert.assertThat(params.get(POST_KEY), is(POST_VALUE));
+        Assert.assertThat(params.get(POST_KEY_2_ENCODED), is(POST_VALUE_2));
     }
 
     @Test
@@ -133,7 +133,7 @@ public class OAuth1aInterceptorTest {
 
         final Map<String, String> params = interceptor.getPostParams(request);
 
-        assertEquals(0, params.size());
+        Assert.assertThat(params.size(), is(0));
     }
 
     @Test
@@ -142,6 +142,6 @@ public class OAuth1aInterceptorTest {
 
         final Map<String, String> params = interceptor.getPostParams(request);
 
-        assertEquals(0, params.size());
+        Assert.assertThat(params.size(), is(0));
     }
 }

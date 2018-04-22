@@ -25,6 +25,7 @@ import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.internal.IdManager;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,10 +35,7 @@ import org.robolectric.RuntimeEnvironment;
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -85,17 +83,16 @@ public class ScribeClientTest {
     public void testGetScribeHandler() throws IOException {
         final ScribeHandler loggedOutScribeHandler
                 = scribeClient.getScribeHandler(GuestSession.LOGGED_OUT_USER_ID);
-        assertNotNull(loggedOutScribeHandler);
+        Assert.assertThat(loggedOutScribeHandler, notNullValue());
         // Verify that asking for a scribe handler for the same owner id results in the same one
         // being returned.
-        assertEquals(loggedOutScribeHandler,
-                scribeClient.getScribeHandler(GuestSession.LOGGED_OUT_USER_ID));
+        Assert.assertThat(scribeClient.getScribeHandler(GuestSession.LOGGED_OUT_USER_ID), is(loggedOutScribeHandler));
 
         // Verify that different scribe handlers are returned for the different user ids.
         final ScribeHandler testUserScribeHandler
                 = scribeClient.getScribeHandler(TEST_USER_ID);
-        assertNotNull(testUserScribeHandler);
-        assertNotSame(loggedOutScribeHandler, testUserScribeHandler);
+        Assert.assertThat(testUserScribeHandler, notNullValue());
+        Assert.assertThat(testUserScribeHandler, not(sameInstance(loggedOutScribeHandler)));
     }
 
     @Test
@@ -110,7 +107,7 @@ public class ScribeClientTest {
 
         final EventsStrategy<ScribeEvent> scribeStrategy
                 = scribeClient.getScribeStrategy(GuestSession.LOGGED_OUT_USER_ID, null);
-        assertTrue(scribeStrategy instanceof EnabledScribeStrategy);
+        Assert.assertThat(scribeStrategy instanceof EnabledScribeStrategy, is(true));
     }
 
     @Test
@@ -125,24 +122,24 @@ public class ScribeClientTest {
 
         final EventsStrategy<ScribeEvent> scribeStrategy
                 = scribeClient.getScribeStrategy(GuestSession.LOGGED_OUT_USER_ID, null);
-        assertTrue(scribeStrategy instanceof DisabledEventsStrategy);
+        Assert.assertThat(scribeStrategy instanceof DisabledEventsStrategy, is(true));
     }
 
     @Test
     public void testGetWorkingFileNameForOwner() {
-        assertTrue(scribeClient.getWorkingFileNameForOwner(GuestSession.LOGGED_OUT_USER_ID)
-                .startsWith(Long.toString(GuestSession.LOGGED_OUT_USER_ID)));
+        Assert.assertThat(scribeClient.getWorkingFileNameForOwner(GuestSession.LOGGED_OUT_USER_ID)
+                .startsWith(Long.toString(GuestSession.LOGGED_OUT_USER_ID)), is(true));
 
-        assertTrue(scribeClient.getWorkingFileNameForOwner(TEST_USER_ID)
-                .startsWith(Long.toString(TEST_USER_ID)));
+        Assert.assertThat(scribeClient.getWorkingFileNameForOwner(TEST_USER_ID)
+                .startsWith(Long.toString(TEST_USER_ID)), is(true));
     }
 
     @Test
     public void testGetStorageDirForOwner() {
-        assertTrue(scribeClient.getStorageDirForOwner(GuestSession.LOGGED_OUT_USER_ID)
-                .startsWith(Long.toString(GuestSession.LOGGED_OUT_USER_ID)));
+        Assert.assertThat(scribeClient.getStorageDirForOwner(GuestSession.LOGGED_OUT_USER_ID)
+                .startsWith(Long.toString(GuestSession.LOGGED_OUT_USER_ID)), is(true));
 
-        assertTrue(scribeClient.getStorageDirForOwner(TEST_USER_ID)
-                .startsWith(Long.toString(TEST_USER_ID)));
+        Assert.assertThat(scribeClient.getStorageDirForOwner(TEST_USER_ID)
+                .startsWith(Long.toString(TEST_USER_ID)), is(true));
     }
 }

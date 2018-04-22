@@ -19,14 +19,13 @@ package com.twitter.sdk.android.core;
 
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class GuestSessionSerializerTest {
@@ -54,38 +53,38 @@ public class GuestSessionSerializerTest {
 
     @Test
     public void testSerialize_sessionNull() {
-        assertEquals("", serializer.serialize(null));
+        Assert.assertThat(serializer.serialize(null), is(""));
     }
 
     @Test
     public void testSerialize_sessionAuthTokenIsGuestAuthToken() {
         final GuestSession session = new GuestSession(new GuestAuthToken(TEST_TOKEN_TYPE,
                 TEST_ACCESS_TOKEN, TEST_GUEST_TOKEN, CREATED_AT));
-        assertEquals(JSON_SESSION_GUEST, serializer.serialize(session));
+        Assert.assertThat(serializer.serialize(session), is(JSON_SESSION_GUEST));
     }
 
     @Test
     public void testDeserialize_serializedStringNull() {
-        assertEquals(null, serializer.deserialize(null));
+        Assert.assertThat(serializer.deserialize(null), nullValue());
     }
 
     @Test
     public void testDeserialize_serializedStringEmpty() {
-        assertEquals(null, serializer.deserialize(""));
+        Assert.assertThat(serializer.deserialize(""), nullValue());
     }
 
     @Test
     public void testDeserialize_serializedStringAuthTokenIsGuestAuthToken() {
         final GuestSession session = serializer.deserialize(JSON_SESSION_GUEST);
-        assertSame(GuestAuthToken.class, session.getAuthToken().getClass());
-        assertEquals(TEST_TOKEN_TYPE, session.getAuthToken().getTokenType());
-        assertEquals(TEST_ACCESS_TOKEN, session.getAuthToken().getAccessToken());
-        assertEquals(TEST_GUEST_TOKEN, session.getAuthToken().getGuestToken());
+        Assert.assertThat(session.getAuthToken().getClass(), sameInstance(GuestAuthToken.class));
+        Assert.assertThat(session.getAuthToken().getTokenType(), is(TEST_TOKEN_TYPE));
+        Assert.assertThat(session.getAuthToken().getAccessToken(), is(TEST_ACCESS_TOKEN));
+        Assert.assertThat(session.getAuthToken().getGuestToken(), is(TEST_GUEST_TOKEN));
     }
 
     @Test
     public void testDeserialize_serializedStringAuthTokenIsInvalid() {
         final GuestSession session = serializer.deserialize(JSON_SESSION_INVALID_AUTH_TYPE);
-        assertNull(session);
+        Assert.assertThat(session, nullValue());
     }
 }

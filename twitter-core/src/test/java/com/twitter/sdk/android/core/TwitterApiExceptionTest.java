@@ -18,12 +18,13 @@
 package com.twitter.sdk.android.core;
 
 import com.twitter.sdk.android.core.models.ApiError;
+
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class TwitterApiExceptionTest  {
@@ -42,33 +43,33 @@ public class TwitterApiExceptionTest  {
     @Test
     public void testParseErrorCode() {
         final ApiError apiError = TwitterApiException.parseApiError(API_ERROR_JSON);
-        assertEquals(API_ERROR_CODE, apiError.code);
-        assertEquals(API_ERROR_MESSAGE, apiError.message);
+        Assert.assertThat(apiError.code, is(API_ERROR_CODE));
+        Assert.assertThat(apiError.message, is(API_ERROR_MESSAGE));
     }
 
     @Test
     public void testParseError_nonJSON() {
-        assertNull(TwitterApiException.parseApiError(API_ERROR_NON_JSON));
+        Assert.assertThat(TwitterApiException.parseApiError(API_ERROR_NON_JSON), nullValue());
     }
 
     @Test
     public void testParseError_noErrorCode() {
         final ApiError apiError = TwitterApiException.parseApiError(API_ERROR_NO_ERROR_CODE);
-        assertEquals(DEFAULT_ERROR_CODE, apiError.code);
-        assertEquals(API_ERROR_MESSAGE, apiError.message);
+        Assert.assertThat(apiError.code, is(DEFAULT_ERROR_CODE));
+        Assert.assertThat(apiError.message, is(API_ERROR_MESSAGE));
     }
 
     @Test
     public void testParseError_noErrors() {
         final ApiError apiError = TwitterApiException.parseApiError(API_ERROR_NO_ERRORS);
-        assertNull(apiError);
+        Assert.assertThat(apiError, nullValue());
     }
 
     @Test
     public void testParseError_noMessage() {
         final ApiError apiError = TwitterApiException.parseApiError(API_ERROR_NO_ERROR_MESSAGE);
-        assertEquals(API_ERROR_CODE, apiError.code);
-        assertEquals(null, apiError.message);
+        Assert.assertThat(apiError.code, is(API_ERROR_CODE));
+        Assert.assertThat(apiError.message, nullValue());
     }
 
 }

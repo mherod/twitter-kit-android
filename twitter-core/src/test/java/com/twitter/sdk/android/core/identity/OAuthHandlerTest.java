@@ -25,12 +25,13 @@ import android.os.Bundle;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.doNothing;
@@ -69,6 +70,6 @@ public class OAuthHandlerTest  {
     public void testNewIntent() {
         final Activity mockActivity = mock(Activity.class);
         final Intent intent = authHandler.newIntent(mockActivity);
-        assertEquals(mockAuthConfig, intent.getParcelableExtra(OAuthActivity.EXTRA_AUTH_CONFIG));
+        Assert.assertThat(intent.getParcelableExtra(OAuthActivity.EXTRA_AUTH_CONFIG), is(mockAuthConfig));
     }
 }

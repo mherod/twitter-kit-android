@@ -18,12 +18,14 @@
 package com.twitter.sdk.android.core.models;
 
 import com.google.gson.Gson;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class EntityTest  {
@@ -43,7 +45,7 @@ public class EntityTest  {
     @Test
     public void testDeserialization() {
         final Entity entity = gson.fromJson(TEST_JSON, Entity.class);
-        assertEquals(TEST_INDICES_START, entity.getStart());
-        assertEquals(TEST_INDICES_END, entity.getEnd());
+        Assert.assertThat(entity.getStart(), is(TEST_INDICES_START));
+        Assert.assertThat(entity.getEnd(), is(TEST_INDICES_END));
     }
 }

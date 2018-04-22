@@ -36,13 +36,13 @@ import java.util.List;
  * TweetTimelineListAdapter is a ListAdapter which can provide Timeline Tweets to ListViews.
  */
 public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
-    protected Callback<Tweet> actionCallback;
-    protected final int styleResId;
-    protected TweetUi tweetUi;
+    private Callback<Tweet> actionCallback;
+    private final int styleResId;
+    private TweetUi tweetUi;
 
     static final String TOTAL_FILTERS_JSON_PROP = "total_filters";
     static final String DEFAULT_FILTERS_JSON_MSG = "{\"total_filters\":0}";
-    final Gson gson = new Gson();
+    private final Gson gson = new Gson();
 
     /**
      * Constructs a TweetTimelineListAdapter for the given Tweet Timeline.
@@ -63,8 +63,8 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
                              Callback<Tweet> cb, TweetUi tweetUi) {
         super(context, delegate);
         this.styleResId = styleResId;
-        this.actionCallback = new ReplaceTweetCallback(delegate, cb);
-        this.tweetUi = tweetUi;
+        this.setActionCallback(new ReplaceTweetCallback(delegate, cb));
+        this.setTweetUi(tweetUi);
 
         scribeTimelineImpression();
     }
@@ -80,8 +80,8 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
         View rowView = convertView;
         final Tweet tweet = getItem(position);
         if (rowView == null) {
-            final BaseTweetView tv = new CompactTweetView(context, tweet, styleResId);
-            tv.setOnActionCallback(actionCallback);
+            final BaseTweetView tv = new CompactTweetView(context, tweet, getStyleResId());
+            tv.setOnActionCallback(getActionCallback());
             rowView = tv;
         } else {
             ((BaseTweetView) rowView).setTweet(tweet);
@@ -99,13 +99,13 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
             jsonMessage = DEFAULT_FILTERS_JSON_MSG;
         }
 
-        final ScribeItem scribeItem = ScribeItem.fromMessage(jsonMessage);
+        final ScribeItem scribeItem = ScribeItem.Companion.fromMessage(jsonMessage);
         final List<ScribeItem> items = new ArrayList<>();
         items.add(scribeItem);
 
         final String timelineType = getTimelineType(delegate.getTimeline());
-        tweetUi.scribe(ScribeConstants.getSyndicatedSdkTimelineNamespace(timelineType));
-        tweetUi.scribe(ScribeConstants.getTfwClientTimelineNamespace(timelineType), items);
+        getTweetUi().scribe(ScribeConstants.getSyndicatedSdkTimelineNamespace(timelineType));
+        getTweetUi().scribe(ScribeConstants.getTfwClientTimelineNamespace(timelineType), items);
     }
 
     private String getJsonMessage(int totalFilters) {
@@ -119,6 +119,26 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
             return ((BaseTimeline) timeline).getTimelineType();
         }
         return "other";
+    }
+
+    public Callback<Tweet> getActionCallback() {
+        return actionCallback;
+    }
+
+    public void setActionCallback(Callback<Tweet> actionCallback) {
+        this.actionCallback = actionCallback;
+    }
+
+    public TweetUi getTweetUi() {
+        return tweetUi;
+    }
+
+    public void setTweetUi(TweetUi tweetUi) {
+        this.tweetUi = tweetUi;
+    }
+
+    public int getStyleResId() {
+        return styleResId;
     }
 
     /*

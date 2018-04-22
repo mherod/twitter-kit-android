@@ -20,6 +20,7 @@ package com.twitter.sdk.android.core;
 import android.app.Application;
 import android.content.Context;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -27,9 +28,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.concurrent.ExecutorService;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 
 public class TwitterConfigTest {
@@ -54,7 +53,7 @@ public class TwitterConfigTest {
     @Test
     public void testBuilderConstructor_shouldStoreAppContext() {
         final TwitterConfig config = new TwitterConfig.Builder(mockContext).build();
-        assertEquals(mockApplication, config.context);
+        Assert.assertThat(config.context, is(mockApplication));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -72,11 +71,11 @@ public class TwitterConfigTest {
                 .debug(true)
                 .build();
 
-        assertEquals(mockApplication, config.context);
-        assertEquals(mockExecutorService, config.executorService);
-        assertEquals(mockLogger, config.logger);
-        assertEquals(mockTwitterAuthConfig, config.twitterAuthConfig);
-        assertTrue(config.debug);
+        Assert.assertThat(config.context, is(mockApplication));
+        Assert.assertThat(config.executorService, is(mockExecutorService));
+        Assert.assertThat(config.logger, is(mockLogger));
+        Assert.assertThat(config.twitterAuthConfig, is(mockTwitterAuthConfig));
+        Assert.assertThat(config.debug, is(true));
     }
 
     @Test
@@ -85,11 +84,11 @@ public class TwitterConfigTest {
                 .Builder(mockContext)
                 .build();
 
-        assertEquals(mockApplication, config.context);
-        assertNull(config.executorService);
-        assertNull(config.logger);
-        assertNull(config.twitterAuthConfig);
-        assertNull(config.debug);
+        Assert.assertThat(config.context, is(mockApplication));
+        Assert.assertThat(config.executorService, nullValue());
+        Assert.assertThat(config.logger, nullValue());
+        Assert.assertThat(config.twitterAuthConfig, nullValue());
+        Assert.assertThat(config.debug, nullValue());
     }
 
     @Test(expected = IllegalArgumentException.class)

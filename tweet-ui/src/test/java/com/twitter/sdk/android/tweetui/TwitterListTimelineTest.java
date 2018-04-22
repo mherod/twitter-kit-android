@@ -21,13 +21,11 @@ import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.services.ListService;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -63,12 +61,12 @@ public class TwitterListTimelineTest {
     public void testConstructor() {
         final TwitterListTimeline timeline = new TwitterListTimeline(twitterCore, TEST_LIST_ID,
                 TEST_SLUG, TEST_OWNER_ID, TEST_OWNER_SCREEN_NAME, TEST_ITEMS_PER_REQUEST, true);
-        assertEquals(TEST_LIST_ID, timeline.listId);
-        assertEquals(TEST_SLUG, timeline.slug);
-        assertEquals(TEST_OWNER_ID, timeline.ownerId);
-        assertEquals(TEST_OWNER_SCREEN_NAME, timeline.ownerScreenName);
-        assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
-        assertTrue(timeline.includeRetweets);
+        Assert.assertThat(timeline.listId, is(TEST_LIST_ID));
+        Assert.assertThat(timeline.slug, is(TEST_SLUG));
+        Assert.assertThat(timeline.ownerId, is(TEST_OWNER_ID));
+        Assert.assertThat(timeline.ownerScreenName, is(TEST_OWNER_SCREEN_NAME));
+        Assert.assertThat(timeline.maxItemsPerRequest, is(TEST_ITEMS_PER_REQUEST));
+        Assert.assertThat(timeline.includeRetweets, is(true));
     }
 
     @Test
@@ -76,12 +74,12 @@ public class TwitterListTimelineTest {
     public void testConstructor_defaults() {
         final TwitterListTimeline timeline = new TwitterListTimeline(twitterCore, TEST_LIST_ID,
                 null, null, null, null, null);
-        assertEquals(TEST_LIST_ID, timeline.listId);
-        assertNull(timeline.slug);
-        assertNull(timeline.ownerId);
-        assertNull(timeline.ownerScreenName);
-        assertNull(timeline.maxItemsPerRequest);
-        assertNull(timeline.includeRetweets);
+        Assert.assertThat(timeline.listId, is(TEST_LIST_ID));
+        Assert.assertThat(timeline.slug, nullValue());
+        Assert.assertThat(timeline.ownerId, nullValue());
+        Assert.assertThat(timeline.ownerScreenName, nullValue());
+        Assert.assertThat(timeline.maxItemsPerRequest, nullValue());
+        Assert.assertThat(timeline.includeRetweets, nullValue());
     }
 
     @Test
@@ -103,7 +101,7 @@ public class TwitterListTimelineTest {
         final TwitterListTimeline timeline = new TwitterListTimeline.Builder(twitterCore)
                 .id(TEST_LIST_ID)
                 .build();
-        assertEquals(REQUIRED_IMPRESSION_SECTION, timeline.getTimelineType());
+        Assert.assertThat(timeline.getTimelineType(), is(REQUIRED_IMPRESSION_SECTION));
     }
 
     /* Builder */
@@ -114,9 +112,9 @@ public class TwitterListTimelineTest {
                 .maxItemsPerRequest(TEST_ITEMS_PER_REQUEST)
                 .includeRetweets(true)
                 .build();
-        assertEquals(TEST_LIST_ID, timeline.listId);
-        assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
-        assertTrue(timeline.includeRetweets);
+        Assert.assertThat(timeline.listId, is(TEST_LIST_ID));
+        Assert.assertThat(timeline.maxItemsPerRequest, is(TEST_ITEMS_PER_REQUEST));
+        Assert.assertThat(timeline.includeRetweets, is(true));
     }
 
     @Test
@@ -126,10 +124,10 @@ public class TwitterListTimelineTest {
                 .maxItemsPerRequest(TEST_ITEMS_PER_REQUEST)
                 .includeRetweets(true)
                 .build();
-        assertEquals(TEST_SLUG, timeline.slug);
-        assertEquals(TEST_OWNER_ID, timeline.ownerId);
-        assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
-        assertTrue(timeline.includeRetweets);
+        Assert.assertThat(timeline.slug, is(TEST_SLUG));
+        Assert.assertThat(timeline.ownerId, is(TEST_OWNER_ID));
+        Assert.assertThat(timeline.maxItemsPerRequest, is(TEST_ITEMS_PER_REQUEST));
+        Assert.assertThat(timeline.includeRetweets, is(true));
     }
 
     @Test
@@ -139,10 +137,10 @@ public class TwitterListTimelineTest {
                 .maxItemsPerRequest(TEST_ITEMS_PER_REQUEST)
                 .includeRetweets(true)
                 .build();
-        assertEquals(TEST_SLUG, timeline.slug);
-        assertEquals(TEST_OWNER_SCREEN_NAME, timeline.ownerScreenName);
-        assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
-        assertTrue(timeline.includeRetweets);
+        Assert.assertThat(timeline.slug, is(TEST_SLUG));
+        Assert.assertThat(timeline.ownerScreenName, is(TEST_OWNER_SCREEN_NAME));
+        Assert.assertThat(timeline.maxItemsPerRequest, is(TEST_ITEMS_PER_REQUEST));
+        Assert.assertThat(timeline.includeRetweets, is(true));
     }
 
     @Test
@@ -151,8 +149,8 @@ public class TwitterListTimelineTest {
         final TwitterListTimeline timeline = new TwitterListTimeline.Builder(twitterCore)
                 .id(TEST_LIST_ID)
                 .build();
-        assertEquals(REQUIRED_DEFAULT_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
-        assertNull(timeline.includeRetweets);
+        Assert.assertThat(timeline.maxItemsPerRequest, is(REQUIRED_DEFAULT_ITEMS_PER_REQUEST));
+        Assert.assertThat(timeline.includeRetweets, nullValue());
     }
 
     @Test
@@ -160,7 +158,7 @@ public class TwitterListTimelineTest {
         final TwitterListTimeline timeline = new TwitterListTimeline.Builder(twitterCore)
                 .id(TEST_LIST_ID)
                 .build();
-        assertEquals(TEST_LIST_ID, timeline.listId);
+        Assert.assertThat(timeline.listId, is(TEST_LIST_ID));
     }
 
     @Test
@@ -168,8 +166,8 @@ public class TwitterListTimelineTest {
         final TwitterListTimeline timeline = new TwitterListTimeline.Builder(twitterCore)
                 .slugWithOwnerId(TEST_SLUG, TEST_OWNER_ID)
                 .build();
-        assertEquals(TEST_SLUG, timeline.slug);
-        assertEquals(TEST_OWNER_ID, timeline.ownerId);
+        Assert.assertThat(timeline.slug, is(TEST_SLUG));
+        Assert.assertThat(timeline.ownerId, is(TEST_OWNER_ID));
     }
 
     @Test
@@ -177,8 +175,8 @@ public class TwitterListTimelineTest {
         final TwitterListTimeline timeline = new TwitterListTimeline.Builder(twitterCore)
                 .slugWithOwnerScreenName(TEST_SLUG, TEST_OWNER_SCREEN_NAME)
                 .build();
-        assertEquals(TEST_SLUG, timeline.slug);
-        assertEquals(TEST_OWNER_SCREEN_NAME, timeline.ownerScreenName);
+        Assert.assertThat(timeline.slug, is(TEST_SLUG));
+        Assert.assertThat(timeline.ownerScreenName, is(TEST_OWNER_SCREEN_NAME));
     }
 
     @Test
@@ -187,23 +185,23 @@ public class TwitterListTimelineTest {
                 .id(TEST_LIST_ID)
                 .maxItemsPerRequest(TEST_ITEMS_PER_REQUEST)
                 .build();
-        assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
+        Assert.assertThat(timeline.maxItemsPerRequest, is(TEST_ITEMS_PER_REQUEST));
     }
 
     @Test
     public void testBuilder_includeRetweets() {
         TwitterListTimeline timeline = new TwitterListTimeline.Builder(twitterCore).id(TEST_LIST_ID)
                 .build();
-        assertNull(timeline.includeRetweets);
+        Assert.assertThat(timeline.includeRetweets, nullValue());
         timeline = new TwitterListTimeline.Builder(twitterCore)
                 .id(TEST_LIST_ID).includeRetweets(true)
                 .build();
-        assertTrue(timeline.includeRetweets);
+        Assert.assertThat(timeline.includeRetweets, is(true));
         timeline = new TwitterListTimeline.Builder(twitterCore)
                 .id(TEST_LIST_ID)
                 .includeRetweets(false)
                 .build();
-        assertFalse(timeline.includeRetweets);
+        Assert.assertThat(timeline.includeRetweets, is(false));
     }
 
     @Test
@@ -212,7 +210,7 @@ public class TwitterListTimelineTest {
             new TwitterListTimeline.Builder(twitterCore).build();
             fail("Expected IllegalArgumentException to be thrown");
         } catch (IllegalStateException e) {
-            assertEquals("must specify either a list id or slug/owner pair", e.getMessage());
+            Assert.assertThat(e.getMessage(), is("must specify either a list id or slug/owner pair"));
         }
     }
 
@@ -224,7 +222,7 @@ public class TwitterListTimelineTest {
                     .slugWithOwnerId(TEST_SLUG, TEST_OWNER_ID)
                     .build();
         } catch (IllegalStateException e) {
-            assertEquals("must specify either a list id or slug/owner pair", e.getMessage());
+            Assert.assertThat(e.getMessage(), is("must specify either a list id or slug/owner pair"));
         }
     }
 }

@@ -19,7 +19,7 @@ package com.twitter.sdk.android.tweetui
 
 import android.graphics.Color
 
-internal object ColorUtils {
+object ColorUtils {
 
     /**
      * This method calculates a combination of colors using an opacity of the foreground layered
@@ -32,6 +32,7 @@ internal object ColorUtils {
      * @param primaryColor The background color that the foreground color is applied to
      * @return             The combined color value
      */
+    @JvmStatic
     fun calculateOpacityTransform(opacity: Double, overlayColor: Int,
                                   primaryColor: Int): Int {
         val redPrimary = Color.red(primaryColor)

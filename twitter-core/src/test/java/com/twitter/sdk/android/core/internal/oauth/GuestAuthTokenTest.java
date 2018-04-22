@@ -17,12 +17,12 @@
 
 package com.twitter.sdk.android.core.internal.oauth;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class GuestAuthTokenTest  {
@@ -37,26 +37,26 @@ public class GuestAuthTokenTest  {
     @Test
     public void testIsExpired_newToken() {
         final GuestAuthToken token = new GuestAuthToken(TOKEN_TYPE, ACCESS_TOKEN, GUEST_TOKEN);
-        assertFalse(token.isExpired());
+        Assert.assertThat(token.isExpired(), is(false));
     }
 
     @Test
     public void testIsExpired_oneHourOld() {
         final GuestAuthToken token = new GuestAuthToken(TOKEN_TYPE, ACCESS_TOKEN, GUEST_TOKEN,
                 ONE_HOUR_AGE);
-        assertFalse(token.isExpired());
+        Assert.assertThat(token.isExpired(), is(false));
     }
 
     @Test
     public void testIsExpired_threeHoursOld() {
         final GuestAuthToken token = new GuestAuthToken(TOKEN_TYPE, ACCESS_TOKEN, GUEST_TOKEN,
                 THREE_HOURS_AGO);
-        assertTrue(token.isExpired());
+        Assert.assertThat(token.isExpired(), is(true));
     }
 
     @Test
     public void testIsExpired_createdAtZero() {
         final GuestAuthToken token = new GuestAuthToken(TOKEN_TYPE, ACCESS_TOKEN, GUEST_TOKEN, 0);
-        assertTrue(token.isExpired());
+        Assert.assertThat(token.isExpired(), is(true));
     }
 }

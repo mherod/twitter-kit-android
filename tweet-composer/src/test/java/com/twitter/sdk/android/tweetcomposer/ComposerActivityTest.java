@@ -20,15 +20,23 @@ package com.twitter.sdk.android.tweetcomposer;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class ComposerActivityTest {
@@ -51,7 +59,7 @@ public class ComposerActivityTest {
     @Test
     public void testBuilder() {
         final ComposerActivity.Builder builder = new ComposerActivity.Builder(mockContext);
-        assertNotNull(builder);
+        assertThat(builder, notNullValue());
     }
 
     @Test
@@ -60,7 +68,7 @@ public class ComposerActivityTest {
             new ComposerActivity.Builder(null);
             fail("expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            assertEquals("Context must not be null", e.getMessage());
+            assertThat(e.getMessage(), is("Context must not be null"));
         }
     }
 
@@ -70,7 +78,7 @@ public class ComposerActivityTest {
                 .session(mockSession)
                 .createIntent();
         verify(mockSession).getAuthToken();
-        assertEquals(mockAuthToken, intent.getParcelableExtra(ComposerActivity.EXTRA_USER_TOKEN));
+        assertThat(intent.getParcelableExtra(ComposerActivity.EXTRA_USER_TOKEN), is(mockAuthToken));
     }
 
     @Test
@@ -79,7 +87,7 @@ public class ComposerActivityTest {
             new ComposerActivity.Builder(mockContext).session(null);
             fail("expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            assertEquals("TwitterSession must not be null", e.getMessage());
+            assertThat(e.getMessage(), is("TwitterSession must not be null"));
         }
     }
 
@@ -90,7 +98,7 @@ public class ComposerActivityTest {
             new ComposerActivity.Builder(mockContext).session(mockSession);
             fail("expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            assertEquals("TwitterSession token must not be null", e.getMessage());
+            assertThat(e.getMessage(), is("TwitterSession token must not be null"));
         }
     }
 
@@ -99,7 +107,7 @@ public class ComposerActivityTest {
         try {
             new ComposerActivity.Builder(mockContext).createIntent();
         } catch (IllegalStateException e) {
-            assertEquals("Must set a TwitterSession", e.getMessage());
+            assertThat(e.getMessage(), is("Must set a TwitterSession"));
         }
     }
 
@@ -109,7 +117,7 @@ public class ComposerActivityTest {
                 .session(mockSession)
                 .darkTheme()
                 .createIntent();
-        assertEquals(R.style.ComposerDark, intent.getIntExtra(ComposerActivity.EXTRA_THEME, -1));
+        assertThat(intent.getIntExtra(ComposerActivity.EXTRA_THEME, -1), is(R.style.ComposerDark));
     }
 
     @Test
@@ -117,7 +125,7 @@ public class ComposerActivityTest {
         final Intent intent = new ComposerActivity.Builder(mockContext)
                 .session(mockSession)
                 .createIntent();
-        assertEquals(R.style.ComposerLight, intent.getIntExtra(ComposerActivity.EXTRA_THEME, -1));
+        assertThat(intent.getIntExtra(ComposerActivity.EXTRA_THEME, -1), is(R.style.ComposerLight));
     }
 
     @Test
@@ -127,7 +135,7 @@ public class ComposerActivityTest {
                 .text(ANY_TEXT)
                 .createIntent();
 
-        assertEquals(ANY_TEXT, intent.getStringExtra(ComposerActivity.EXTRA_TEXT));
+        assertThat(intent.getStringExtra(ComposerActivity.EXTRA_TEXT), is(ANY_TEXT));
     }
 
     @Test
@@ -137,7 +145,7 @@ public class ComposerActivityTest {
                 .hashtags()
                 .createIntent();
 
-        assertNull(intent.getStringExtra(ComposerActivity.EXTRA_HASHTAGS));
+        assertThat(intent.getStringExtra(ComposerActivity.EXTRA_HASHTAGS), nullValue());
     }
 
     @Test
@@ -147,7 +155,7 @@ public class ComposerActivityTest {
                 .hashtags(ANY_HASHTAG)
                 .createIntent();
 
-        assertEquals(ANY_HASHTAG, intent.getStringExtra(ComposerActivity.EXTRA_HASHTAGS));
+        assertThat(intent.getStringExtra(ComposerActivity.EXTRA_HASHTAGS), is(ANY_HASHTAG));
     }
 
     @Test
@@ -157,7 +165,7 @@ public class ComposerActivityTest {
                 .hashtags("NotHashtag")
                 .createIntent();
 
-        assertNull(intent.getStringExtra(ComposerActivity.EXTRA_HASHTAGS));
+        assertThat(intent.getStringExtra(ComposerActivity.EXTRA_HASHTAGS), nullValue());
     }
 
     @Test
@@ -166,6 +174,6 @@ public class ComposerActivityTest {
                 .session(mockSession)
                 .image(mockUri)
                 .createIntent();
-        assertEquals(mockUri, intent.getParcelableExtra(ComposerActivity.EXTRA_IMAGE_URI));
+        assertThat(intent.getParcelableExtra(ComposerActivity.EXTRA_IMAGE_URI), is(mockUri));
     }
 }

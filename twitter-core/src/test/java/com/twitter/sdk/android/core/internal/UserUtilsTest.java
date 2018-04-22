@@ -20,12 +20,13 @@ package com.twitter.sdk.android.core.internal;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.models.UserBuilder;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class UserUtilsTest {
@@ -43,27 +44,25 @@ public class UserUtilsTest {
 
     @Test
     public void testGetProfileImageUrlHttps_nullSize() {
-        assertEquals(user.profileImageUrlHttps,
-                UserUtils.INSTANCE.getProfileImageUrlHttps(user, null));
+        Assert.assertThat(UserUtils.INSTANCE.getProfileImageUrlHttps(user, null), is(user.getProfileImageUrlHttps()));
     }
 
     @Test
     public void testGetProfileImageUrlHttps_reasonablySmall() {
         final String reasonableSize = "https://pbs.twimg.com/profile_images/2284174872/" +
                   "7df3h38zabcvjylnyfe3_reasonably_small.png";
-        assertEquals(reasonableSize,
-                UserUtils.INSTANCE.getProfileImageUrlHttps(user, AvatarSize.REASONABLY_SMALL));
+        Assert.assertThat(UserUtils.INSTANCE.getProfileImageUrlHttps(user, AvatarSize.REASONABLY_SMALL), is(reasonableSize));
     }
 
     @Test
     public void testFormatScreenName_alreadyFormatted() {
         final String test = "@test";
-        assertEquals(test, UserUtils.formatScreenName(test));
+        Assert.assertThat(UserUtils.formatScreenName(test), is(test));
     }
 
     @Test
     public void testFormatScreenName() {
         final String test = "@test";
-        assertEquals("@test", UserUtils.formatScreenName(test));
+        Assert.assertThat(UserUtils.formatScreenName(test), is("@test"));
     }
 }

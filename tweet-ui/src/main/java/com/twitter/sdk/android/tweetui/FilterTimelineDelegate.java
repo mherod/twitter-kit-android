@@ -133,7 +133,7 @@ class FilterTimelineDelegate extends TimelineDelegate<Tweet> {
 
         final String jsonMessage = getJsonMessage(tweetCount, totalTweetsFiltered,
                 totalFilters);
-        final ScribeItem scribeItem = ScribeItem.fromMessage(jsonMessage);
+        final ScribeItem scribeItem = ScribeItem.Companion.fromMessage(jsonMessage);
         final List<ScribeItem> items = new ArrayList<>();
         items.add(scribeItem);
 

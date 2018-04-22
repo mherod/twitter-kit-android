@@ -21,6 +21,7 @@ import com.twitter.sdk.android.core.internal.CommonUtils;
 import com.twitter.sdk.android.core.internal.CurrentTimeProvider;
 import com.twitter.sdk.android.core.internal.SystemCurrentTimeProvider;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,8 +35,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
@@ -83,8 +83,7 @@ public class EventsFilesManagerTest {
         verify(mockEventStorage).canWorkingFileStore(anyInt(), anyInt());
         verify(mockCurrentTimeProvider, times(1)).getCurrentTimeMillis();
 
-        assertEquals("roll over time should NOT have been updated",
-                startTime, filesManager.getLastRollOverTime());
+        Assert.assertThat("roll over time should NOT have been updated", filesManager.getLastRollOverTime(), is(startTime));
     }
 
     @Test
@@ -116,8 +115,7 @@ public class EventsFilesManagerTest {
         verify(mockEventStorage).rollOver(any(String.class));
         verify(mockCurrentTimeProvider, times(2)).getCurrentTimeMillis();
 
-        assertEquals("roll over time should have been updated", newMostRecentRollOverTime,
-                filesManager.getLastRollOverTime());
+        Assert.assertThat("roll over time should have been updated", filesManager.getLastRollOverTime(), is(newMostRecentRollOverTime));
     }
 
     @Test
@@ -131,10 +129,10 @@ public class EventsFilesManagerTest {
                 "testParseTimestampFromRolledOverFileName",
                 EventsFilesManager.MAX_FILES_TO_KEEP);
 
-        assertEquals(10, filesManager.parseCreationTimestampFromFileName("sa_hey_10"));
-        assertEquals(0, filesManager.parseCreationTimestampFromFileName("unexpected_badname"));
-        assertEquals(0, filesManager.parseCreationTimestampFromFileName(
-                "unexpected_nonnumeric_time"));
+        Assert.assertThat(filesManager.parseCreationTimestampFromFileName("sa_hey_10"), is(10));
+        Assert.assertThat(filesManager.parseCreationTimestampFromFileName("unexpected_badname"), is(0));
+        Assert.assertThat(filesManager.parseCreationTimestampFromFileName(
+                "unexpected_nonnumeric_time"), is(0));
     }
 
     @Test
@@ -208,8 +206,8 @@ public class EventsFilesManagerTest {
 
             // Verify the event transform.
             final byte[] writtenBytes = bos.toByteArray();
-            assertTrue(Arrays.equals(transform.toBytes(testEvent), writtenBytes));
-            assertEquals(testEvent, transform.fromBytes(writtenBytes));
+            Assert.assertThat(Arrays.equals(transform.toBytes(testEvent), writtenBytes), is(true));
+            Assert.assertThat(transform.fromBytes(writtenBytes), is(testEvent));
         } finally {
             CommonUtils.closeQuietly(bos);
         }

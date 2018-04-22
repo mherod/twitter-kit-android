@@ -19,45 +19,44 @@ package com.twitter.sdk.android.tweetui;
 
 import android.graphics.Color;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class ColorUtilsTest {
 
     @Test
     public void testIsLightColor_blue() {
-        assertFalse(ColorUtils.INSTANCE.isLightColor(Color.BLUE));
+        Assert.assertThat(ColorUtils.INSTANCE.isLightColor(Color.BLUE), is(false));
     }
 
     @Test
     public void testIsLightColor_black() {
-        assertFalse(ColorUtils.INSTANCE.isLightColor(Color.BLACK));
+        Assert.assertThat(ColorUtils.INSTANCE.isLightColor(Color.BLACK), is(false));
     }
 
     @Test
     public void testIsLightColor_white() {
-        assertTrue(ColorUtils.INSTANCE.isLightColor(Color.WHITE));
+        Assert.assertThat(ColorUtils.INSTANCE.isLightColor(Color.WHITE), is(true));
     }
 
     @Test
     public void testCalculateOpacityTransform_zeroOpacity() {
-        assertEquals(Color.WHITE, ColorUtils.INSTANCE.calculateOpacityTransform(0, Color.BLUE, Color.WHITE));
+        Assert.assertThat(ColorUtils.calculateOpacityTransform(0, Color.BLUE, Color.WHITE), is(Color.WHITE));
     }
 
     @Test
     public void testCalculateOpacityTransform_fullOpacity() {
-        assertEquals(Color.BLUE, ColorUtils.INSTANCE.calculateOpacityTransform(1, Color.BLUE, Color.WHITE));
+        Assert.assertThat(ColorUtils.calculateOpacityTransform(1, Color.BLUE, Color.WHITE), is(Color.BLUE));
     }
 
     @Test
     public void testCalculateOpacityTransform_returnsFullOpacity() {
-        final int color = ColorUtils.INSTANCE.calculateOpacityTransform(0, Color.BLUE, Color.WHITE);
-        assertEquals(0xFF000000, color & 0xFF000000);
+        final int color = ColorUtils.calculateOpacityTransform(0, Color.BLUE, Color.WHITE);
+        Assert.assertThat(color & 0xFF000000, is(0xFF000000));
     }
 }

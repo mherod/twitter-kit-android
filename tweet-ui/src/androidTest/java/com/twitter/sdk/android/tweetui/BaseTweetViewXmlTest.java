@@ -25,6 +25,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import org.junit.Assert;
+
+import static org.hamcrest.CoreMatchers.*;
+
 /**
  * Tests the state of BaseTweetViews created via XML.
  */
@@ -57,31 +61,31 @@ public abstract class BaseTweetViewXmlTest extends TweetUiTestCase {
 
     public void testInitName() {
         final BaseTweetView view = getView();
-        Assert.assertNotNull(view);
-        Assert.assertEquals(TestFixtures.EMPTY_STRING, view.fullNameView.getText().toString());
+        Assert.assertThat(view, notNullValue());
+        Assert.assertThat(view.fullNameView.getText().toString(), is(TestFixtures.EMPTY_STRING));
     }
 
     public void testInitScreenName() {
         final BaseTweetView view = getView();
-        Assert.assertNotNull(view);
-        Assert.assertEquals(TestFixtures.EMPTY_STRING, view.screenNameView.getText().toString());
+        Assert.assertThat(view, notNullValue());
+        Assert.assertThat(view.screenNameView.getText().toString(), is(TestFixtures.EMPTY_STRING));
     }
 
     public void testInitTimestamp() {
         final BaseTweetView view = getView();
-        Assert.assertNotNull(view);
-        Assert.assertEquals(TestFixtures.EMPTY_STRING, view.timestampView.getText().toString());
+        Assert.assertThat(view, notNullValue());
+        Assert.assertThat(view.timestampView.getText().toString(), is(TestFixtures.EMPTY_STRING));
     }
 
     public void testInitText() {
         final BaseTweetView view = getView();
-        Assert.assertNotNull(view);
-        Assert.assertEquals(TestFixtures.EMPTY_STRING, view.contentView.getText().toString());
+        Assert.assertThat(view, notNullValue());
+        Assert.assertThat(view.contentView.getText().toString(), is(TestFixtures.EMPTY_STRING));
     }
 
     public void testInitWithTweetActionsDisabled() {
         final BaseTweetView view = getView();
-        Assert.assertFalse(view.tweetActionsEnabled);
+        Assert.assertThat(view.tweetActionsEnabled, is(false));
     }
 
     public void testInitWithTweetActionsEnabled() {
@@ -90,7 +94,7 @@ public abstract class BaseTweetViewXmlTest extends TweetUiTestCase {
                 R.layout.activity_tweet_actions_enabled, group, true);
 
         final BaseTweetView tweetView = view.findViewById(R.id.tweet_view);
-        Assert.assertTrue(tweetView.tweetActionsEnabled);
+        Assert.assertThat(tweetView.tweetActionsEnabled, is(true));
     }
 
     // asserts that a BaseTweetView with an invalid tweet id throws an exception
@@ -109,20 +113,20 @@ public abstract class BaseTweetViewXmlTest extends TweetUiTestCase {
 
     public void testSetTweet_permalink() {
         final BaseTweetView view = getView();
-        Assert.assertEquals(TestFixtures.TEST_PERMALINK_UNKNOWN_USER, view.getPermalinkUri().toString());
+        Assert.assertThat(view.getPermalinkUri().toString(), is(TestFixtures.TEST_PERMALINK_UNKNOWN_USER));
     }
 
     // permalinkUri should be null so the permalink launcher will be a NoOp
     public void testSetTweet_nullTweetPermalink() {
         final BaseTweetView view = getView();
         view.setTweet(null);
-        Assert.assertNull(view.getPermalinkUri());
+        Assert.assertThat(view.getPermalinkUri(), nullValue());
     }
 
     public void testSetTweet_updatePermalink() {
         final BaseTweetView view = getView();
         view.setTweet(TestFixtures.TEST_PHOTO_TWEET);
-        Assert.assertEquals(TestFixtures.TEST_PERMALINK_TWO, view.getPermalinkUri().toString());
+        Assert.assertThat(view.getPermalinkUri().toString(), is(TestFixtures.TEST_PERMALINK_TWO));
     }
 
     // Styling
@@ -137,21 +141,21 @@ public abstract class BaseTweetViewXmlTest extends TweetUiTestCase {
         final BaseTweetView view = getView();
         final int primaryTextColor = getResources().getColor(
                 R.color.tw__tweet_light_primary_text_color);
-        final int color = ColorUtils.INSTANCE.calculateOpacityTransform(
+        final int color = ColorUtils.calculateOpacityTransform(
                 BaseTweetView.SECONDARY_TEXT_COLOR_LIGHT_OPACITY, Color.WHITE, primaryTextColor);
-        Assert.assertEquals(color, view.secondaryTextColor);
-        Assert.assertEquals(color, view.timestampView.getCurrentTextColor());
-        Assert.assertEquals(color, view.screenNameView.getCurrentTextColor());
-        Assert.assertEquals(color, view.retweetedByView.getCurrentTextColor());
+        Assert.assertThat(view.secondaryTextColor, is(color));
+        Assert.assertThat(view.timestampView.getCurrentTextColor(), is(color));
+        Assert.assertThat(view.screenNameView.getCurrentTextColor(), is(color));
+        Assert.assertThat(view.retweetedByView.getCurrentTextColor(), is(color));
     }
 
     public void testAvatarDefault() {
         final BaseTweetView view = getView();
         final int containerColor = getResources().getColor(
                 R.color.tw__tweet_light_container_bg_color);
-        final int color = ColorUtils.INSTANCE.calculateOpacityTransform(
+        final int color = ColorUtils.calculateOpacityTransform(
                 BaseTweetView.MEDIA_BG_LIGHT_OPACITY, Color.BLACK, containerColor);
-        Assert.assertEquals(color, TestUtils.getDrawableColor(view.avatarView));
+        Assert.assertThat(TestUtils.getDrawableColor(view.avatarView), is(color));
     }
 
     public void testPhotoErrorDefault() {
@@ -175,21 +179,21 @@ public abstract class BaseTweetViewXmlTest extends TweetUiTestCase {
         final BaseTweetView view = getViewDark();
         final int primaryTextColor = getResources().getColor(
                 R.color.tw__tweet_dark_primary_text_color);
-        final int color = ColorUtils.INSTANCE.calculateOpacityTransform(
+        final int color = ColorUtils.calculateOpacityTransform(
                 BaseTweetView.SECONDARY_TEXT_COLOR_DARK_OPACITY, Color.BLACK, primaryTextColor);
-        Assert.assertEquals(color, view.secondaryTextColor);
-        Assert.assertEquals(color, view.timestampView.getCurrentTextColor());
-        Assert.assertEquals(color, view.screenNameView.getCurrentTextColor());
-        Assert.assertEquals(color, view.retweetedByView.getCurrentTextColor());
+        Assert.assertThat(view.secondaryTextColor, is(color));
+        Assert.assertThat(view.timestampView.getCurrentTextColor(), is(color));
+        Assert.assertThat(view.screenNameView.getCurrentTextColor(), is(color));
+        Assert.assertThat(view.retweetedByView.getCurrentTextColor(), is(color));
     }
 
     public void testAvatarDark() {
         final BaseTweetView view = getViewDark();
         final int containerColor = getResources().getColor(
                 R.color.tw__tweet_dark_container_bg_color);
-        final int color = ColorUtils.INSTANCE.calculateOpacityTransform(
+        final int color = ColorUtils.calculateOpacityTransform(
                 BaseTweetView.MEDIA_BG_DARK_OPACITY, Color.WHITE, containerColor);
-        Assert.assertEquals(color, TestUtils.getDrawableColor(view.avatarView));
+        Assert.assertThat(TestUtils.getDrawableColor(view.avatarView), is(color));
     }
 
     public void testPhotoErrorDark() {

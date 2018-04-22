@@ -19,16 +19,14 @@ package com.twitter.sdk.android.tweetui;
 
 import android.util.AttributeSet;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class ToggleImageButtonTest {
@@ -52,63 +50,63 @@ public class ToggleImageButtonTest {
     @Test
     public void testInit() {
         final ToggleImageButton button = createDefaultButton();
-        assertNull(button.contentDescriptionOn);
-        assertNull(button.contentDescriptionOff);
-        assertFalse(button.isToggledOn());
-        assertTrue(button.toggleOnClick);
+        Assert.assertThat(button.contentDescriptionOn, nullValue());
+        Assert.assertThat(button.contentDescriptionOff, nullValue());
+        Assert.assertThat(button.isToggledOn(), is(false));
+        Assert.assertThat(button.toggleOnClick, is(true));
     }
 
     @Test
     public void testPerformClick() {
         final ToggleImageButton button = createDefaultButton();
-        assertTrue(button.toggleOnClick);
-        assertFalse(button.isToggledOn());
+        Assert.assertThat(button.toggleOnClick, is(true));
+        Assert.assertThat(button.isToggledOn(), is(false));
         button.performClick();
-        assertTrue(button.isToggledOn());
+        Assert.assertThat(button.isToggledOn(), is(true));
     }
 
     @Test
     public void testSetToggledOn() {
         final ToggleImageButton button = createDefaultButton();
-        assertFalse(button.isToggledOn());
+        Assert.assertThat(button.isToggledOn(), is(false));
         button.setToggledOn(true);
-        assertTrue(button.isToggledOn());
+        Assert.assertThat(button.isToggledOn(), is(true));
     }
 
     @Test
     public void testToggle() {
         final ToggleImageButton button = createDefaultButton();
-        assertFalse(button.isToggledOn());
+        Assert.assertThat(button.isToggledOn(), is(false));
         button.toggle();
-        assertTrue(button.isToggledOn());
+        Assert.assertThat(button.isToggledOn(), is(true));
     }
 
     @Test
     public void testXmlInit() {
         final ToggleImageButton button = createButtonWithAttributes();
-        assertEquals(CONTENT_DESCRIPTION_ON, button.contentDescriptionOn);
-        assertEquals(CONTENT_DESCRIPTION_OFF, button.contentDescriptionOff);
-        assertFalse(button.isToggledOn());
-        assertEquals(CONTENT_DESCRIPTION_OFF, button.getContentDescription());
-        assertFalse(button.toggleOnClick);
+        Assert.assertThat(button.contentDescriptionOn, is(CONTENT_DESCRIPTION_ON));
+        Assert.assertThat(button.contentDescriptionOff, is(CONTENT_DESCRIPTION_OFF));
+        Assert.assertThat(button.isToggledOn(), is(false));
+        Assert.assertThat(button.getContentDescription(), is(CONTENT_DESCRIPTION_OFF));
+        Assert.assertThat(button.toggleOnClick, is(false));
     }
 
     @Test
     public void testPerformClick_toggleOnClickDisabled() {
         final ToggleImageButton button = createButtonWithAttributes();
-        assertFalse(button.toggleOnClick);
-        assertFalse(button.isToggledOn());
+        Assert.assertThat(button.toggleOnClick, is(false));
+        Assert.assertThat(button.isToggledOn(), is(false));
         button.performClick();
-        assertFalse(button.isToggledOn());
+        Assert.assertThat(button.isToggledOn(), is(false));
     }
 
     @Test
     public void testSetToggledOn_withContentDescription() {
         final ToggleImageButton button = createButtonWithAttributes();
-        assertFalse(button.isToggledOn());
-        assertEquals(CONTENT_DESCRIPTION_OFF, button.getContentDescription());
+        Assert.assertThat(button.isToggledOn(), is(false));
+        Assert.assertThat(button.getContentDescription(), is(CONTENT_DESCRIPTION_OFF));
         button.setToggledOn(true);
-        assertTrue(button.isToggledOn());
-        assertEquals(CONTENT_DESCRIPTION_ON, button.getContentDescription());
+        Assert.assertThat(button.isToggledOn(), is(true));
+        Assert.assertThat(button.getContentDescription(), is(CONTENT_DESCRIPTION_ON));
     }
 }

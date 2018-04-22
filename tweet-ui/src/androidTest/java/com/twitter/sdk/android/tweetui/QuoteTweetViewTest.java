@@ -21,8 +21,10 @@ import android.content.Context;
 
 import com.twitter.sdk.android.core.models.Tweet;
 
+import org.junit.Assert;
+
 public class QuoteTweetViewTest extends AbstractTweetViewTest {
-    protected static final double DELTA = 0.001f;
+    private static final double DELTA = 0.001f;
 
     @Override
     QuoteTweetView createView(Context context, Tweet tweet) {
@@ -85,9 +87,9 @@ public class QuoteTweetViewTest extends AbstractTweetViewTest {
 
     public void testGetAspectRatioForPhotoEntity() {
         final QuoteTweetView quoteTweetView = createView(context, TestFixtures.TEST_PHOTO_TWEET);
-        Assert.assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(1));
-        Assert.assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(2));
-        Assert.assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(3));
-        Assert.assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(4));
+        Assert.assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(1), 0.0);
+        Assert.assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(2), 0.0);
+        Assert.assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(3), 0.0);
+        Assert.assertEquals(1.6, quoteTweetView.getAspectRatioForPhotoEntity(4), 0.0);
     }
 }

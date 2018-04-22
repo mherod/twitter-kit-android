@@ -21,6 +21,8 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.twitter.sdk.android.core.TestResources;
 import com.twitter.sdk.android.core.internal.CommonUtils;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,7 +32,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.io.InputStreamReader;
 import java.util.Collections;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class UserEntitiesTest {
@@ -54,11 +56,11 @@ public class UserEntitiesTest {
             final UserEntities userEntities = gson.fromJson(reader, UserEntities.class);
             // We simply assert that we parsed it successfully and rely on our other unit tests to
             // verify parsing of the individual objects.
-            assertNotNull(userEntities.url);
-            assertFalse(userEntities.url.urls.isEmpty());
+            Assert.assertThat(userEntities.url, notNullValue());
+            Assert.assertThat(userEntities.url.urls.isEmpty(), is(false));
 
-            assertNotNull(userEntities.description);
-            assertEquals(Collections.EMPTY_LIST, userEntities.description.urls);
+            Assert.assertThat(userEntities.description, notNullValue());
+            Assert.assertThat(userEntities.description.urls, is(Collections.EMPTY_LIST));
         } finally {
             CommonUtils.closeQuietly(reader);
         }

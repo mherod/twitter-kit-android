@@ -23,6 +23,7 @@ import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.services.SearchService;
 import com.twitter.sdk.android.core.services.params.Geocode;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,10 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.isNull;
@@ -76,10 +74,10 @@ public class SearchTimelineTest {
     public void testConstructor() {
         final SearchTimeline timeline = new SearchTimeline(twitterCore, TEST_QUERY, TEST_GEOCODE,
                 TEST_RESULT_TYPE, TEST_LANG, TEST_ITEMS_PER_REQUEST, TEST_UNTIL_DATE);
-        assertEquals(TEST_QUERY + SearchTimeline.FILTER_RETWEETS, timeline.query);
-        assertEquals(TEST_LANG, timeline.languageCode);
-        assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
-        assertEquals(TEST_UNTIL_DATE, timeline.untilDate);
+        Assert.assertThat(timeline.query, is(TEST_QUERY + SearchTimeline.FILTER_RETWEETS));
+        Assert.assertThat(timeline.languageCode, is(TEST_LANG));
+        Assert.assertThat(timeline.maxItemsPerRequest, is(TEST_ITEMS_PER_REQUEST));
+        Assert.assertThat(timeline.untilDate, is(TEST_UNTIL_DATE));
     }
 
     @Test
@@ -87,10 +85,10 @@ public class SearchTimelineTest {
     public void testConstructor_defaults() {
         final SearchTimeline timeline = new SearchTimeline(twitterCore, null, null, null, null,
                 null, null);
-        assertNull(timeline.query);
-        assertNull(timeline.languageCode);
-        assertNull(timeline.maxItemsPerRequest);
-        assertNull(timeline.untilDate);
+        Assert.assertThat(timeline.query, nullValue());
+        Assert.assertThat(timeline.languageCode, nullValue());
+        Assert.assertThat(timeline.maxItemsPerRequest, nullValue());
+        Assert.assertThat(timeline.untilDate, nullValue());
     }
 
     @Test
@@ -98,14 +96,14 @@ public class SearchTimelineTest {
     public void testFilterRetweets() {
         final SearchTimeline timeline = new SearchTimeline(twitterCore, TEST_QUERY, null, null,
                 null, null, null);
-        assertTrue(timeline.query.endsWith(SearchTimeline.FILTER_RETWEETS));
+        Assert.assertThat(timeline.query.endsWith(SearchTimeline.FILTER_RETWEETS), is(true));
     }
 
     @Test
     public void testAddFilterRetweets() {
         final SearchTimeline timeline = new SearchTimeline(twitterCore, TEST_FILTER_QUERY, null,
                 null, null, null, null);
-        assertEquals("from:twitter -filter:retweets", timeline.query);
+        Assert.assertThat(timeline.query, is("from:twitter -filter:retweets"));
     }
 
     @Test
@@ -113,7 +111,7 @@ public class SearchTimelineTest {
         // handle null queries, do not append FILTER_RETWEETS
         final SearchTimeline timeline = new SearchTimeline(twitterCore, null, null, null, null,
                 null, null);
-        assertNull(timeline.query);
+        Assert.assertThat(timeline.query, nullValue());
     }
 
     @Test
@@ -158,7 +156,7 @@ public class SearchTimelineTest {
         final SearchTimeline timeline = new SearchTimeline.Builder(twitterCore)
                 .query(TEST_QUERY)
                 .build();
-        assertEquals(REQUIRED_IMPRESSION_SECTION, timeline.getTimelineType());
+        Assert.assertThat(timeline.getTimelineType(), is(REQUIRED_IMPRESSION_SECTION));
     }
 
     /* Builder */
@@ -172,12 +170,12 @@ public class SearchTimelineTest {
                 .resultType(SearchTimeline.ResultType.POPULAR)
                 .untilDate(TEST_UNTIL)
                 .build();
-        assertEquals(TEST_QUERY + SearchTimeline.FILTER_RETWEETS, timeline.query);
-        assertEquals(TEST_RESULT_TYPE, timeline.resultType);
-        assertEquals(TEST_LANG, timeline.languageCode);
-        assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
-        assertEquals(TEST_UNTIL_DATE, timeline.untilDate);
-        assertSame(TEST_GEOCODE, timeline.geocode);
+        Assert.assertThat(timeline.query, is(TEST_QUERY + SearchTimeline.FILTER_RETWEETS));
+        Assert.assertThat(timeline.resultType, is(TEST_RESULT_TYPE));
+        Assert.assertThat(timeline.languageCode, is(TEST_LANG));
+        Assert.assertThat(timeline.maxItemsPerRequest, is(TEST_ITEMS_PER_REQUEST));
+        Assert.assertThat(timeline.untilDate, is(TEST_UNTIL_DATE));
+        Assert.assertThat(timeline.geocode, sameInstance(TEST_GEOCODE));
     }
 
     @Test
@@ -186,9 +184,9 @@ public class SearchTimelineTest {
         final SearchTimeline timeline = new SearchTimeline.Builder(twitterCore)
                 .query(TEST_QUERY)
                 .build();
-        assertNull(timeline.languageCode);
-        assertEquals(REQUIRED_DEFAULT_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
-        assertNull(timeline.untilDate);
+        Assert.assertThat(timeline.languageCode, nullValue());
+        Assert.assertThat(timeline.maxItemsPerRequest, is(REQUIRED_DEFAULT_ITEMS_PER_REQUEST));
+        Assert.assertThat(timeline.untilDate, nullValue());
     }
 
     @Test
@@ -196,7 +194,7 @@ public class SearchTimelineTest {
         final SearchTimeline timeline = new SearchTimeline.Builder(twitterCore)
                 .query(TEST_QUERY)
                 .build();
-        assertEquals(TEST_QUERY + SearchTimeline.FILTER_RETWEETS, timeline.query);
+        Assert.assertThat(timeline.query, is(TEST_QUERY + SearchTimeline.FILTER_RETWEETS));
     }
 
     @Test
@@ -205,7 +203,7 @@ public class SearchTimelineTest {
             new SearchTimeline.Builder(twitterCore).build();
             fail("Expected IllegalStateException");
         } catch (IllegalStateException e) {
-            assertEquals("query must not be null", e.getMessage());
+            Assert.assertThat(e.getMessage(), is("query must not be null"));
         }
     }
 
@@ -215,7 +213,7 @@ public class SearchTimelineTest {
                 .query(TEST_QUERY)
                 .languageCode(TEST_LANG)
                 .build();
-        assertEquals(TEST_LANG, timeline.languageCode);
+        Assert.assertThat(timeline.languageCode, is(TEST_LANG));
     }
 
     @Test
@@ -224,7 +222,7 @@ public class SearchTimelineTest {
                 .query(TEST_QUERY)
                 .geocode(TEST_GEOCODE)
                 .build();
-        assertSame(TEST_GEOCODE, timeline.geocode);
+        Assert.assertThat(timeline.geocode, sameInstance(TEST_GEOCODE));
     }
 
     @Test
@@ -233,6 +231,6 @@ public class SearchTimelineTest {
                 .query(TEST_QUERY)
                 .maxItemsPerRequest(TEST_ITEMS_PER_REQUEST)
                 .build();
-        assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
+        Assert.assertThat(timeline.maxItemsPerRequest, is(TEST_ITEMS_PER_REQUEST));
     }
 }

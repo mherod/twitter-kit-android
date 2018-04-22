@@ -21,6 +21,8 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.twitter.sdk.android.core.TestResources;
 import com.twitter.sdk.android.core.internal.CommonUtils;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,7 +34,7 @@ import java.io.InputStreamReader;
 import java.io.NotSerializableException;
 import java.io.ObjectOutputStream;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 
 @RunWith(RobolectricTestRunner.class)
@@ -83,29 +85,29 @@ public class MediaEntityTest  {
                     .getAsStream("model_media_entity.json")));
             final MediaEntity entity = gson.fromJson(reader, MediaEntity.class);
 
-            assertEquals(TEST_INDICES_START, entity.getStart());
-            assertEquals(TEST_INDICES_END, entity.getEnd());
-            assertEquals(TEST_URL, entity.url);
-            assertEquals(TEST_DISPLAY_URL, entity.displayUrl);
-            assertEquals(TEST_EXPANDED_URL, entity.expandedUrl);
-            assertEquals(TEST_ID, entity.id);
-            assertEquals(TEST_ID_STR, entity.idStr);
-            assertEquals(TEST_MEDIA_URL, entity.mediaUrl);
-            assertEquals(TEST_MEDIA_URL_HTTPS, entity.mediaUrlHttps);
-            assertSizeEquals(TEST_SIZE_THUMB, entity.sizes.thumb);
-            assertSizeEquals(TEST_SIZE_SMALL, entity.sizes.small);
-            assertSizeEquals(TEST_SIZE_MEDIUM, entity.sizes.medium);
-            assertSizeEquals(TEST_SIZE_LARGE, entity.sizes.large);
-            assertEquals(TEST_SOURCE_STATUS_ID, entity.sourceStatusId);
-            assertEquals(TEST_SOURCE_STATUS_ID_STR, entity.sourceStatusIdStr);
-            assertEquals(TEST_TYPE, entity.type);
-            assertEquals(TEST_ASPECT_WIDTH, (int) entity.videoInfo.aspectRatio.get(0));
-            assertEquals(TEST_ASPECT_HEIGHT, (int) entity.videoInfo.aspectRatio.get(1));
-            assertEquals(TEST_DURATION, entity.videoInfo.durationMillis);
-            assertEquals(TEST_TOTAL_VARIANTS, entity.videoInfo.variants.size());
-            assertVariantEquals(TEST_VARIANT_0, entity.videoInfo.variants.get(0));
-            assertVariantEquals(TEST_VARIANT_1, entity.videoInfo.variants.get(1));
-            assertEquals(TEST_ALT_TEXT, entity.altText);
+            Assert.assertThat(entity.getStart(), is(TEST_INDICES_START));
+            Assert.assertThat(entity.getEnd(), is(TEST_INDICES_END));
+            Assert.assertThat(entity.getUrl(), is(TEST_URL));
+            Assert.assertThat(entity.getDisplayUrl(), is(TEST_DISPLAY_URL));
+            Assert.assertThat(entity.getExpandedUrl(), is(TEST_EXPANDED_URL));
+            Assert.assertThat(entity.id, is(TEST_ID));
+            Assert.assertThat(entity.idStr, is(TEST_ID_STR));
+            Assert.assertThat(entity.mediaUrl, is(TEST_MEDIA_URL));
+            Assert.assertThat(entity.mediaUrlHttps, is(TEST_MEDIA_URL_HTTPS));
+            assertSizeEquals(TEST_SIZE_THUMB, entity.sizes.getThumb());
+            assertSizeEquals(TEST_SIZE_SMALL, entity.sizes.getSmall());
+            assertSizeEquals(TEST_SIZE_MEDIUM, entity.sizes.getMedium());
+            assertSizeEquals(TEST_SIZE_LARGE, entity.sizes.getLarge());
+            Assert.assertThat(entity.getSourceStatusId(), is(TEST_SOURCE_STATUS_ID));
+            Assert.assertThat(entity.getSourceStatusIdStr(), is(TEST_SOURCE_STATUS_ID_STR));
+            Assert.assertThat(entity.getType(), is(TEST_TYPE));
+            Assert.assertThat(entity.getVideoInfo().aspectRatio.get(0), is(TEST_ASPECT_WIDTH));
+            Assert.assertThat(entity.getVideoInfo().aspectRatio.get(1), is(TEST_ASPECT_HEIGHT));
+            Assert.assertThat(entity.getVideoInfo().durationMillis, is(TEST_DURATION));
+            Assert.assertThat(entity.getVideoInfo().variants.size(), is(TEST_TOTAL_VARIANTS));
+            assertVariantEquals(TEST_VARIANT_0, entity.getVideoInfo().variants.get(0));
+            assertVariantEquals(TEST_VARIANT_1, entity.getVideoInfo().variants.get(1));
+            Assert.assertThat(entity.getAltText(), is(TEST_ALT_TEXT));
         } finally {
             CommonUtils.closeQuietly(reader);
         }
@@ -128,14 +130,14 @@ public class MediaEntityTest  {
     }
 
     public static void assertSizeEquals(MediaEntity.Size expected, MediaEntity.Size actual) {
-        assertEquals(expected.h, actual.h);
-        assertEquals(expected.w, actual.w);
-        assertEquals(expected.resize, actual.resize);
+        Assert.assertThat(actual.getH(), is(expected.getH()));
+        Assert.assertThat(actual.getW(), is(expected.getW()));
+        Assert.assertThat(actual.getResize(), is(expected.getResize()));
     }
 
     public static void assertVariantEquals(VideoInfo.Variant expected, VideoInfo.Variant actual) {
-        assertEquals(expected.bitrate, actual.bitrate);
-        assertEquals(expected.contentType, actual.contentType);
-        assertEquals(expected.url, actual.url);
+        Assert.assertThat(actual.bitrate, is(expected.bitrate));
+        Assert.assertThat(actual.contentType, is(expected.contentType));
+        Assert.assertThat(actual.url, is(expected.url));
     }
 }

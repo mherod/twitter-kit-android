@@ -74,7 +74,7 @@ public class TweetActionBarView extends LinearLayout {
     void setLike(Tweet tweet) {
         final TweetUi tweetUi = dependencyProvider.getTweetUi();
         if (tweet != null) {
-            likeButton.setToggledOn(tweet.favorited);
+            likeButton.setToggledOn(tweet.getFavorited());
             final LikeTweetAction likeTweetAction = new LikeTweetAction(tweet,
                     tweetUi, actionCallback);
             likeButton.setOnClickListener(likeTweetAction);

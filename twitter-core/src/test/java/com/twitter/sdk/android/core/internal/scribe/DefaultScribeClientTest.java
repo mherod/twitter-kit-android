@@ -35,9 +35,10 @@ import org.robolectric.RuntimeEnvironment;
 
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -77,43 +78,43 @@ public class DefaultScribeClientTest {
         final ScribeConfig scribeConfig
                 = DefaultScribeClient.getScribeConfig(TEST_SCRIBE_KIT_NAME, TEST_KIT_VERSION);
 
-        assertEquals(!BuildConfig.BUILD_TYPE.equals(DEBUG_BUILD_TYPE), scribeConfig.isEnabled);
-        assertEquals(REQUIRED_SCRIBE_URL_COMPONENT, scribeConfig.baseUrl);
-        assertEquals(BuildConfig.SCRIBE_SEQUENCE, scribeConfig.sequence);
-        assertEquals(TEST_USER_AGENT, scribeConfig.userAgent);
-        assertEquals(ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP, scribeConfig.maxFilesToKeep);
-        assertEquals(ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS, scribeConfig.sendIntervalSeconds);
+        //noinspection ConstantConditions
+        assertThat(scribeConfig.isEnabled, is(!BuildConfig.BUILD_TYPE.equals(DEBUG_BUILD_TYPE)));
+        assertThat(scribeConfig.baseUrl, is(REQUIRED_SCRIBE_URL_COMPONENT));
+        assertThat(scribeConfig.sequence, is(BuildConfig.SCRIBE_SEQUENCE));
+        assertThat(scribeConfig.userAgent, is(TEST_USER_AGENT));
+        assertThat(scribeConfig.maxFilesToKeep, is(ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP));
+        assertThat(scribeConfig.sendIntervalSeconds, is(ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS));
     }
 
     @Test
     public void testGetScribeUrl_nullOverride() {
         final String scribeUrl
                 = DefaultScribeClient.getScribeUrl(TEST_DEFAULT_SCRIBE_URL, null);
-        assertEquals(TEST_DEFAULT_SCRIBE_URL, scribeUrl);
+        assertThat(scribeUrl, is(TEST_DEFAULT_SCRIBE_URL));
     }
 
     @Test
     public void testGetScribeUrl_emptyOverride() {
         final String scribeUrl = DefaultScribeClient.getScribeUrl(TEST_DEFAULT_SCRIBE_URL, "");
-        assertEquals(TEST_DEFAULT_SCRIBE_URL, scribeUrl);
+        assertThat(scribeUrl, is(TEST_DEFAULT_SCRIBE_URL));
     }
 
     @Test
     public void testGetScribeUrl_override() {
         final String scribeUrl = DefaultScribeClient.getScribeUrl(TEST_DEFAULT_SCRIBE_URL,
                 TEST_OVERRIDE_SCRIBE_URL);
-        assertEquals(TEST_OVERRIDE_SCRIBE_URL, scribeUrl);
+        assertThat(scribeUrl, is(TEST_OVERRIDE_SCRIBE_URL));
     }
 
     @Test
     public void testGetScribeUserAgent() {
-        assertEquals(TEST_USER_AGENT,
-                DefaultScribeClient.getUserAgent(TEST_SCRIBE_KIT_NAME, TEST_KIT_VERSION));
+        assertThat(DefaultScribeClient.getUserAgent(TEST_SCRIBE_KIT_NAME, TEST_KIT_VERSION), is(TEST_USER_AGENT));
     }
 
     @Test
     public void testGetActiveSession_activeSessionDoesNotExist() {
-        assertNull(scribeClient.getActiveSession());
+        assertThat(scribeClient.getActiveSession(), nullValue());
     }
 
     @Test
@@ -122,12 +123,12 @@ public class DefaultScribeClientTest {
 
         when(mockTwitterSessionManager.getActiveSession()).thenReturn(mockSession);
 
-        assertSame(mockSession, scribeClient.getActiveSession());
+        assertThat(scribeClient.getActiveSession(), sameInstance(mockSession));
     }
 
     @Test
     public void testGetScribeSessionId_nullSession() {
-        assertEquals(REQUIRED_LOGGED_OUT_USER_ID, scribeClient.getScribeSessionId(null));
+        assertThat(scribeClient.getScribeSessionId(null), is(REQUIRED_LOGGED_OUT_USER_ID));
     }
 
     @Test
@@ -138,6 +139,6 @@ public class DefaultScribeClientTest {
         final Session mockSession = mock(Session.class);
         when(mockSession.getId()).thenReturn(TEST_ACTIVE_SESSION_ID);
 
-        assertEquals(TEST_ACTIVE_SESSION_ID, scribeClient.getScribeSessionId(mockSession));
+        assertThat(scribeClient.getScribeSessionId(mockSession), is(TEST_ACTIVE_SESSION_ID));
     }
 }

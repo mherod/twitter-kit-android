@@ -17,11 +17,12 @@
 
 package com.twitter.sdk.android.core.services.params;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class GeocodeTest  {
@@ -29,6 +30,6 @@ public class GeocodeTest  {
     @Test
     public void testToString() {
         final Geocode geocode = new Geocode(1.0, 1.0, 1, Geocode.Distance.MILES);
-        assertEquals("1.0,1.0,1mi", geocode.toString());
+        Assert.assertThat(geocode.toString(), is("1.0,1.0,1mi"));
     }
 }

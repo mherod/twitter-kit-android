@@ -29,6 +29,7 @@ import com.twitter.sdk.android.core.models.UrlEntity;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.models.UserBuilder;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,10 +40,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 @RunWith(RobolectricTestRunner.class)
 public class BasicTimelineFilterTest {
@@ -82,20 +81,20 @@ public class BasicTimelineFilterTest {
 
         final List<Tweet> filteredTweets = basicTimelineFilter.filter(tweets);
 
-        assertNotNull(filteredTweets);
-        assertEquals(2, filteredTweets.size());
-        assertEquals(TEST_TWEET_2, filteredTweets.get(0));
-        assertEquals(TEST_TWEET_3, filteredTweets.get(0));
+        Assert.assertThat(filteredTweets, notNullValue());
+        Assert.assertThat(filteredTweets.size(), is(2));
+        Assert.assertThat(filteredTweets.get(0), is(TEST_TWEET_2));
+        Assert.assertThat(filteredTweets.get(0), is(TEST_TWEET_3));
     }
 
     @Test
     public void testShouldFilterTweet_withNoMatch() {
-        assertFalse(basicTimelineFilter.shouldFilterTweet(TEST_TWEET_2));
+        Assert.assertThat(basicTimelineFilter.shouldFilterTweet(TEST_TWEET_2), is(false));
     }
 
     @Test
     public void testShouldFilterTweet_withTextMatch() {
-        assertTrue(basicTimelineFilter.shouldFilterTweet(TEST_TWEET_1));
+        Assert.assertThat(basicTimelineFilter.shouldFilterTweet(TEST_TWEET_1), is(true));
     }
 
     @Test
@@ -106,7 +105,7 @@ public class BasicTimelineFilterTest {
                 new TweetEntities(Collections.singletonList(entity), null, null, null, null);
         final Tweet tweet = new TweetBuilder().setText("").setEntities(entities).build();
 
-        assertTrue(basicTimelineFilter.shouldFilterTweet(tweet));
+        Assert.assertThat(basicTimelineFilter.shouldFilterTweet(tweet), is(true));
     }
 
     @Test
@@ -114,17 +113,17 @@ public class BasicTimelineFilterTest {
         final User user = new UserBuilder().setScreenName("EricFrohnhoefer").build();
         final Tweet tweet = new TweetBuilder().setText("").setUser(user).build();
 
-        assertTrue(basicTimelineFilter.shouldFilterTweet(tweet));
+        Assert.assertThat(basicTimelineFilter.shouldFilterTweet(tweet), is(true));
     }
 
     @Test
     public void testContainsMatchingText_withNoMatch() {
-        assertFalse(basicTimelineFilter.containsMatchingText(TEST_TWEET_2));
+        Assert.assertThat(basicTimelineFilter.containsMatchingText(TEST_TWEET_2), is(false));
     }
 
     @Test
     public void testContainsMatchingText_withMatch() {
-        assertTrue(basicTimelineFilter.containsMatchingText(TEST_TWEET_1));
+        Assert.assertThat(basicTimelineFilter.containsMatchingText(TEST_TWEET_1), is(true));
     }
 
     @Test
@@ -132,7 +131,7 @@ public class BasicTimelineFilterTest {
         final UrlEntity entity =
                 new UrlEntity("foobar.com", "http://foobar.com", "foobar.com", 0, 0);
 
-        assertFalse(basicTimelineFilter.containsMatchingUrl(Collections.singletonList(entity)));
+        Assert.assertThat(basicTimelineFilter.containsMatchingUrl(Collections.singletonList(entity)), is(false));
     }
 
     @Test
@@ -140,35 +139,35 @@ public class BasicTimelineFilterTest {
         final UrlEntity entity = new UrlEntity("Cookiesareawesome.com",
                 "http://Cookiesareawesome.com", "Cookiesareawesome.com", 0, 0);
 
-        assertTrue(basicTimelineFilter.containsMatchingUrl(Collections.singletonList(entity)));
+        Assert.assertThat(basicTimelineFilter.containsMatchingUrl(Collections.singletonList(entity)), is(true));
     }
 
     @Test
     public void testContainsMatchingHashtag_withNoMatch() {
         final HashtagEntity entity = new HashtagEntity("foobar", 0, 0);
 
-        assertFalse(basicTimelineFilter.containsMatchingHashtag(Collections.singletonList(entity)));
+        Assert.assertThat(basicTimelineFilter.containsMatchingHashtag(Collections.singletonList(entity)), is(false));
     }
 
     @Test
     public void testContainsMatchingHashtag_withMatch() {
         final HashtagEntity entity = new HashtagEntity("cookies", 0, 0);
 
-        assertTrue(basicTimelineFilter.containsMatchingHashtag(Collections.singletonList(entity)));
+        Assert.assertThat(basicTimelineFilter.containsMatchingHashtag(Collections.singletonList(entity)), is(true));
     }
 
     @Test
     public void testContainsMatchingSymbol_withNoMatch() {
         final SymbolEntity entity = new SymbolEntity("foobar", 0, 0);
 
-        assertFalse(basicTimelineFilter.containsMatchingSymbol(Collections.singletonList(entity)));
+        Assert.assertThat(basicTimelineFilter.containsMatchingSymbol(Collections.singletonList(entity)), is(false));
     }
 
     @Test
     public void testContainsMatchingSymbol_withMatch() {
         final SymbolEntity entity = new SymbolEntity("cookies", 0, 0);
 
-        assertTrue(basicTimelineFilter.containsMatchingSymbol(Collections.singletonList(entity)));
+        Assert.assertThat(basicTimelineFilter.containsMatchingSymbol(Collections.singletonList(entity)), is(true));
     }
 
     @Test
@@ -176,7 +175,7 @@ public class BasicTimelineFilterTest {
         final MentionEntity entity =
                 new MentionEntity(0, "0", "Foo Bar", "FooBar", 0, 0);
 
-        assertFalse(basicTimelineFilter.containsMatchingMention(Collections.singletonList(entity)));
+        Assert.assertThat(basicTimelineFilter.containsMatchingMention(Collections.singletonList(entity)), is(false));
     }
 
     @Test
@@ -184,94 +183,94 @@ public class BasicTimelineFilterTest {
         final MentionEntity entity =
                 new MentionEntity(0, "0", "Eric Frohnhoefer", "EricFrohnhoefer", 0, 0);
 
-        assertTrue(basicTimelineFilter.containsMatchingMention(Collections.singletonList(entity)));
+        Assert.assertThat(basicTimelineFilter.containsMatchingMention(Collections.singletonList(entity)), is(true));
     }
 
     @Test
     public void testContainsMatchingScreenName_withNoMatch() {
-        assertFalse(basicTimelineFilter.containsMatchingScreenName("FooBar"));
+        Assert.assertThat(basicTimelineFilter.containsMatchingScreenName("FooBar"), is(false));
     }
 
     @Test
     public void testContainsMatchingScreenName_withMatch() {
-        assertTrue(basicTimelineFilter.containsMatchingScreenName("EricFrohnhoefer"));
+        Assert.assertThat(basicTimelineFilter.containsMatchingScreenName("EricFrohnhoefer"), is(true));
     }
 
     @Test
     public void testNormalizeHandle() {
         String twitterHandle = "@twitter";
         String normalizedHandle = BasicTimelineFilter.normalizeHandle(twitterHandle);
-        assertEquals("twitter", normalizedHandle);
+        Assert.assertThat(normalizedHandle, is("twitter"));
 
         twitterHandle = "＠twitter";
         normalizedHandle = BasicTimelineFilter.normalizeHandle(twitterHandle);
-        assertEquals("twitter", normalizedHandle);
+        Assert.assertThat(normalizedHandle, is("twitter"));
     }
 
     @Test
     public void testNormalizeHandleWithoutAtSign() {
         final String twitterHandle = "twiTTer";
         final String normalizedHandle = BasicTimelineFilter.normalizeHandle(twitterHandle);
-        assertEquals("twitter", normalizedHandle);
+        Assert.assertThat(normalizedHandle, is("twitter"));
     }
 
     @Test
     public void testNormalizeHashtag() {
         String hashtag = "#twitter";
         String normalizedHashtag = BasicTimelineFilter.normalizeHashtag(hashtag);
-        assertEquals("twitter", normalizedHashtag);
+        Assert.assertThat(normalizedHashtag, is("twitter"));
 
         hashtag = "＃twitter";
         normalizedHashtag = BasicTimelineFilter.normalizeHashtag(hashtag);
-        assertEquals("twitter", normalizedHashtag);
+        Assert.assertThat(normalizedHashtag, is("twitter"));
 
         hashtag = "$TWTR";
         normalizedHashtag = BasicTimelineFilter.normalizeHashtag(hashtag);
-        assertEquals("TWTR", normalizedHashtag);
+        Assert.assertThat(normalizedHashtag, is("TWTR"));
     }
 
     @Test
     public void testNormalizeHashtagWithoutHashtag() {
         final String hashtag = "TWTR";
         final String normalizedHashtag = BasicTimelineFilter.normalizeHashtag(hashtag);
-        assertEquals(hashtag, normalizedHashtag);
+        Assert.assertThat(normalizedHashtag, is(hashtag));
     }
 
     @Test
     public void testNormalizeUrl() {
         String url = "twitter.com";
         String normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        assertEquals("twitter.com", normalizedUrl);
+        Assert.assertThat(normalizedUrl, is("twitter.com"));
 
         url = "dev.twitter.com";
         normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        assertEquals("dev.twitter.com", normalizedUrl);
+        Assert.assertThat(normalizedUrl, is("dev.twitter.com"));
 
         url = "http://twitter.com";
         normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        assertEquals("twitter.com", normalizedUrl);
+        Assert.assertThat(normalizedUrl, is("twitter.com"));
 
         url = "http://TwiTTer.com";
         normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        assertEquals("twitter.com", normalizedUrl);
+        Assert.assertThat(normalizedUrl, is("twitter.com"));
 
         url = "https://twitter.com/test";
         normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        assertEquals("twitter.com", normalizedUrl);
+        Assert.assertThat(normalizedUrl, is("twitter.com"));
 
         url = "транспорт.com";
         normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        assertEquals("xn--80a0addceeeh.com", normalizedUrl);
+        Assert.assertThat(normalizedUrl, is("xn--80a0addceeeh.com"));
 
         url = "https://транспорт.com/test";
         normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        assertEquals("xn--80a0addceeeh.com", normalizedUrl);
+        Assert.assertThat(normalizedUrl, is("xn--80a0addceeeh.com"));
     }
 
     @Test
     public void testNormalizeUrl_withProhibitedCodePoint() {
         final String url = "twitter\u180E.com";
         final String normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        assertEquals(url, normalizedUrl);
+        Assert.assertThat(normalizedUrl, is(url));
     }
 }

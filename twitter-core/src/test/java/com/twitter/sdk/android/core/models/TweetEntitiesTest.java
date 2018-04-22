@@ -21,6 +21,8 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.twitter.sdk.android.core.TestResources;
 import com.twitter.sdk.android.core.internal.CommonUtils;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,6 +32,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.io.InputStreamReader;
 import java.util.Collections;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
@@ -55,10 +58,10 @@ public class TweetEntitiesTest {
     public void testConstructor_nullParameters() {
         try {
             final TweetEntities entities = new TweetEntities(null, null, null, null, null);
-            assertEquals(Collections.EMPTY_LIST, entities.urls);
-            assertEquals(Collections.EMPTY_LIST, entities.userMentions);
-            assertEquals(Collections.EMPTY_LIST, entities.media);
-            assertEquals(Collections.EMPTY_LIST, entities.hashtags);
+            Assert.assertThat(entities.getUrls(), is(Collections.EMPTY_LIST));
+            Assert.assertThat(entities.getUserMentions(), is(Collections.EMPTY_LIST));
+            Assert.assertThat(entities.getMedia(), is(Collections.EMPTY_LIST));
+            Assert.assertThat(entities.getHashtags(), is(Collections.EMPTY_LIST));
         } catch (Exception e) {
             fail();
         }
@@ -73,11 +76,11 @@ public class TweetEntitiesTest {
             final TweetEntities tweetEntities = gson.fromJson(reader, TweetEntities.class);
             // We simply assert that we parsed it successfully and rely on our other unit tests to
             // verify parsing of the individual objects.
-            assertEquals(EXPECTED_URLS_SIZE, tweetEntities.urls.size());
-            assertEquals(EXPECTED_USER_MENTIONS_SIZE, tweetEntities.userMentions.size());
-            assertEquals(EXPECTED_MEDIA_SIZE, tweetEntities.media.size());
-            assertEquals(EXPECTED_HASHTAGS_SIZE, tweetEntities.hashtags.size());
-            assertEquals(EXPECTED_SYMBOLS_SIZE, tweetEntities.symbols.size());
+            Assert.assertThat(tweetEntities.getUrls().size(), is(EXPECTED_URLS_SIZE));
+            Assert.assertThat(tweetEntities.getUserMentions().size(), is(EXPECTED_USER_MENTIONS_SIZE));
+            Assert.assertThat(tweetEntities.getMedia().size(), is(EXPECTED_MEDIA_SIZE));
+            Assert.assertThat(tweetEntities.getHashtags().size(), is(EXPECTED_HASHTAGS_SIZE));
+            Assert.assertThat(tweetEntities.getSymbols().size(), is(EXPECTED_SYMBOLS_SIZE));
         } finally {
             CommonUtils.closeQuietly(reader);
         }
@@ -88,15 +91,15 @@ public class TweetEntitiesTest {
         final TweetEntities tweetEntities = gson.fromJson("{\"urls\":[]}", TweetEntities.class);
         // We simply assert that we parsed it successfully and rely on our other unit tests to
         // verify parsing of the individual objects.
-        assertNotNull(tweetEntities.urls);
-        assertEquals(0, tweetEntities.urls.size());
-        assertNotNull(tweetEntities.userMentions);
-        assertEquals(0, tweetEntities.userMentions.size());
-        assertNotNull(tweetEntities.media);
-        assertEquals(0, tweetEntities.media.size());
-        assertNotNull(tweetEntities.hashtags);
-        assertEquals(0, tweetEntities.hashtags.size());
-        assertNotNull(tweetEntities.symbols);
-        assertEquals(0, tweetEntities.symbols.size());
+        Assert.assertThat(tweetEntities.getUrls(), notNullValue());
+        Assert.assertThat(tweetEntities.getUrls().size(), is(0));
+        Assert.assertThat(tweetEntities.getUserMentions(), notNullValue());
+        Assert.assertThat(tweetEntities.getUserMentions().size(), is(0));
+        Assert.assertThat(tweetEntities.getMedia(), notNullValue());
+        Assert.assertThat(tweetEntities.getMedia().size(), is(0));
+        Assert.assertThat(tweetEntities.getHashtags(), notNullValue());
+        Assert.assertThat(tweetEntities.getHashtags().size(), is(0));
+        Assert.assertThat(tweetEntities.getSymbols(), notNullValue());
+        Assert.assertThat(tweetEntities.getSymbols().size(), is(0));
     }
 }

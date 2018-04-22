@@ -22,13 +22,17 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.test.AndroidTestCase;
 
+import org.junit.Assert;
+
+import static org.hamcrest.CoreMatchers.is;
+
 public class MultiTouchImageViewTest extends AndroidTestCase {
-    static final RectF TEST_VIEW_RECT = new RectF(0, 0, 100, 100);
-    static final Matrix TEST_BASE_MATRIX = new MatrixBuilder().postScale(2f).build();
-    static final Matrix TEST_IDENTITY_MATRIX = new MatrixBuilder().build();
-    static final float TEST_BASE_SCALE = 1f;
-    static final Bitmap image = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
-    MultiTouchImageView view;
+    private static final RectF TEST_VIEW_RECT = new RectF(0, 0, 100, 100);
+    private static final Matrix TEST_BASE_MATRIX = new MatrixBuilder().postScale(2f).build();
+    private static final Matrix TEST_IDENTITY_MATRIX = new MatrixBuilder().build();
+    private static final float TEST_BASE_SCALE = 1f;
+    private static final Bitmap image = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
+    private MultiTouchImageView view;
 
     public void setUp() throws Exception {
         super.setUp();
@@ -38,11 +42,11 @@ public class MultiTouchImageViewTest extends AndroidTestCase {
     }
 
     public void testInitialViewState() {
-        Assert.assertEquals(TEST_BASE_MATRIX, view.baseMatrix);
-        Assert.assertEquals(TEST_IDENTITY_MATRIX, view.updateMatrix);
-        Assert.assertEquals(TEST_VIEW_RECT, view.viewRect);
-        Assert.assertEquals(TEST_BASE_SCALE, view.getScale());
-        Assert.assertEquals(TEST_BASE_MATRIX, view.getDrawMatrix());
+        Assert.assertThat(view.baseMatrix, is(TEST_BASE_MATRIX));
+        Assert.assertThat(view.updateMatrix, is(TEST_IDENTITY_MATRIX));
+        Assert.assertThat(view.viewRect, is(TEST_VIEW_RECT));
+        Assert.assertThat(view.getScale(), is(TEST_BASE_SCALE));
+        Assert.assertThat(view.getDrawMatrix(), is(TEST_BASE_MATRIX));
     }
 
     public void testGetDrawRect() {
@@ -52,7 +56,7 @@ public class MultiTouchImageViewTest extends AndroidTestCase {
                 .build();
         final RectF result = view.getDrawRect(matrix);
         final RectF expected = new RectF(10f, 10f, 110f, 110f);
-        Assert.assertEquals(expected, result);
+        Assert.assertThat(result, is(expected));
     }
 
     public void testSetScale() {
@@ -62,18 +66,18 @@ public class MultiTouchImageViewTest extends AndroidTestCase {
                 .postScale(1.5f)
                 .postTranslate(-25f, -25f)
                 .build();
-        Assert.assertEquals(expected, view.updateMatrix);
-        Assert.assertEquals(1.5f, view.getScale());
-        Assert.assertEquals(TEST_BASE_MATRIX, view.baseMatrix);
+        Assert.assertThat(view.updateMatrix, is(expected));
+        Assert.assertEquals(1.5f, view.getScale(), 0.0);
+        Assert.assertThat(view.baseMatrix, is(TEST_BASE_MATRIX));
     }
 
     public void testReset() {
         view.setScale(1.5f, 50f, 50f);
         view.reset();
 
-        Assert.assertEquals(TEST_IDENTITY_MATRIX, view.updateMatrix);
-        Assert.assertEquals(TEST_BASE_SCALE, view.getScale());
-        Assert.assertEquals(TEST_BASE_MATRIX, view.baseMatrix);
+        Assert.assertThat(view.updateMatrix, is(TEST_IDENTITY_MATRIX));
+        Assert.assertEquals(TEST_BASE_SCALE, view.getScale(), 0.0);
+        Assert.assertThat(view.baseMatrix, is(TEST_BASE_MATRIX));
     }
 
     public void testSetTranslate() {
@@ -82,18 +86,18 @@ public class MultiTouchImageViewTest extends AndroidTestCase {
         final Matrix expected = new MatrixBuilder()
                 .postTranslate(10f, 10f)
                 .build();
-        Assert.assertEquals(expected, view.updateMatrix);
-        Assert.assertEquals(TEST_BASE_SCALE, view.getScale());
-        Assert.assertEquals(TEST_BASE_MATRIX, view.baseMatrix);
+        Assert.assertThat(view.updateMatrix, is(expected));
+        Assert.assertEquals(TEST_BASE_SCALE, view.getScale(), 0.0);
+        Assert.assertThat(view.baseMatrix, is(TEST_BASE_MATRIX));
     }
 
     public void testCanBeSwiped_withScaleEqualOne() {
-        Assert.assertTrue(view.canBeSwiped());
+        Assert.assertThat(view.canBeSwiped(), is(true));
     }
 
     public void testCanBeSwiped_withScaleGreaterThanOne() {
         view.setScale(2, 0, 0);
-        Assert.assertFalse(view.canBeSwiped());
+        Assert.assertThat(view.canBeSwiped(), is(false));
     }
 
     static class MatrixBuilder {

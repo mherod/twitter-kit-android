@@ -76,6 +76,7 @@ dependencies {
     implementation dependency.supportCompatV4
     implementation dependency.recyclerview
 
+    androidTestCompile dependency.junit
     androidTestCompile dependency.retrofitMock
     androidTestCompile dependency.mockito
     androidTestCompile dependency.dexmakerMockito

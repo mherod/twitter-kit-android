@@ -19,12 +19,12 @@ package com.twitter.sdk.android.core.internal.oauth;
 
 import android.os.Parcel;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class OAuth2TokenTest  {
@@ -40,12 +40,12 @@ public class OAuth2TokenTest  {
         parcel.setDataPosition(0);
         final OAuth2Token parceledAuthToken
                 = OAuth2Token.CREATOR.createFromParcel(parcel);
-        assertEquals(authToken, parceledAuthToken);
+        Assert.assertThat(parceledAuthToken, is(authToken));
     }
 
     @Test
     public void testIsExpired() {
         final OAuth2Token token = new OAuth2Token(TOKEN_TYPE, ACCESS_TOKEN);
-        assertFalse(token.isExpired());
+        Assert.assertThat(token.isExpired(), is(false));
     }
 }

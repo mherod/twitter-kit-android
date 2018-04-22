@@ -25,13 +25,14 @@ import android.view.ViewGroup;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Identifiable;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -63,7 +64,7 @@ public class TimelineListAdapterTest {
             new TestTimelineListAdapter<>(context, (Timeline) null);
             fail("IllegalArgumentException expected");
         } catch (IllegalArgumentException e) {
-            assertEquals("Timeline must not be null", e.getMessage());
+            Assert.assertThat(e.getMessage(), is("Timeline must not be null"));
         }
     }
 

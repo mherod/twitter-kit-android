@@ -15,41 +15,39 @@
  *
  */
 
-package com.twitter.sdk.android.core.models;
+package com.twitter.sdk.android.core.models
 
-import com.google.gson.annotations.SerializedName;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
+import java.util.*
 
 /**
  * Provides metadata and additional contextual information about content posted on Twitter
  */
-class Entity implements Serializable {
-    private static final int START_INDEX = 0;
-    private static final int END_INDEX = 1;
+open class Entity(start: Int, end: Int) : Serializable {
 
     /**
      * An array of integers indicating the offsets.
      */
     @SerializedName("indices")
-    public final List<Integer> indices;
+    val indices: List<Int>
 
-    Entity(int start, int end) {
-        final List<Integer> temp = new ArrayList<>(2);
-        temp.add(START_INDEX, start);
-        temp.add(END_INDEX, end);
+    val start: Int
+        get() = indices[START_INDEX]
 
-        indices = Collections.unmodifiableList(temp);
+    val end: Int
+        get() = indices[END_INDEX]
+
+    init {
+        val temp = ArrayList<Int>(2)
+        temp.add(START_INDEX, start)
+        temp.add(END_INDEX, end)
+
+        indices = Collections.unmodifiableList(temp)
     }
 
-    public int getStart() {
-        return indices.get(START_INDEX);
-    }
-
-    public int getEnd() {
-        return indices.get(END_INDEX);
+    companion object {
+        private const val START_INDEX = 0
+        private const val END_INDEX = 1
     }
 }

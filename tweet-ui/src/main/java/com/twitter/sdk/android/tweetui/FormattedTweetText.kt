@@ -24,9 +24,9 @@ package com.twitter.sdk.android.tweetui
  */
 data class FormattedTweetText @JvmOverloads constructor(
         var text: String? = null,
-        val urlEntities: List<FormattedUrlEntity> = arrayListOf(),
-        val hashtagEntities: List<FormattedUrlEntity> = arrayListOf(),
-        val mediaEntities: List<FormattedMediaEntity> = arrayListOf(),
-        val mentionEntities: List<FormattedUrlEntity> = arrayListOf(),
-        val symbolEntities: List<FormattedUrlEntity> = arrayListOf()
+        val urlEntities: ArrayList<FormattedUrlEntity> = arrayListOf(),
+        val hashtagEntities: ArrayList<FormattedUrlEntity> = arrayListOf(),
+        val mediaEntities: ArrayList<FormattedMediaEntity> = arrayListOf(),
+        val mentionEntities: ArrayList<FormattedUrlEntity> = arrayListOf(),
+        val symbolEntities: ArrayList<FormattedUrlEntity> = arrayListOf()
 )

@@ -19,6 +19,7 @@ package com.twitter.sdk.android.core.internal.persistence;
 
 import android.os.Environment;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,10 +29,7 @@ import org.robolectric.shadows.ShadowEnvironment;
 
 import java.io.File;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 
 @RunWith(RobolectricTestRunner.class)
@@ -49,7 +47,7 @@ public class FileStoreImplTest {
             new FileStoreImpl(null);
             fail();
         } catch (IllegalArgumentException ex) {
-            assertEquals("Context must not be null", ex.getMessage());
+            Assert.assertThat(ex.getMessage(), is("Context must not be null"));
         }
     }
 
@@ -72,7 +70,7 @@ public class FileStoreImplTest {
     @Test
     public void testGetExternalCacheDir_withoutExternalStorage() {
         ShadowEnvironment.setExternalStorageState(Environment.MEDIA_REMOVED);
-        assertNull(fileStore.getExternalCacheDir());
+        Assert.assertThat(fileStore.getExternalCacheDir(), nullValue());
     }
 
     @Test
@@ -84,7 +82,7 @@ public class FileStoreImplTest {
     @Test
     public void testGetExternalFilesDir_withoutExternalStorage() {
         ShadowEnvironment.setExternalStorageState(Environment.MEDIA_REMOVED);
-        assertNull(fileStore.getExternalFilesDir());
+        Assert.assertThat(fileStore.getExternalFilesDir(), nullValue());
     }
 
     @Test
@@ -96,12 +94,11 @@ public class FileStoreImplTest {
     @Test
     public void testisExternalStorageAvailable() {
         final String state = Environment.getExternalStorageState();
-        assertEquals(Environment.MEDIA_MOUNTED.equals(state),
-                fileStore.isExternalStorageAvailable());
+        Assert.assertThat(fileStore.isExternalStorageAvailable(), is(Environment.MEDIA_MOUNTED.equals(state)));
     }
 
     private void verifyFile(File file) {
-        assertNotNull(file);
-        assertTrue(file.exists());
+        Assert.assertThat(file, notNullValue());
+        Assert.assertThat(file.exists(), is(true));
     }
 }

@@ -43,9 +43,9 @@ public class TweetTimelineRecyclerViewAdapter extends
         RecyclerView.Adapter<TweetTimelineRecyclerViewAdapter.TweetViewHolder> {
 
     protected final Context context;
-    protected final TimelineDelegate<Tweet> timelineDelegate;
-    protected Callback<Tweet> actionCallback;
-    protected final int styleResId;
+    private final TimelineDelegate<Tweet> timelineDelegate;
+    private Callback<Tweet> actionCallback;
+    private final int styleResId;
     protected TweetUi tweetUi;
     private int previousCount;
 
@@ -72,7 +72,7 @@ public class TweetTimelineRecyclerViewAdapter extends
     TweetTimelineRecyclerViewAdapter(Context context, TimelineDelegate<Tweet> timelineDelegate,
                                      int styleResId, Callback<Tweet> cb, TweetUi tweetUi) {
         this(context, timelineDelegate, styleResId);
-        actionCallback = new ReplaceTweetCallback(timelineDelegate, cb);
+        setActionCallback(new ReplaceTweetCallback(timelineDelegate, cb));
         this.tweetUi = tweetUi;
         scribeTimelineImpression();
     }
@@ -87,11 +87,11 @@ public class TweetTimelineRecyclerViewAdapter extends
         this.timelineDelegate = timelineDelegate;
         this.styleResId = styleResId;
 
-        this.timelineDelegate.refresh(new Callback<TimelineResult<Tweet>>() {
+        this.getTimelineDelegate().refresh(new Callback<TimelineResult<Tweet>>() {
             @Override
             public void success(Result<TimelineResult<Tweet>> result) {
                 notifyDataSetChanged();
-                previousCount = TweetTimelineRecyclerViewAdapter.this.timelineDelegate.getCount();
+                previousCount = TweetTimelineRecyclerViewAdapter.this.getTimelineDelegate().getCount();
             }
 
             @Override
@@ -108,10 +108,10 @@ public class TweetTimelineRecyclerViewAdapter extends
                     notifyDataSetChanged();
                 } else {
                     notifyItemRangeInserted(previousCount,
-                            TweetTimelineRecyclerViewAdapter.this.timelineDelegate.getCount()
+                            TweetTimelineRecyclerViewAdapter.this.getTimelineDelegate().getCount()
                                     - previousCount);
                 }
-                previousCount = TweetTimelineRecyclerViewAdapter.this.timelineDelegate.getCount();
+                previousCount = TweetTimelineRecyclerViewAdapter.this.getTimelineDelegate().getCount();
             }
 
             @Override
@@ -121,11 +121,11 @@ public class TweetTimelineRecyclerViewAdapter extends
             }
         };
 
-        this.timelineDelegate.registerDataSetObserver(dataSetObserver);
+        this.getTimelineDelegate().registerDataSetObserver(dataSetObserver);
     }
 
     public void refresh(Callback<TimelineResult<Tweet>> cb) {
-        timelineDelegate.refresh(cb);
+        getTimelineDelegate().refresh(cb);
         previousCount = 0;
     }
 
@@ -133,21 +133,37 @@ public class TweetTimelineRecyclerViewAdapter extends
     @Override
     public TweetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final Tweet tweet = new TweetBuilder().build();
-        final CompactTweetView compactTweetView = new CompactTweetView(context, tweet, styleResId);
-        compactTweetView.setOnActionCallback(actionCallback);
+        final CompactTweetView compactTweetView = new CompactTweetView(context, tweet, getStyleResId());
+        compactTweetView.setOnActionCallback(getActionCallback());
         return new TweetViewHolder(compactTweetView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TweetViewHolder holder, int position) {
-        final Tweet tweet = timelineDelegate.getItem(position);
+        final Tweet tweet = getTimelineDelegate().getItem(position);
         final CompactTweetView compactTweetView = (CompactTweetView) holder.itemView;
         compactTweetView.setTweet(tweet);
     }
 
     @Override
     public int getItemCount() {
-        return timelineDelegate.getCount();
+        return getTimelineDelegate().getCount();
+    }
+
+    public Callback<Tweet> getActionCallback() {
+        return actionCallback;
+    }
+
+    public void setActionCallback(Callback<Tweet> actionCallback) {
+        this.actionCallback = actionCallback;
+    }
+
+    public int getStyleResId() {
+        return styleResId;
+    }
+
+    public TimelineDelegate<Tweet> getTimelineDelegate() {
+        return timelineDelegate;
     }
 
     protected static final class TweetViewHolder extends RecyclerView.ViewHolder {
@@ -158,20 +174,20 @@ public class TweetTimelineRecyclerViewAdapter extends
 
     private void scribeTimelineImpression() {
         final String jsonMessage;
-        if (timelineDelegate instanceof FilterTimelineDelegate) {
+        if (getTimelineDelegate() instanceof FilterTimelineDelegate) {
             final FilterTimelineDelegate filterTimelineDelegate =
-                    (FilterTimelineDelegate) timelineDelegate;
+                    (FilterTimelineDelegate) getTimelineDelegate();
             final TimelineFilter timelineFilter = filterTimelineDelegate.timelineFilter;
             jsonMessage = getJsonMessage(timelineFilter.totalFilters());
         } else {
             jsonMessage = DEFAULT_FILTERS_JSON_MSG;
         }
 
-        final ScribeItem scribeItem = ScribeItem.fromMessage(jsonMessage);
+        final ScribeItem scribeItem = ScribeItem.Companion.fromMessage(jsonMessage);
         final List<ScribeItem> items = new ArrayList<>();
         items.add(scribeItem);
 
-        final String timelineType = getTimelineType(timelineDelegate.getTimeline());
+        final String timelineType = getTimelineType(getTimelineDelegate().getTimeline());
         tweetUi.scribe(ScribeConstants.getSyndicatedSdkTimelineNamespace(timelineType));
         tweetUi.scribe(ScribeConstants.getTfwClientTimelineNamespace(timelineType), items);
     }

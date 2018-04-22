@@ -25,13 +25,12 @@ import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.models.UserBuilder;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class ScribeItemTest {
@@ -50,61 +49,61 @@ public class ScribeItemTest {
     @Test
     public void testFromTweet() {
         final Tweet tweet = new TweetBuilder().setId(TEST_ID).build();
-        final ScribeItem item = ScribeItem.fromTweet(tweet);
+        final ScribeItem item = ScribeItem.Companion.fromTweet(tweet);
 
-        assertEquals(Long.valueOf(TEST_ID), item.id);
-        assertEquals(Integer.valueOf(ScribeItem.TYPE_TWEET), item.itemType);
-        assertNull(item.description);
+        Assert.assertThat(item.getId(), is(Long.valueOf(TEST_ID)));
+        Assert.assertThat(item.getItemType(), is(Integer.valueOf(ScribeItem.TYPE_TWEET)));
+        Assert.assertThat(item.getDescription(), nullValue());
     }
 
     @Test
     public void testFromUser() {
         final User user = new UserBuilder().setId(TEST_ID).build();
-        final ScribeItem item = ScribeItem.fromUser(user);
+        final ScribeItem item = ScribeItem.Companion.fromUser(user);
 
-        assertEquals(Long.valueOf(TEST_ID), item.id);
-        assertEquals(Integer.valueOf(ScribeItem.TYPE_USER), item.itemType);
-        assertNull(item.description);
+        Assert.assertThat(item.getId(), is(Long.valueOf(TEST_ID)));
+        Assert.assertThat(item.getItemType(), is(Integer.valueOf(ScribeItem.TYPE_USER)));
+        Assert.assertThat(item.getDescription(), nullValue());
     }
 
     @Test
     public void testFromMediaEntity_withAnimatedGif() {
         final MediaEntity animatedGif = createTestEntity(TEST_TYPE_ANIMATED_GIF);
-        final ScribeItem scribeItem = ScribeItem.fromMediaEntity(TEST_ID, animatedGif);
+        final ScribeItem scribeItem = ScribeItem.Companion.fromMediaEntity(TEST_ID, animatedGif);
 
-        assertEquals(Long.valueOf(TEST_ID), scribeItem.id);
-        assertEquals(Integer.valueOf(ScribeItem.TYPE_TWEET), scribeItem.itemType);
-        assertMediaDetails(scribeItem.mediaDetails, TEST_TYPE_ANIMATED_GIF_ID);
+        Assert.assertThat(scribeItem.getId(), is(Long.valueOf(TEST_ID)));
+        Assert.assertThat(scribeItem.getItemType(), is(Integer.valueOf(ScribeItem.TYPE_TWEET)));
+        assertMediaDetails(scribeItem.getMediaDetails(), TEST_TYPE_ANIMATED_GIF_ID);
     }
 
     @Test
     public void testFromMediaEntity_withConsumerVideo() {
         final MediaEntity videoEntity = createTestEntity(TEST_TYPE_CONSUMER);
-        final ScribeItem scribeItem = ScribeItem.fromMediaEntity(TEST_ID, videoEntity);
+        final ScribeItem scribeItem = ScribeItem.Companion.fromMediaEntity(TEST_ID, videoEntity);
 
-        assertEquals(Long.valueOf(TEST_ID), scribeItem.id);
-        assertEquals(Integer.valueOf(ScribeItem.TYPE_TWEET), scribeItem.itemType);
-        assertMediaDetails(scribeItem.mediaDetails, TEST_TYPE_CONSUMER_ID);
+        Assert.assertThat(scribeItem.getId(), is(Long.valueOf(TEST_ID)));
+        Assert.assertThat(scribeItem.getItemType(), is(Integer.valueOf(ScribeItem.TYPE_TWEET)));
+        assertMediaDetails(scribeItem.getMediaDetails(), TEST_TYPE_CONSUMER_ID);
     }
 
     @Test
     public void testFromTweetCard() {
         final long tweetId = TEST_ID;
         final Card vineCard = TestFixtures.sampleValidVineCard();
-        final ScribeItem scribeItem = ScribeItem.fromTweetCard(tweetId, vineCard);
+        final ScribeItem scribeItem = ScribeItem.Companion.fromTweetCard(tweetId, vineCard);
 
-        assertEquals(Long.valueOf(TEST_ID), scribeItem.id);
-        assertEquals(Integer.valueOf(ScribeItem.TYPE_TWEET), scribeItem.itemType);
-        assertMediaDetails(scribeItem.mediaDetails, TEST_TYPE_VINE_ID);
+        Assert.assertThat(scribeItem.getId(), is(Long.valueOf(TEST_ID)));
+        Assert.assertThat(scribeItem.getItemType(), is(Integer.valueOf(ScribeItem.TYPE_TWEET)));
+        assertMediaDetails(scribeItem.getMediaDetails(), TEST_TYPE_VINE_ID);
     }
 
     @Test
     public void testFromMessage() {
-        final ScribeItem item = ScribeItem.fromMessage(TEST_MESSAGE);
+        final ScribeItem item = ScribeItem.Companion.fromMessage(TEST_MESSAGE);
 
-        assertNull(item.id);
-        assertEquals(Integer.valueOf(ScribeItem.TYPE_MESSAGE), item.itemType);
-        assertEquals(TEST_MESSAGE, item.description);
+        Assert.assertThat(item.getId(), nullValue());
+        Assert.assertThat(item.getItemType(), is(Integer.valueOf(ScribeItem.TYPE_MESSAGE)));
+        Assert.assertThat(item.getDescription(), is(TEST_MESSAGE));
     }
 
     @Test
@@ -117,30 +116,30 @@ public class ScribeItemTest {
                 .setMediaDetails(TEST_MEDIA_DETAILS)
                 .build();
 
-        assertEquals(Long.valueOf(TEST_ID), item.id);
-        assertEquals(Integer.valueOf(ScribeItem.TYPE_MESSAGE), item.itemType);
-        assertEquals(TEST_MESSAGE, item.description);
-        assertEquals(TEST_CARD_EVENT, item.cardEvent);
-        assertEquals(TEST_MEDIA_DETAILS, item.mediaDetails);
+        Assert.assertThat(item.getId(), is(Long.valueOf(TEST_ID)));
+        Assert.assertThat(item.getItemType(), is(Integer.valueOf(ScribeItem.TYPE_MESSAGE)));
+        Assert.assertThat(item.getDescription(), is(TEST_MESSAGE));
+        Assert.assertThat(item.getCardEvent(), is(TEST_CARD_EVENT));
+        Assert.assertThat(item.getMediaDetails(), is(TEST_MEDIA_DETAILS));
     }
 
     @Test
     public void testBuilder_empty() {
         final ScribeItem item = new ScribeItem.Builder().build();
 
-        assertNull(item.id);
-        assertNull(item.itemType);
-        assertNull(item.description);
-        assertNull(item.cardEvent);
-        assertNull(item.mediaDetails);
+        Assert.assertThat(item.getId(), nullValue());
+        Assert.assertThat(item.getItemType(), nullValue());
+        Assert.assertThat(item.getDescription(), nullValue());
+        Assert.assertThat(item.getCardEvent(), nullValue());
+        Assert.assertThat(item.getMediaDetails(), nullValue());
     }
 
 
     static void assertMediaDetails(ScribeItem.MediaDetails mediaDetails, int type) {
-        assertNotNull(mediaDetails);
-        assertEquals(TEST_ID, mediaDetails.contentId);
-        assertEquals(type, mediaDetails.mediaType);
-        assertEquals(TEST_MEDIA_ID, mediaDetails.publisherId);
+        Assert.assertThat(mediaDetails, notNullValue());
+        Assert.assertThat(mediaDetails.getContentId(), is(TEST_ID));
+        Assert.assertThat(mediaDetails.getMediaType(), is(type));
+        Assert.assertThat(mediaDetails.getPublisherId(), is(TEST_MEDIA_ID));
     }
 
     private MediaEntity createTestEntity(String type) {

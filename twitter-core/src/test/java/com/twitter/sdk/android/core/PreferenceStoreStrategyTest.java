@@ -20,23 +20,24 @@ package com.twitter.sdk.android.core;
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStore;
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreStrategy;
+
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class PreferenceStoreStrategyTest {
-    private PreferenceStore preferenceStore;
     private PreferenceStoreStrategy<TwitterSession> preferenceStrategy;
 
     @Before
     public void setUp() throws Exception {
-        preferenceStore = new PreferenceStoreImpl(RuntimeEnvironment.application, "testSession");
+        PreferenceStore preferenceStore = new PreferenceStoreImpl(RuntimeEnvironment.application, "testSession");
         preferenceStrategy = new PreferenceStoreStrategy<>(preferenceStore,
                 new TwitterSession.Serializer(), "testSession");
     }
@@ -48,14 +49,14 @@ public class PreferenceStoreStrategyTest {
 
     @Test
     public void testRestore_emptyStore() {
-        assertEquals(null, preferenceStrategy.restore());
+        Assert.assertThat(preferenceStrategy.restore(), nullValue());
     }
 
     @Test
     public void testSaveAndRestore_nullSession() {
         preferenceStrategy.save(null);
         final TwitterSession restoredSession = preferenceStrategy.restore();
-        assertEquals(null, restoredSession);
+        Assert.assertThat(restoredSession, nullValue());
     }
 
     @Test
@@ -65,6 +66,6 @@ public class PreferenceStoreStrategyTest {
                 TwitterSession.UNKNOWN_USER_NAME);
         preferenceStrategy.save(session);
         final TwitterSession restoredSession = preferenceStrategy.restore();
-        assertEquals(session, restoredSession);
+        Assert.assertThat(restoredSession, is(session));
     }
 }

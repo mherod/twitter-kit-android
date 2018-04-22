@@ -31,6 +31,7 @@ import com.mopub.network.Networking;
 import com.mopub.volley.toolbox.ImageLoader;
 import com.twitter.sdk.android.mopub.internal.RoundedImageView;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,8 +42,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doAnswer;
@@ -138,7 +138,8 @@ public class TwitterStaticNativeAdRendererTest {
 
     @Test
     public void testSupports_withCorrectInstanceOfBaseNativeAd_shouldReturnTrue() {
-        assertTrue(twitterStaticNativeAdRenderer.supports(new StaticNativeAd() {}));
-        assertFalse(twitterStaticNativeAdRenderer.supports(mock(BaseNativeAd.class)));
+        Assert.assertThat(twitterStaticNativeAdRenderer.supports(new StaticNativeAd() {
+        }), is(true));
+        Assert.assertThat(twitterStaticNativeAdRenderer.supports(mock(BaseNativeAd.class)), is(false));
     }
 }

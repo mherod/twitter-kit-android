@@ -62,12 +62,12 @@ public final class TweetMediaUtils {
      */
     public static List<MediaEntity> getPhotoEntities(Tweet tweet) {
         final List<MediaEntity> photoEntities = new ArrayList<>();
-        final TweetEntities extendedEntities = tweet.extendedEntities;
+        final TweetEntities extendedEntities = tweet.getExtendedEntities();
 
-        if (extendedEntities != null && extendedEntities.media != null
-                && extendedEntities.media.size() > 0) {
-            for (int i = 0; i <= extendedEntities.media.size() - 1; i++) {
-                final MediaEntity entity = extendedEntities.media.get(i);
+        if (extendedEntities != null && extendedEntities.getMedia() != null
+                && extendedEntities.getMedia().size() > 0) {
+            for (int i = 0; i <= extendedEntities.getMedia().size() - 1; i++) {
+                final MediaEntity entity = extendedEntities.getMedia().get(i);
                 if (entity.type != null && isPhotoType(entity)) {
                     photoEntities.add(entity);
                 }
@@ -157,12 +157,12 @@ public final class TweetMediaUtils {
 
     static List<MediaEntity> getAllMediaEntities(Tweet tweet) {
         final List<MediaEntity> entities = new ArrayList<>();
-        if (tweet.entities != null && tweet.entities.media != null) {
-            entities.addAll(tweet.entities.media);
+        if (tweet.getEntities() != null && tweet.getEntities().getMedia() != null) {
+            entities.addAll(tweet.getEntities().getMedia());
         }
 
-        if (tweet.extendedEntities != null && tweet.extendedEntities.media != null) {
-            entities.addAll(tweet.extendedEntities.media);
+        if (tweet.getExtendedEntities() != null && tweet.getExtendedEntities().getMedia() != null) {
+            entities.addAll(tweet.getExtendedEntities().getMedia());
         }
 
         return entities;

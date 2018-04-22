@@ -23,6 +23,6 @@ import com.twitter.sdk.android.core.internal.scribe.ScribeItem
 /**
  * ScribeClient writes tweet-composer scribe events.
  */
-internal interface ScribeClient {
+interface ScribeClient {
     fun scribe(eventNamespace: EventNamespace, items: List<ScribeItem>)
 }

@@ -22,16 +22,14 @@ import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 
 public class FixedTweetTimelineTest {
@@ -48,14 +46,14 @@ public class FixedTweetTimelineTest {
     @Test
     public void testConstructor() {
         final FixedTweetTimeline timeline = new FixedTweetTimeline(fixedTweets);
-        assertNotNull(timeline.tweets);
-        assertEquals(fixedTweets, timeline.tweets);
+        Assert.assertThat(timeline.tweets, notNullValue());
+        Assert.assertThat(timeline.tweets, is(fixedTweets));
     }
 
     @Test
     public void testConstructor_nullTweets() {
         final FixedTweetTimeline timeline = new FixedTweetTimeline(null);
-        assertTrue(timeline.tweets.isEmpty());
+        Assert.assertThat(timeline.tweets.isEmpty(), is(true));
     }
 
     @Test
@@ -64,12 +62,10 @@ public class FixedTweetTimelineTest {
         timeline.next(ANY_ID, new Callback<TimelineResult<Tweet>>() {
             @Override
             public void success(Result<TimelineResult<Tweet>> result) {
-                assertEquals(fixedTweets, result.getData().getItems());
-                assertEquals((Long) TestFixtures.TEST_PHOTO_TWEET.getId(),
-                        result.getData().getTimelineCursor().minPosition);
-                assertEquals((Long) TestFixtures.TEST_TWEET.getId(),
-                        result.getData().getTimelineCursor().maxPosition);
-                assertNull(result.getResponse());
+                Assert.assertThat(result.getData().getItems(), is(fixedTweets));
+                Assert.assertThat(result.getData().getTimelineCursor().minPosition, is(TestFixtures.TEST_PHOTO_TWEET.getId()));
+                Assert.assertThat(result.getData().getTimelineCursor().maxPosition, is(TestFixtures.TEST_TWEET.getId()));
+                Assert.assertThat(result.getResponse(), nullValue());
             }
             @Override
             public void failure(TwitterException exception) {
@@ -84,10 +80,10 @@ public class FixedTweetTimelineTest {
         timeline.previous(ANY_ID, new Callback<TimelineResult<Tweet>>() {
             @Override
             public void success(Result<TimelineResult<Tweet>> result) {
-                assertTrue(result.getData().getItems().isEmpty());
-                assertNull(result.getData().getTimelineCursor().maxPosition);
-                assertNull(result.getData().getTimelineCursor().minPosition);
-                assertNull(result.getResponse());
+                Assert.assertThat(result.getData().getItems().isEmpty(), is(true));
+                Assert.assertThat(result.getData().getTimelineCursor().maxPosition, nullValue());
+                Assert.assertThat(result.getData().getTimelineCursor().minPosition, nullValue());
+                Assert.assertThat(result.getResponse(), nullValue());
             }
 
             @Override
@@ -102,12 +98,12 @@ public class FixedTweetTimelineTest {
     public void testBuilder() {
         final FixedTweetTimeline timeline = new FixedTweetTimeline.Builder()
                 .setTweets(fixedTweets).build();
-        assertEquals(fixedTweets, timeline.tweets);
+        Assert.assertThat(timeline.tweets, is(fixedTweets));
     }
 
     @Test
     public void testBuilder_empty() {
         final FixedTweetTimeline timeline = new FixedTweetTimeline.Builder().build();
-        assertTrue(timeline.tweets.isEmpty());
+        Assert.assertThat(timeline.tweets.isEmpty(), is(true));
     }
 }

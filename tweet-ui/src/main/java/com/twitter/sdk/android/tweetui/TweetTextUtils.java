@@ -59,9 +59,9 @@ final class TweetTextUtils {
      * @param tweet The source Tweet
      */
     static void convertEntities(FormattedTweetText formattedTweetText, Tweet tweet) {
-        if (tweet.entities == null) return;
+        if (tweet.getEntities() == null) return;
 
-        final List<UrlEntity> coreUrls = tweet.entities.urls;
+        final List<UrlEntity> coreUrls = tweet.getEntities().getUrls();
         if (coreUrls != null) {
             for (UrlEntity entity : coreUrls) {
                 final FormattedUrlEntity formattedUrlEntity =
@@ -70,7 +70,7 @@ final class TweetTextUtils {
             }
         }
 
-        final List<MediaEntity> coreMedia = tweet.entities.media;
+        final List<MediaEntity> coreMedia = tweet.getEntities().getMedia();
         if (coreMedia != null) {
             for (MediaEntity entity : coreMedia) {
                 final FormattedMediaEntity formattedMediaEntity = new FormattedMediaEntity(entity);
@@ -78,7 +78,7 @@ final class TweetTextUtils {
             }
         }
 
-        final List<HashtagEntity> coreHashtags = tweet.entities.hashtags;
+        final List<HashtagEntity> coreHashtags = tweet.getEntities().getHashtags();
         if (coreHashtags != null) {
             for (HashtagEntity entity : coreHashtags) {
                 final FormattedUrlEntity formattedHashtagEntity =
@@ -87,7 +87,7 @@ final class TweetTextUtils {
             }
         }
 
-        final List<MentionEntity> coreMentions = tweet.entities.userMentions;
+        final List<MentionEntity> coreMentions = tweet.getEntities().getUserMentions();
         if (coreMentions != null) {
             for (MentionEntity entity : coreMentions) {
                 final FormattedUrlEntity formattedMentionEntity =
@@ -96,7 +96,7 @@ final class TweetTextUtils {
             }
         }
 
-        final List<SymbolEntity> coreSymbols = tweet.entities.symbols;
+        final List<SymbolEntity> coreSymbols = tweet.getEntities().getSymbols();
         if (coreSymbols != null) {
             for (SymbolEntity entity : coreSymbols) {
                 final FormattedUrlEntity formattedSymbolEntity =
@@ -114,9 +114,9 @@ final class TweetTextUtils {
      * @param tweet The source Tweet
      */
     static void format(FormattedTweetText formattedTweetText, Tweet tweet) {
-        if (TextUtils.isEmpty(tweet.text)) return;
+        if (TextUtils.isEmpty(tweet.getText())) return;
 
-        final HtmlEntities.Unescaped u = HtmlEntities.HTML40.unescape(tweet.text);
+        final HtmlEntities.Unescaped u = HtmlEntities.HTML40.unescape(tweet.getText());
         final StringBuilder result = new StringBuilder(u.unescaped);
 
         adjustIndicesForEscapedChars(formattedTweetText.getUrlEntities(), u.indices);

@@ -23,6 +23,7 @@ import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
 import com.twitter.sdk.android.core.internal.oauth.OAuthConstants;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,10 +35,7 @@ import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -89,8 +87,8 @@ public class GuestAuthenticatorTest {
         final GuestSession session = authenticator.getExpiredSession(response);
 
         final GuestAuthToken token = session.getAuthToken();
-        assertEquals(TEST_GUEST_TOKEN, token.getGuestToken());
-        assertEquals(TEST_ACCESS_TOKEN, token.getAccessToken());
+        Assert.assertThat(token.getGuestToken(), is(TEST_GUEST_TOKEN));
+        Assert.assertThat(token.getAccessToken(), is(TEST_ACCESS_TOKEN));
     }
 
     @Test
@@ -108,7 +106,7 @@ public class GuestAuthenticatorTest {
 
         final GuestSession session = authenticator.getExpiredSession(response);
 
-        assertNull(session);
+        Assert.assertThat(session, nullValue());
     }
 
     @Test
@@ -125,21 +123,20 @@ public class GuestAuthenticatorTest {
                 .build();
 
         final Request request = authenticator.reauth(response);
-        assertNull(request);
+        Assert.assertThat(request, nullValue());
     }
 
     @Test
     public void testResign() {
         final Request newRequest = authenticator.resign(request, mockAuthToken);
 
-        assertEquals(TEST_HEADER_AUTHORIZATION_2,
-                newRequest.header(OAuthConstants.HEADER_AUTHORIZATION));
-        assertEquals(TEST_GUEST_TOKEN_2, newRequest.header(OAuthConstants.HEADER_GUEST_TOKEN));
+        Assert.assertThat(newRequest.header(OAuthConstants.HEADER_AUTHORIZATION), is(TEST_HEADER_AUTHORIZATION_2));
+        Assert.assertThat(newRequest.header(OAuthConstants.HEADER_GUEST_TOKEN), is(TEST_GUEST_TOKEN_2));
     }
 
     @Test
     public void testCanRetry_firstRetry() {
-        assertTrue(authenticator.canRetry(response));
+        Assert.assertThat(authenticator.canRetry(response), is(true));
     }
 
     @Test
@@ -152,6 +149,6 @@ public class GuestAuthenticatorTest {
                 .priorResponse(response)
                 .build();
 
-        assertFalse(authenticator.canRetry(failedResponse));
+        Assert.assertThat(authenticator.canRetry(failedResponse), is(false));
     }
 }

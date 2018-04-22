@@ -20,6 +20,7 @@ package com.twitter.sdk.android.tweetui;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -29,8 +30,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -77,12 +77,12 @@ public class TweetScribeClientImplTest {
 
         EventNamespace ns = namespaceArgumentCaptor.getAllValues().get(0);
         assertTfwNamespaceValuesForTweets(ns);
-        assertEquals(TEST_VIEW_NAME, ns.component);
-        assertEquals(REQUIRED_SCRIBE_IMPRESSION_ACTION, ns.action);
+        Assert.assertThat(ns.component, is(TEST_VIEW_NAME));
+        Assert.assertThat(ns.action, is(REQUIRED_SCRIBE_IMPRESSION_ACTION));
         ns = namespaceArgumentCaptor.getAllValues().get(1);
         assertSyndicatedNamespaceValuesForTweets(ns);
-        assertEquals(TEST_VIEW_NAME, ns.section);
-        assertEquals(REQUIRED_SCRIBE_IMPRESSION_ACTION, ns.action);
+        Assert.assertThat(ns.section, is(TEST_VIEW_NAME));
+        Assert.assertThat(ns.action, is(REQUIRED_SCRIBE_IMPRESSION_ACTION));
 
         List<ScribeItem> items = itemsArgumentCaptor.getAllValues().get(0);
         assertItems(items);
@@ -98,7 +98,7 @@ public class TweetScribeClientImplTest {
 
         final EventNamespace ns = namespaceArgumentCaptor.getValue();
         assertTfwNamespaceForActions(ns);
-        assertEquals(REQUIRED_SCRIBE_SHARE_ACTION, ns.action);
+        Assert.assertThat(ns.action, is(REQUIRED_SCRIBE_SHARE_ACTION));
         assertItems(itemsArgumentCaptor.getValue());
     }
 
@@ -109,7 +109,7 @@ public class TweetScribeClientImplTest {
         verify(tweetUi).scribe(namespaceArgumentCaptor.capture(), itemsArgumentCaptor.capture());
         final EventNamespace ns = namespaceArgumentCaptor.getValue();
         assertTfwNamespaceForActions(ns);
-        assertEquals(REQUIRED_SCRIBE_FAVORITE_ACTION, ns.action);
+        Assert.assertThat(ns.action, is(REQUIRED_SCRIBE_FAVORITE_ACTION));
         assertItems(itemsArgumentCaptor.getValue());
     }
 
@@ -120,7 +120,7 @@ public class TweetScribeClientImplTest {
         verify(tweetUi).scribe(namespaceArgumentCaptor.capture(), itemsArgumentCaptor.capture());
         final EventNamespace ns = namespaceArgumentCaptor.getValue();
         assertTfwNamespaceForActions(ns);
-        assertEquals(REQUIRED_SCRIBE_UNFAVORITE_ACTION, ns.action);
+        Assert.assertThat(ns.action, is(REQUIRED_SCRIBE_UNFAVORITE_ACTION));
         assertItems(itemsArgumentCaptor.getValue());
     }
 
@@ -131,8 +131,8 @@ public class TweetScribeClientImplTest {
         verify(tweetUi).scribe(namespaceArgumentCaptor.capture(), itemsArgumentCaptor.capture());
         final EventNamespace ns = namespaceArgumentCaptor.getValue();
         assertTfwNamespaceValuesForTweets(ns);
-        assertEquals(TEST_VIEW_NAME, ns.component);
-        assertEquals(REQUIRED_SCRIBE_CLICK_ACTION, ns.action);
+        Assert.assertThat(ns.component, is(TEST_VIEW_NAME));
+        Assert.assertThat(ns.action, is(REQUIRED_SCRIBE_CLICK_ACTION));
         assertItems(itemsArgumentCaptor.getValue());
     }
 
@@ -140,12 +140,12 @@ public class TweetScribeClientImplTest {
     public void testGetTfwImpressionNamespace_actionsEnabled() {
         final EventNamespace ns =
                 TweetScribeClientImpl.getTfwImpressionNamespace(TEST_VIEW_NAME, true);
-        assertEquals(REQUIRED_TFW_SCRIBE_CLIENT, ns.client);
-        assertEquals(REQUIRED_TFW_SCRIBE_PAGE, ns.page);
-        assertEquals(REQUIRED_TFW_SCRIBE_SECTION, ns.section);
-        assertEquals(REQUIRED_SCRIBE_ACTIONS_ELEMENT, ns.element);
-        assertEquals(TEST_VIEW_NAME, ns.component);
-        assertEquals(REQUIRED_SCRIBE_IMPRESSION_ACTION, ns.action);
+        Assert.assertThat(ns.client, is(REQUIRED_TFW_SCRIBE_CLIENT));
+        Assert.assertThat(ns.page, is(REQUIRED_TFW_SCRIBE_PAGE));
+        Assert.assertThat(ns.section, is(REQUIRED_TFW_SCRIBE_SECTION));
+        Assert.assertThat(ns.element, is(REQUIRED_SCRIBE_ACTIONS_ELEMENT));
+        Assert.assertThat(ns.component, is(TEST_VIEW_NAME));
+        Assert.assertThat(ns.action, is(REQUIRED_SCRIBE_IMPRESSION_ACTION));
     }
 
     @Test
@@ -153,8 +153,8 @@ public class TweetScribeClientImplTest {
         final EventNamespace ns =
                 TweetScribeClientImpl.getTfwImpressionNamespace(TEST_VIEW_NAME, false);
         assertTfwNamespaceValuesForTweets(ns);
-        assertEquals(TEST_VIEW_NAME, ns.component);
-        assertEquals(REQUIRED_SCRIBE_IMPRESSION_ACTION, ns.action);
+        Assert.assertThat(ns.component, is(TEST_VIEW_NAME));
+        Assert.assertThat(ns.action, is(REQUIRED_SCRIBE_IMPRESSION_ACTION));
     }
 
     @Test
@@ -162,8 +162,8 @@ public class TweetScribeClientImplTest {
         final EventNamespace ns =
                 TweetScribeClientImpl.getSyndicatedImpressionNamespace(TEST_VIEW_NAME);
         assertSyndicatedNamespaceValuesForTweets(ns);
-        assertEquals(TEST_VIEW_NAME, ns.section);
-        assertEquals(REQUIRED_SCRIBE_IMPRESSION_ACTION, ns.action);
+        Assert.assertThat(ns.section, is(TEST_VIEW_NAME));
+        Assert.assertThat(ns.action, is(REQUIRED_SCRIBE_IMPRESSION_ACTION));
     }
 
     @Test
@@ -171,56 +171,56 @@ public class TweetScribeClientImplTest {
         final EventNamespace ns = TweetScribeClientImpl.getTfwClickNamespace(TEST_VIEW_NAME);
 
         assertTfwNamespaceValuesForTweets(ns);
-        assertEquals(TEST_VIEW_NAME, ns.component);
-        assertEquals(REQUIRED_SCRIBE_CLICK_ACTION, ns.action);
+        Assert.assertThat(ns.component, is(TEST_VIEW_NAME));
+        Assert.assertThat(ns.action, is(REQUIRED_SCRIBE_CLICK_ACTION));
     }
 
     @Test
     public void testGetTfwFavoriteNamespace() {
         final EventNamespace ns = TweetScribeClientImpl.getTfwFavoriteNamespace();
         assertTfwNamespaceForActions(ns);
-        assertEquals(REQUIRED_SCRIBE_FAVORITE_ACTION, ns.action);
+        Assert.assertThat(ns.action, is(REQUIRED_SCRIBE_FAVORITE_ACTION));
     }
 
     @Test
     public void testGetTfwUnfavoriteNamespace() {
         final EventNamespace ns = TweetScribeClientImpl.getTfwUnfavoriteNamespace();
         assertTfwNamespaceForActions(ns);
-        assertEquals(REQUIRED_SCRIBE_UNFAVORITE_ACTION, ns.action);
+        Assert.assertThat(ns.action, is(REQUIRED_SCRIBE_UNFAVORITE_ACTION));
     }
 
     @Test
     public void testGetTfwShareNamespace() {
         final EventNamespace ns = TweetScribeClientImpl.getTfwShareNamespace();
         assertTfwNamespaceForActions(ns);
-        assertEquals(REQUIRED_SCRIBE_SHARE_ACTION, ns.action);
+        Assert.assertThat(ns.action, is(REQUIRED_SCRIBE_SHARE_ACTION));
     }
 
     static void assertItems(List<ScribeItem> items) {
-        assertNotNull(items);
-        assertEquals(1, items.size());
-        assertEquals(TestFixtures.TEST_TWEET.id, items.get(0).id.longValue());
-        assertEquals(ScribeItem.TYPE_TWEET, items.get(0).itemType.intValue());
+        Assert.assertThat(items, notNullValue());
+        Assert.assertThat(items.size(), is(1));
+        Assert.assertThat(items.get(0).getId().longValue(), is(TestFixtures.TEST_TWEET.getId()));
+        Assert.assertThat(items.get(0).getItemType().intValue(), is(ScribeItem.TYPE_TWEET));
     }
 
     static void assertTfwNamespaceForActions(EventNamespace ns) {
-        assertEquals(REQUIRED_TFW_SCRIBE_CLIENT, ns.client);
-        assertEquals(REQUIRED_TFW_SCRIBE_PAGE, ns.page);
-        assertEquals(REQUIRED_TFW_SCRIBE_SECTION, ns.section);
-        assertEquals(REQUIRED_SCRIBE_ACTIONS_ELEMENT, ns.element);
+        Assert.assertThat(ns.client, is(REQUIRED_TFW_SCRIBE_CLIENT));
+        Assert.assertThat(ns.page, is(REQUIRED_TFW_SCRIBE_PAGE));
+        Assert.assertThat(ns.section, is(REQUIRED_TFW_SCRIBE_SECTION));
+        Assert.assertThat(ns.element, is(REQUIRED_SCRIBE_ACTIONS_ELEMENT));
     }
 
     static void assertTfwNamespaceValuesForTweets(EventNamespace ns) {
-        assertEquals(REQUIRED_TFW_SCRIBE_CLIENT, ns.client);
-        assertEquals(REQUIRED_TFW_SCRIBE_PAGE, ns.page);
-        assertEquals(REQUIRED_TFW_SCRIBE_SECTION, ns.section);
-        assertEquals(REQUIRED_TFW_SCRIBE_ELEMENT, ns.element);
+        Assert.assertThat(ns.client, is(REQUIRED_TFW_SCRIBE_CLIENT));
+        Assert.assertThat(ns.page, is(REQUIRED_TFW_SCRIBE_PAGE));
+        Assert.assertThat(ns.section, is(REQUIRED_TFW_SCRIBE_SECTION));
+        Assert.assertThat(ns.element, is(REQUIRED_TFW_SCRIBE_ELEMENT));
     }
 
     static void assertSyndicatedNamespaceValuesForTweets(EventNamespace ns) {
-        assertEquals(REQUIRED_SDK_SCRIBE_CLIENT, ns.client);
-        assertEquals(REQUIRED_SDK_SCRIBE_PAGE, ns.page);
-        assertEquals(REQUIRED_SDK_SCRIBE_COMPONENT, ns.component);
-        assertEquals(REQUIRED_SDK_SCRIBE_ELEMENT, ns.element);
+        Assert.assertThat(ns.client, is(REQUIRED_SDK_SCRIBE_CLIENT));
+        Assert.assertThat(ns.page, is(REQUIRED_SDK_SCRIBE_PAGE));
+        Assert.assertThat(ns.component, is(REQUIRED_SDK_SCRIBE_COMPONENT));
+        Assert.assertThat(ns.element, is(REQUIRED_SDK_SCRIBE_ELEMENT));
     }
 }

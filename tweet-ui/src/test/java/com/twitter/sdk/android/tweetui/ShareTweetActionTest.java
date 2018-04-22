@@ -26,6 +26,7 @@ import android.content.res.Resources;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +37,7 @@ import org.robolectric.RuntimeEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.mock;
@@ -54,7 +55,7 @@ public class ShareTweetActionTest {
             "Tweet from " + TestFixtures.TEST_NAME + " (@" + TestFixtures.TEST_SCREEN_NAME + ")";
     private static final String A_SHARE_TEXT
             = "Check out @" + TestFixtures.TEST_SCREEN_NAME + "'s Tweet: https://twitter.com/" +
-            TestFixtures.TEST_SCREEN_NAME + "/status/" + TestFixtures.TEST_TWEET.id;
+            TestFixtures.TEST_SCREEN_NAME + "/status/" + TestFixtures.TEST_TWEET.getId();
 
     private ShareTweetAction listener;
     private Resources resources;
@@ -102,19 +103,19 @@ public class ShareTweetActionTest {
                 = ArgumentCaptor.forClass(Tweet.class);
 
         verify(mockScribeClient).share(tweetCaptor.capture());
-        assertEquals(TestFixtures.TEST_TWEET, tweetCaptor.getValue());
+        Assert.assertThat(tweetCaptor.getValue(), is(TestFixtures.TEST_TWEET));
     }
 
     @Test
     public void testGetShareContent() {
         final String shareContent = listener.getShareContent(resources);
-        assertEquals(A_SHARE_TEXT, shareContent);
+        Assert.assertThat(shareContent, is(A_SHARE_TEXT));
     }
 
     @Test
     public void testGetShareSubject() {
         final String shareSubject = listener.getShareSubject(resources);
-        assertEquals(A_SHARE_SUBJECT, shareSubject);
+        Assert.assertThat(shareSubject, is(A_SHARE_SUBJECT));
     }
 
     @Test
@@ -128,10 +129,10 @@ public class ShareTweetActionTest {
     @Test
     public void testGetShareIntent() {
         final Intent intent = listener.getShareIntent(A_SHARE_SUBJECT, A_SHARE_TEXT);
-        assertEquals(REQUIRED_SEND_ACTION, intent.getAction());
-        assertEquals(REQUIRED_MIME_TYPE, intent.getType());
-        assertEquals(A_SHARE_SUBJECT, intent.getStringExtra(Intent.EXTRA_SUBJECT));
-        assertEquals(A_SHARE_TEXT, intent.getStringExtra(Intent.EXTRA_TEXT));
+        Assert.assertThat(intent.getAction(), is(REQUIRED_SEND_ACTION));
+        Assert.assertThat(intent.getType(), is(REQUIRED_MIME_TYPE));
+        Assert.assertThat(intent.getStringExtra(Intent.EXTRA_SUBJECT), is(A_SHARE_SUBJECT));
+        Assert.assertThat(intent.getStringExtra(Intent.EXTRA_TEXT), is(A_SHARE_TEXT));
     }
 
     private Context createContextWithPackageManager() {

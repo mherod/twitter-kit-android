@@ -22,13 +22,11 @@ import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.services.StatusesService;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.isNull;
 import static org.mockito.Mockito.mock;
@@ -60,31 +58,31 @@ public class UserTimelineTest {
 
     @Test
     public void testConstructor() {
-        final UserTimeline timeline = new UserTimeline(twitterCore, TestFixtures.TEST_USER.id,
-                TestFixtures.TEST_USER.screenName, TEST_ITEMS_PER_REQUEST, true, true);
-        assertEquals((Long) TestFixtures.TEST_USER.id, timeline.userId);
-        assertEquals(TestFixtures.TEST_USER.screenName, timeline.screenName);
-        assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
-        assertTrue(timeline.includeReplies);
-        assertTrue(timeline.includeRetweets);
+        final UserTimeline timeline = new UserTimeline(twitterCore, TestFixtures.TEST_USER.getId(),
+                TestFixtures.TEST_USER.getScreenName(), TEST_ITEMS_PER_REQUEST, true, true);
+        Assert.assertThat(timeline.userId, is(TestFixtures.TEST_USER.getId()));
+        Assert.assertThat(timeline.screenName, is(TestFixtures.TEST_USER.getScreenName()));
+        Assert.assertThat(timeline.maxItemsPerRequest, is(TEST_ITEMS_PER_REQUEST));
+        Assert.assertThat(timeline.includeReplies, is(true));
+        Assert.assertThat(timeline.includeRetweets, is(true));
     }
 
     @Test
     // most api arguments should default to Null to allow the backend to determine default behavior
     public void testConstructor_defaults() {
         final UserTimeline timeline = new UserTimeline(twitterCore, null, null, null, null, null);
-        assertNull(timeline.userId);
-        assertNull(timeline.screenName);
-        assertNull(timeline.maxItemsPerRequest);
-        assertNull(timeline.includeRetweets);
+        Assert.assertThat(timeline.userId, nullValue());
+        Assert.assertThat(timeline.screenName, nullValue());
+        Assert.assertThat(timeline.maxItemsPerRequest, nullValue());
+        Assert.assertThat(timeline.includeRetweets, nullValue());
         // parameters which default to false
-        assertFalse(timeline.includeReplies);
+        Assert.assertThat(timeline.includeReplies, is(false));
     }
 
     @Test
     public void testNext_createsCorrectRequest() {
-        final UserTimeline timeline = spy(new UserTimeline(twitterCore, TestFixtures.TEST_USER.id,
-                TestFixtures.TEST_USER.screenName, TEST_ITEMS_PER_REQUEST, null, null));
+        final UserTimeline timeline = spy(new UserTimeline(twitterCore, TestFixtures.TEST_USER.getId(),
+                TestFixtures.TEST_USER.getScreenName(), TEST_ITEMS_PER_REQUEST, null, null));
         timeline.next(TEST_SINCE_ID, mock(Callback.class));
         verify(timeline, times(1)).createUserTimelineRequest(eq(TEST_SINCE_ID),
                 isNull(Long.class));
@@ -92,8 +90,8 @@ public class UserTimelineTest {
 
     @Test
     public void testPrevious_createsCorrectRequest() {
-        final UserTimeline timeline = spy(new UserTimeline(twitterCore, TestFixtures.TEST_USER.id,
-                TestFixtures.TEST_USER.screenName, TEST_ITEMS_PER_REQUEST, null, null));
+        final UserTimeline timeline = spy(new UserTimeline(twitterCore, TestFixtures.TEST_USER.getId(),
+                TestFixtures.TEST_USER.getScreenName(), TEST_ITEMS_PER_REQUEST, null, null));
         timeline.previous(TEST_MAX_ID, mock(Callback.class));
         // intentionally decrementing the maxId which is passed through to the request
         verify(timeline, times(1)).createUserTimelineRequest(isNull(Long.class),
@@ -103,16 +101,16 @@ public class UserTimelineTest {
     @Test
     public void testCreateUserTimelineRequest() {
         // build a timeline with test params
-        final UserTimeline timeline = new UserTimeline(twitterCore, TestFixtures.TEST_USER.id,
-                TestFixtures.TEST_USER.screenName, TEST_ITEMS_PER_REQUEST, null, null);
+        final UserTimeline timeline = new UserTimeline(twitterCore, TestFixtures.TEST_USER.getId(),
+                TestFixtures.TEST_USER.getScreenName(), TEST_ITEMS_PER_REQUEST, null, null);
 
         // create a request directly
         timeline.createUserTimelineRequest(TEST_SINCE_ID, TEST_MAX_ID);
 
         // assert userTimeline call is made with the correct arguments
         verify(twitterCore.getApiClient().getStatusesService())
-                .userTimeline(eq(TestFixtures.TEST_USER.id),
-                        eq(TestFixtures.TEST_USER.screenName), eq(TEST_ITEMS_PER_REQUEST),
+                .userTimeline(eq(TestFixtures.TEST_USER.getId()),
+                        eq(TestFixtures.TEST_USER.getScreenName()), eq(TEST_ITEMS_PER_REQUEST),
                         eq(TEST_SINCE_ID), eq(TEST_MAX_ID), eq(false), eq(true),
                         isNull(Boolean.class), isNull(Boolean.class));
     }
@@ -120,53 +118,53 @@ public class UserTimelineTest {
     @Test
     public void testGetScribeSection() {
         final UserTimeline timeline = new UserTimeline.Builder(twitterCore).build();
-        assertEquals(REQUIRED_IMPRESSION_SECTION, timeline.getTimelineType());
+        Assert.assertThat(timeline.getTimelineType(), is(REQUIRED_IMPRESSION_SECTION));
     }
 
     /* Builder */
     @Test
     public void testBuilder() {
         final UserTimeline timeline = new UserTimeline.Builder(twitterCore)
-                .userId(TestFixtures.TEST_USER.id)
-                .screenName(TestFixtures.TEST_USER.screenName)
+                .userId(TestFixtures.TEST_USER.getId())
+                .screenName(TestFixtures.TEST_USER.getScreenName())
                 .maxItemsPerRequest(TEST_ITEMS_PER_REQUEST)
                 .includeReplies(true)
                 .includeRetweets(true)
                 .build();
-        assertEquals((Long) TestFixtures.TEST_USER.id, timeline.userId);
-        assertEquals(TestFixtures.TEST_USER.screenName, timeline.screenName);
-        assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
-        assertTrue(timeline.includeReplies);
-        assertTrue(timeline.includeRetweets);
+        Assert.assertThat(timeline.userId, is(TestFixtures.TEST_USER.getId()));
+        Assert.assertThat(timeline.screenName, is(TestFixtures.TEST_USER.getScreenName()));
+        Assert.assertThat(timeline.maxItemsPerRequest, is(TEST_ITEMS_PER_REQUEST));
+        Assert.assertThat(timeline.includeReplies, is(true));
+        Assert.assertThat(timeline.includeRetweets, is(true));
     }
 
     @Test
     // api arguments should default to Null to allow the backend to determine default behavior
     public void testBuilder_defaults() {
         final UserTimeline timeline = new UserTimeline.Builder(twitterCore).build();
-        assertNull(timeline.userId);
-        assertNull(timeline.screenName);
-        assertEquals(REQUIRED_DEFAULT_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
-        assertNull(timeline.includeRetweets);
+        Assert.assertThat(timeline.userId, nullValue());
+        Assert.assertThat(timeline.screenName, nullValue());
+        Assert.assertThat(timeline.maxItemsPerRequest, is(REQUIRED_DEFAULT_ITEMS_PER_REQUEST));
+        Assert.assertThat(timeline.includeRetweets, nullValue());
         // parameters which default to false
-        assertFalse(timeline.includeReplies);
+        Assert.assertThat(timeline.includeReplies, is(false));
     }
 
     @Test
     public void testBuilder_userId() {
-        final Long USER_ID = TestFixtures.TEST_USER.id;
+        final Long USER_ID = TestFixtures.TEST_USER.getId();
         final UserTimeline timeline = new UserTimeline.Builder(twitterCore)
                 .userId(USER_ID)
                 .build();
-        assertEquals(USER_ID, timeline.userId);
+        Assert.assertThat(timeline.userId, is(USER_ID));
     }
 
     @Test
     public void testBuilder_screenName() {
         final UserTimeline timeline = new UserTimeline.Builder(twitterCore)
-                .screenName(TestFixtures.TEST_USER.screenName)
+                .screenName(TestFixtures.TEST_USER.getScreenName())
                 .build();
-        assertEquals(TestFixtures.TEST_USER.screenName, timeline.screenName);
+        Assert.assertThat(timeline.screenName, is(TestFixtures.TEST_USER.getScreenName()));
     }
 
     @Test
@@ -174,27 +172,27 @@ public class UserTimelineTest {
         final UserTimeline timeline = new UserTimeline.Builder(twitterCore)
                 .maxItemsPerRequest(TEST_ITEMS_PER_REQUEST)
                 .build();
-        assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
+        Assert.assertThat(timeline.maxItemsPerRequest, is(TEST_ITEMS_PER_REQUEST));
     }
 
     @Test
     public void testBuilder_includeReplies() {
         // null includeReplies defaults to false
         UserTimeline timeline = new UserTimeline.Builder(twitterCore).build();
-        assertFalse(timeline.includeReplies);
+        Assert.assertThat(timeline.includeReplies, is(false));
         timeline = new UserTimeline.Builder(twitterCore).includeReplies(true).build();
-        assertTrue(timeline.includeReplies);
+        Assert.assertThat(timeline.includeReplies, is(true));
         timeline = new UserTimeline.Builder(twitterCore).includeReplies(false).build();
-        assertFalse(timeline.includeReplies);
+        Assert.assertThat(timeline.includeReplies, is(false));
     }
 
     @Test
     public void testBuilder_includeRetweets() {
         UserTimeline timeline = new UserTimeline.Builder(twitterCore).build();
-        assertNull(timeline.includeRetweets);
+        Assert.assertThat(timeline.includeRetweets, nullValue());
         timeline = new UserTimeline.Builder(twitterCore).includeRetweets(true).build();
-        assertTrue(timeline.includeRetweets);
+        Assert.assertThat(timeline.includeRetweets, is(true));
         timeline = new UserTimeline.Builder(twitterCore).includeRetweets(false).build();
-        assertFalse(timeline.includeRetweets);
+        Assert.assertThat(timeline.includeRetweets, is(false));
     }
 }

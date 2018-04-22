@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,8 +30,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Collections;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class SafeMapAdapterTest  {
@@ -54,7 +54,7 @@ public class SafeMapAdapterTest  {
     @Test
     public void testDeserialization_emptyMapModel1() {
         final Model1 model = gson.fromJson(TEST_JSON_MAP_EMPTY, Model1.class);
-        assertEquals(Collections.EMPTY_MAP, model.mapOfStrings);
+        Assert.assertThat(model.mapOfStrings, is(Collections.EMPTY_MAP));
     }
 
     @Test
@@ -63,14 +63,14 @@ public class SafeMapAdapterTest  {
         try {
             model.mapOfStrings.put(TEST_ANY_STRING_KEY, TEST_ANY_STRING_VALUE);
         } catch (Exception e) {
-            assertTrue(e instanceof UnsupportedOperationException);
+            Assert.assertThat(e instanceof UnsupportedOperationException, is(true));
         }
     }
 
     @Test
     public void testDeserialization_emptyList() {
         final Model2 model = gson.fromJson(TEST_JSON_MAP_EMPTY, Model2.class);
-        assertEquals(Collections.EMPTY_MAP, model.stringLongMap);
+        Assert.assertThat(model.stringLongMap, is(Collections.EMPTY_MAP));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class SafeMapAdapterTest  {
         try {
             model.stringLongMap.put(TEST_ANY_STRING_KEY, (long) TEST_ANY_NUMBER);
         } catch (Exception e) {
-            assertTrue(e instanceof UnsupportedOperationException);
+            Assert.assertThat(e instanceof UnsupportedOperationException, is(true));
         }
     }
 

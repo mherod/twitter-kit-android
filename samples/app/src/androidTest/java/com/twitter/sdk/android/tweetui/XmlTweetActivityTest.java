@@ -19,14 +19,12 @@ package com.twitter.sdk.android.tweetui;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.example.app.R;
 import com.example.app.tweetui.XmlTweetActivity;
 import com.squareup.spoon.Spoon;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.registerIdlingResources;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 /**
  * UI/integration tests of XML Tweet views (requires network connectivity).

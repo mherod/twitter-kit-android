@@ -191,7 +191,7 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
     }
 
     public void launchVideoPlayer(Tweet tweet) {
-        final Card card = tweet.card;
+        final Card card = tweet.getCard();
         final Intent intent = new Intent(getContext(), PlayerActivity.class);
         final String playerStreamUrl = VineCardUtils.getStreamUrl(card);
 
@@ -199,7 +199,7 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
                 new PlayerActivity.PlayerItem(playerStreamUrl, true, false, null, null);
         intent.putExtra(PlayerActivity.PLAYER_ITEM, playerItem);
 
-        final ScribeItem scribeItem = ScribeItem.fromTweetCard(tweet.id, card);
+        final ScribeItem scribeItem = ScribeItem.Companion.fromTweetCard(tweet.getId(), card);
         intent.putExtra(PlayerActivity.SCRIBE_ITEM, scribeItem);
 
         IntentUtils.safeStartActivity(getContext(), intent);
@@ -208,7 +208,7 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
     public void launchPhotoGallery(int mediaEntityIndex) {
         final Intent intent = new Intent(getContext(), GalleryActivity.class);
         final GalleryActivity.GalleryItem item =
-                new GalleryActivity.GalleryItem(tweet.id, mediaEntityIndex, mediaEntities);
+                new GalleryActivity.GalleryItem(tweet.getId(), mediaEntityIndex, mediaEntities);
         intent.putExtra(GalleryActivity.GALLERY_ITEM, item);
         IntentUtils.safeStartActivity(getContext(), intent);
     }
@@ -231,7 +231,7 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
     }
 
     public void setVineCard(Tweet tweet) {
-        if (tweet == null || tweet.card == null || !VineCardUtils.isVine(tweet.card)) {
+        if (tweet == null || tweet.getCard() == null || !VineCardUtils.isVine(tweet.getCard())) {
             return;
         }
 
@@ -239,7 +239,7 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
         this.mediaEntities = Collections.emptyList();
 
         clearImageViews();
-        initializeImageViews(tweet.card);
+        initializeImageViews(tweet.getCard());
 
         internalRoundedCornersEnabled = false;
 

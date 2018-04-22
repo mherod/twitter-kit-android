@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.core.internal.network;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,9 +30,7 @@ import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -65,8 +64,8 @@ public class GuestAuthNetworkInterceptorTest {
 
         final Response modifiedResponse = interceptor.intercept(mockChain);
 
-        assertFalse(response == modifiedResponse);
-        assertEquals(401, modifiedResponse.code());
+        Assert.assertThat(modifiedResponse, not(sameInstance(response)));
+        Assert.assertThat(modifiedResponse.code(), is(401));
     }
 
     @Test
@@ -83,7 +82,7 @@ public class GuestAuthNetworkInterceptorTest {
 
         final Response unmodifiedResponse = interceptor.intercept(mockChain);
 
-        assertTrue(response == unmodifiedResponse);
-        assertEquals(400, unmodifiedResponse.code());
+        Assert.assertThat(unmodifiedResponse, sameInstance(response));
+        Assert.assertThat(unmodifiedResponse.code(), is(400));
     }
 }

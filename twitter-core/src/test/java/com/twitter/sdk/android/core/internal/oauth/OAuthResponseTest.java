@@ -22,11 +22,12 @@ import android.os.Parcel;
 import com.twitter.sdk.android.core.TestFixtures;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class OAuthResponseTest  {
@@ -42,8 +43,8 @@ public class OAuthResponseTest  {
         parcel.setDataPosition(0);
         final OAuthResponse parceledAuthResponse
                 = OAuthResponse.CREATOR.createFromParcel(parcel);
-        assertEquals(authResponse.authToken, parceledAuthResponse.authToken);
-        assertEquals(TestFixtures.SCREEN_NAME, parceledAuthResponse.userName);
-        assertEquals(TestFixtures.USER_ID, parceledAuthResponse.userId);
+        Assert.assertThat(parceledAuthResponse.authToken, is(authResponse.authToken));
+        Assert.assertThat(parceledAuthResponse.userName, is(TestFixtures.SCREEN_NAME));
+        Assert.assertThat(parceledAuthResponse.userId, is(TestFixtures.USER_ID));
     }
 }

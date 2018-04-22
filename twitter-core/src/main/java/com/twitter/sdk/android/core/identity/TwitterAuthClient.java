@@ -191,7 +191,7 @@ public class TwitterAuthClient {
         verifyRequest.enqueue(new Callback<User>() {
             @Override
             public void success(Result<User> result) {
-                callback.success(new Result<>(result.getData().email, null));
+                callback.success(new Result<>(result.getData().getEmail(), null));
             }
 
             @Override

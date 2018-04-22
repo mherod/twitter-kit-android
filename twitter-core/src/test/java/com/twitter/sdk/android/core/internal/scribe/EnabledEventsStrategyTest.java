@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,16 +33,26 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+
 
 @RunWith(RobolectricTestRunner.class)
 public class EnabledEventsStrategyTest {
 
-    TestEnabledEventsStrategy eventsStrategy;
-    ScheduledExecutorService mockExecutor;
-    EventsFilesManager mockFilesManager;
-    FilesSender mockFilesSender;
+    private TestEnabledEventsStrategy eventsStrategy;
+    private ScheduledExecutorService mockExecutor;
+    private EventsFilesManager mockFilesManager;
+    private FilesSender mockFilesSender;
 
     @Before
     public void setUp() throws Exception {
@@ -74,7 +85,7 @@ public class EnabledEventsStrategyTest {
         eventsStrategy.cancelTimeBasedFileRollOver();
 
         verify(mockFuture).cancel(false);
-        assertNull(eventsStrategy.scheduledRolloverFutureRef.get());
+        Assert.assertThat(eventsStrategy.scheduledRolloverFutureRef.get(), nullValue());
     }
 
     @Test
@@ -96,26 +107,26 @@ public class EnabledEventsStrategyTest {
     @Test
     public void testRollFileOver() throws Exception {
         doReturn(true).when(mockFilesManager).rollFileOver();
-        assertTrue(eventsStrategy.rollFileOver());
+        Assert.assertThat(eventsStrategy.rollFileOver(), is(true));
     }
 
     @Test
     public void testRollFileOver_failure() throws Exception {
         doReturn(false).when(mockFilesManager).rollFileOver();
-        assertFalse(eventsStrategy.rollFileOver());
+        Assert.assertThat(eventsStrategy.rollFileOver(), is(false));
     }
 
     @Test
     public void testRollFileOver_exception() throws Exception {
         doThrow(new IOException()).when(mockFilesManager).rollFileOver();
-        assertFalse(eventsStrategy.rollFileOver());
+        Assert.assertThat(eventsStrategy.rollFileOver(), is(false));
     }
 
     @Test
     public void testConfigureRollover() {
         final int rollover = 10;
         eventsStrategy.configureRollover(rollover);
-        assertEquals(rollover, eventsStrategy.rolloverIntervalSeconds);
+        Assert.assertThat(eventsStrategy.rolloverIntervalSeconds, is(rollover));
         verifyExecutorScheduled(0, rollover);
     }
 
@@ -131,7 +142,7 @@ public class EnabledEventsStrategyTest {
 
         eventsStrategy.scheduleTimeBasedFileRollOver(initialDelay, frequency);
 
-        assertEquals(mockFuture, eventsStrategy.scheduledRolloverFutureRef.get());
+        Assert.assertThat(eventsStrategy.scheduledRolloverFutureRef.get(), is(mockFuture));
     }
 
     @Test
@@ -213,7 +224,7 @@ public class EnabledEventsStrategyTest {
         verifyNoMoreInteractions(mockFilesManager);
     }
 
-    void verifyExecutorScheduled(long initialDelaySecs, long frequencySecs) {
+    private void verifyExecutorScheduled(long initialDelaySecs, long frequencySecs) {
         verify(mockExecutor).scheduleAtFixedRate(any(TimeBasedFileRollOverRunnable.class),
                 eq(initialDelaySecs), eq(frequencySecs), eq(TimeUnit.SECONDS));
     }

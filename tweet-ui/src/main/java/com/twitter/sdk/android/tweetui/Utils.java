@@ -60,7 +60,7 @@ final class Utils {
         final HashMap<Long, Tweet> idToTweet = new HashMap<>();
         final ArrayList<Tweet> ordered = new ArrayList<>();
         for (Tweet tweet: tweets) {
-            idToTweet.put(tweet.id, tweet);
+            idToTweet.put(tweet.getId(), tweet);
         }
         for (Long id: tweetIds) {
             if (idToTweet.containsKey(id)) {

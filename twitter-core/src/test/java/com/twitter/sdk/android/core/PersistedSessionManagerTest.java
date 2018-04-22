@@ -25,6 +25,7 @@ import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreStrategy
 import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,11 +36,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -55,7 +55,6 @@ public class PersistedSessionManagerTest {
     private static final String RESTORED_USER = "restoredUser";
 
     private PreferenceStore preferenceStore;
-    private SerializationStrategy<TwitterSession> mockSerializer;
     private ConcurrentHashMap<Long, TwitterSession> sessionMap;
     private ConcurrentHashMap<Long, PreferenceStoreStrategy<TwitterSession>> storageMap;
     private PreferenceStoreStrategy<TwitterSession> mockActiveSessionStorage;
@@ -64,7 +63,7 @@ public class PersistedSessionManagerTest {
     @Before
     public void setUp() throws Exception {
         preferenceStore = new PreferenceStoreImpl(RuntimeEnvironment.application, "testSession");
-        mockSerializer = mock(SerializationStrategy.class);
+        SerializationStrategy<TwitterSession> mockSerializer = mock(SerializationStrategy.class);
         sessionMap = new ConcurrentHashMap<>();
         storageMap = new ConcurrentHashMap<>();
         mockActiveSessionStorage = mock(PreferenceStoreStrategy.class);
@@ -81,19 +80,19 @@ public class PersistedSessionManagerTest {
     @Test
     public void testIsSessionPreferenceKey_validKey() {
         final String preferenceKey = PREF_KEY_SESSION + "_" + TestFixtures.USER_ID;
-        assertTrue(sessionManager.isSessionPreferenceKey(preferenceKey));
+        Assert.assertThat(sessionManager.isSessionPreferenceKey(preferenceKey), is(true));
     }
 
     @Test
     public void testIsSessionPreferenceKey_invalidKey() {
-        assertFalse(sessionManager.isSessionPreferenceKey(PREF_RANDOM_KEY));
+        Assert.assertThat(sessionManager.isSessionPreferenceKey(PREF_RANDOM_KEY), is(false));
     }
 
     @Test
     public void testRestoreSession_noSavedSession() {
         when(mockActiveSessionStorage.restore()).thenReturn(null);
         sessionManager.restoreAllSessionsIfNecessary();
-        assertNull(sessionManager.getActiveSession());
+        Assert.assertThat(sessionManager.getActiveSession(), nullValue());
     }
 
     @Test
@@ -101,7 +100,7 @@ public class PersistedSessionManagerTest {
         final TwitterSession mockSession = mock(TwitterSession.class);
         when(mockActiveSessionStorage.restore()).thenReturn(mockSession);
         sessionManager.restoreAllSessionsIfNecessary();
-        assertEquals(mockSession, sessionManager.getActiveSession());
+        Assert.assertThat(sessionManager.getActiveSession(), is(mockSession));
     }
 
     @Test
@@ -128,7 +127,7 @@ public class PersistedSessionManagerTest {
         localSessionManager.restoreAllSessionsIfNecessary();
         assertMapSizes(sessions.length);
         for (TwitterSession session : sessions) {
-            assertEquals(session, localSessionManager.getSession(session.getId()));
+            Assert.assertThat(localSessionManager.getSession(session.getId()), is(session));
         }
     }
 
@@ -147,7 +146,7 @@ public class PersistedSessionManagerTest {
         final TwitterSession mockSession = mock(TwitterSession.class);
         when(mockActiveSessionStorage.restore()).thenReturn(mockSession);
 
-        assertEquals(mockSession, sessionManager.getActiveSession());
+        Assert.assertThat(sessionManager.getActiveSession(), is(mockSession));
         sessionManager.restoreAllSessionsIfNecessary();
 
         // restore should only be called once.
@@ -163,7 +162,7 @@ public class PersistedSessionManagerTest {
         sessionManager.setActiveSession(mockActiveSession);
         sessionManager.restoreAllSessionsIfNecessary();
 
-        assertEquals(mockActiveSession, sessionManager.getActiveSession());
+        Assert.assertThat(sessionManager.getActiveSession(), is(mockActiveSession));
     }
 
     @Test
@@ -172,19 +171,19 @@ public class PersistedSessionManagerTest {
         when(mockActiveSessionStorage.restore()).thenReturn(mockRestoredSession);
 
         final TwitterSession activeSession = sessionManager.getActiveSession();
-        assertEquals(mockRestoredSession, activeSession);
+        Assert.assertThat(activeSession, is(mockRestoredSession));
         verify(mockActiveSessionStorage).restore();
     }
 
     @Test
     public void testGetActiveSession_nullSession() {
-        assertNull(sessionManager.getActiveSession());
+        Assert.assertThat(sessionManager.getActiveSession(), nullValue());
     }
 
     @Test
     public void testGetActiveSession_validSession() {
         final TwitterSession session = setupActiveSessionTest();
-        assertEquals(session, sessionManager.getActiveSession());
+        Assert.assertThat(sessionManager.getActiveSession(), is(session));
     }
 
     private TwitterSession setupActiveSessionTest() {
@@ -200,7 +199,7 @@ public class PersistedSessionManagerTest {
             sessionManager.setActiveSession(null);
             fail();
         } catch (Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
+            Assert.assertThat(e instanceof IllegalArgumentException, is(true));
         }
     }
 
@@ -211,13 +210,13 @@ public class PersistedSessionManagerTest {
         assertMapSizes(numSessionsThisTest);
 
         verify(mockActiveSessionStorage).save(session);
-        assertEquals(session, sessionManager.getActiveSession());
-        assertEquals(session, sessionManager.getSession(session.getId()));
+        Assert.assertThat(sessionManager.getActiveSession(), is(session));
+        Assert.assertThat(sessionManager.getSession(session.getId()), is(session));
     }
 
     private void assertMapSizes(int count) {
-        assertEquals(count, sessionMap.size());
-        assertEquals(count, storageMap.size());
+        Assert.assertThat(sessionMap.size(), is(count));
+        Assert.assertThat(storageMap.size(), is(count));
     }
 
     @Test
@@ -226,7 +225,7 @@ public class PersistedSessionManagerTest {
         int numSessionsThisTest = 1;
         assertMapSizes(numSessionsThisTest);
         verify(mockActiveSessionStorage).save(session);
-        assertEquals(session, sessionManager.getActiveSession());
+        Assert.assertThat(sessionManager.getActiveSession(), is(session));
 
         final TwitterSession session2 = mock(TwitterSession.class);
         final long differentSessionId = session.getId() + 1;
@@ -235,8 +234,8 @@ public class PersistedSessionManagerTest {
         numSessionsThisTest++;
         assertMapSizes(numSessionsThisTest);
         verify(mockActiveSessionStorage).save(session2);
-        assertNotSame(session2, session);
-        assertEquals(session2, sessionManager.getActiveSession());
+        Assert.assertThat(session, not(sameInstance(session2)));
+        Assert.assertThat(sessionManager.getActiveSession(), is(session2));
     }
 
     @Test
@@ -245,7 +244,7 @@ public class PersistedSessionManagerTest {
         sessionManager.clearActiveSession();
         assertMapSizes(0);
         verify(mockActiveSessionStorage).clear();
-        assertNull(sessionManager.getActiveSession());
+        Assert.assertThat(sessionManager.getActiveSession(), nullValue());
     }
 
     @Test
@@ -261,13 +260,13 @@ public class PersistedSessionManagerTest {
     public void testClearActiveSession_beforeRestoreSession() {
         setupActiveSessionTest();
         sessionManager.clearActiveSession();
-        assertNull(sessionManager.getActiveSession());
+        Assert.assertThat(sessionManager.getActiveSession(), nullValue());
     }
 
     @Test
     public void testGetSession() {
         final TwitterSession session = setupActiveSessionTest();
-        assertEquals(session, sessionManager.getSession(session.getId()));
+        Assert.assertThat(sessionManager.getSession(session.getId()), is(session));
     }
 
     @Test
@@ -276,7 +275,7 @@ public class PersistedSessionManagerTest {
         final List<TwitterSession> sessions = setupMultipleSessionsTest(count);
         for (int i = 0; i < count; i++) {
             final TwitterSession session = sessions.get(i);
-            assertEquals(session, sessionManager.getSession(session.getId()));
+            Assert.assertThat(sessionManager.getSession(session.getId()), is(session));
         }
     }
 
@@ -298,7 +297,7 @@ public class PersistedSessionManagerTest {
             sessionManager.setSession(TEST_SESSION_ID, null);
             fail();
         } catch (Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
+            Assert.assertThat(e instanceof IllegalArgumentException, is(true));
         }
     }
 
@@ -312,8 +311,8 @@ public class PersistedSessionManagerTest {
         // Verify that when setSession is called and there is no active session, the specified
         // session becomes the active session.
         verify(mockActiveSessionStorage).save(session);
-        assertEquals(session, sessionManager.getSession(TEST_SESSION_ID));
-        assertEquals(session, sessionManager.getActiveSession());
+        Assert.assertThat(sessionManager.getSession(TEST_SESSION_ID), is(session));
+        Assert.assertThat(sessionManager.getActiveSession(), is(session));
     }
 
     @Test
@@ -324,10 +323,10 @@ public class PersistedSessionManagerTest {
 
         for (int i = 0; i < count; i++) {
             final TwitterSession session = sessions.get(i);
-            assertEquals(session, sessionManager.getSession(session.getId()));
+            Assert.assertThat(sessionManager.getSession(session.getId()), is(session));
         }
         // Verify that the first session is still the active session.
-        assertEquals(sessions.get(0), sessionManager.getActiveSession());
+        Assert.assertThat(sessionManager.getActiveSession(), is(sessions.get(0)));
     }
 
     @Test
@@ -337,15 +336,15 @@ public class PersistedSessionManagerTest {
                 TestFixtures.SCREEN_NAME);
         final long sessionId = session.getId();
         sessionManager.setSession(sessionId, session);
-        assertEquals(session, sessionManager.getSession(sessionId));
-        assertEquals(session, sessionManager.getActiveSession());
+        Assert.assertThat(sessionManager.getSession(sessionId), is(session));
+        Assert.assertThat(sessionManager.getActiveSession(), is(session));
         assertMapSizes(1);
 
         final TwitterSession sessionWithDifferentUserName = new TwitterSession(authToken, sessionId,
                 "differentUserName");
         sessionManager.setSession(sessionId, sessionWithDifferentUserName);
-        assertEquals(sessionWithDifferentUserName, sessionManager.getSession(sessionId));
-        assertEquals(sessionWithDifferentUserName, sessionManager.getActiveSession());
+        Assert.assertThat(sessionManager.getSession(sessionId), is(sessionWithDifferentUserName));
+        Assert.assertThat(sessionManager.getActiveSession(), is(sessionWithDifferentUserName));
         assertMapSizes(1);
     }
 
@@ -365,7 +364,7 @@ public class PersistedSessionManagerTest {
 
         // We want to make sure that even if restore sessions is called after setSession.
         // session set in setSession will not be overwritten.
-        assertEquals(newSession, sessionManager.getSession(newSession.getId()));
+        Assert.assertThat(sessionManager.getSession(newSession.getId()), is(newSession));
     }
 
     private void setupSessionForRestore(final TwitterSession restoredSession) {
@@ -381,8 +380,8 @@ public class PersistedSessionManagerTest {
         final TwitterSession session = setupActiveSessionTest();
         sessionManager.clearSession(session.getId());
         assertMapSizes(0);
-        assertNull(sessionManager.getActiveSession());
-        assertNull(sessionManager.getSession(session.getId()));
+        Assert.assertThat(sessionManager.getActiveSession(), nullValue());
+        Assert.assertThat(sessionManager.getSession(session.getId()), nullValue());
     }
 
     @Test
@@ -406,10 +405,10 @@ public class PersistedSessionManagerTest {
         sessionManager.clearSession(firstSessionId);
         numSessionsThisTest--;
         assertMapSizes(numSessionsThisTest);
-        assertNull(sessionManager.getSession(firstSessionId));
+        Assert.assertThat(sessionManager.getSession(firstSessionId), nullValue());
         // Make sure the second session is still there
         final long secondSessionId = sessions.get(1).getId();
-        assertEquals(sessions.get(1), sessionManager.getSession(secondSessionId));
+        Assert.assertThat(sessionManager.getSession(secondSessionId), is(sessions.get(1)));
     }
 
     @Test
@@ -424,10 +423,10 @@ public class PersistedSessionManagerTest {
         sessionManager.clearSession(secondSessionId);
         numSessionsThisTest--;
         assertMapSizes(numSessionsThisTest);
-        assertNull(sessionManager.getSession(secondSessionId));
+        Assert.assertThat(sessionManager.getSession(secondSessionId), nullValue());
         // Make sure the first session is still there
         final long firstSessionId = sessions.get(0).getId();
-        assertEquals(sessions.get(0), sessionManager.getSession(firstSessionId));
+        Assert.assertThat(sessionManager.getSession(firstSessionId), is(sessions.get(0)));
     }
 
     @Test
@@ -439,13 +438,12 @@ public class PersistedSessionManagerTest {
         sessionManager.clearSession(TestFixtures.USER_ID);
         sessionManager.restoreAllSessionsIfNecessary();
 
-        assertNull(sessionManager.getSession(TestFixtures.USER_ID));
+        Assert.assertThat(sessionManager.getSession(TestFixtures.USER_ID), nullValue());
     }
 
     @Test
     public void testGetPrefKey() {
-        assertEquals(PREF_KEY_SESSION + "_" + TEST_SESSION_ID,
-                sessionManager.getPrefKey(TEST_SESSION_ID));
+        Assert.assertThat(sessionManager.getPrefKey(TEST_SESSION_ID), is(PREF_KEY_SESSION + "_" + TEST_SESSION_ID));
     }
 
     @Test
@@ -463,6 +461,6 @@ public class PersistedSessionManagerTest {
         final TwitterSession mockSession = mock(TwitterSession.class);
         when(mockActiveSessionStorage.restore()).thenReturn(mockSession);
         sessionManager.getSessionMap();
-        assertEquals(mockSession, sessionManager.getActiveSession());
+        Assert.assertThat(sessionManager.getActiveSession(), is(mockSession));
     }
 }

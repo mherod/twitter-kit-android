@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,9 +30,7 @@ import org.robolectric.RuntimeEnvironment;
 
 import java.io.File;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 
 @SuppressWarnings("FieldCanBeLocal")
 @RunWith(RobolectricTestRunner.class)
@@ -52,20 +51,20 @@ public class TwitterContextTest {
     public void testGetDatabasePath() {
         final File file = context.getDatabasePath("a");
         assertValidDirStructure(file);
-        assertTrue(file.getParentFile().exists());
+        Assert.assertThat(file.getParentFile().exists(), is(true));
     }
 
     @Test
     public void testOpenOrCreateDatabase() {
         final SQLiteDatabase db = context.openOrCreateDatabase("b", Context.MODE_PRIVATE, null);
-        assertNotNull(db);
+        Assert.assertThat(db, notNullValue());
     }
 
     @Test
     public void testOpenOrCreateDatabaseWithErrorHandler() {
         final SQLiteDatabase db =
                 context.openOrCreateDatabase("b", Context.MODE_PRIVATE, null, null);
-        assertNotNull(db);
+        Assert.assertThat(db, notNullValue());
     }
 
     @Test
@@ -104,16 +103,16 @@ public class TwitterContextTest {
         final SharedPreferences testPref =
                 testContext.getSharedPreferences(testName, Context.MODE_PRIVATE);
 
-        assertNotNull(pref);
-        assertFalse(pref.equals(testPref));
+        Assert.assertThat(pref, notNullValue());
+        Assert.assertThat(testPref, not(is(pref)));
         pref.edit().putBoolean(testName, true).commit();
-        assertFalse(testPref.getBoolean(testName, false));
+        Assert.assertThat(testPref.getBoolean(testName, false), is(false));
 
     }
 
     private void assertValidDirStructure(File file) {
-        assertNotNull(file);
-        assertTrue(file.getPath().contains(name));
-        assertTrue(file.getPath().contains(ROOT_DIR));
+        Assert.assertThat(file, notNullValue());
+        Assert.assertThat(file.getPath(), containsString(name));
+        Assert.assertThat(file.getPath(), containsString(ROOT_DIR));
     }
 }

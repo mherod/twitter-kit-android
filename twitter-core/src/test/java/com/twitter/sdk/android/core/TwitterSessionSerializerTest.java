@@ -17,13 +17,13 @@
 
 package com.twitter.sdk.android.core;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.Matchers.*;
 
 
 @RunWith(RobolectricTestRunner.class)
@@ -63,28 +63,27 @@ public class TwitterSessionSerializerTest  {
         final TwitterSession newSession = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET, CREATED_AT),
                 TwitterSession.UNKNOWN_USER_ID, TwitterSession.UNKNOWN_USER_NAME);
-        assertEquals(session, newSession);
+        Assert.assertThat(newSession, is(session));
     }
 
     @Test
     public void testDeserialize_session() {
         final TwitterSession session = serializer.deserialize(FULL_SESSION_JSON);
-        assertEquals(new TwitterSession(new TwitterAuthToken(TestFixtures.TOKEN,
-                TestFixtures.SECRET, CREATED_AT), TestFixtures.USER_ID, TestFixtures.SCREEN_NAME),
-                session);
+        Assert.assertThat(session, is(new TwitterSession(new TwitterAuthToken(TestFixtures.TOKEN,
+                TestFixtures.SECRET, CREATED_AT), TestFixtures.USER_ID, TestFixtures.SCREEN_NAME)));
     }
 
     @Test
     public void testDeserialize_sessionWithNullUserName() {
         final TwitterSession session = serializer.deserialize(SESSION_JSON_NULL_USERNAME);
-        assertEquals(new TwitterSession(new TwitterAuthToken(TestFixtures.TOKEN,
-                TestFixtures.SECRET, CREATED_AT), TestFixtures.USER_ID, null), session);
+        Assert.assertThat(session, is(new TwitterSession(new TwitterAuthToken(TestFixtures.TOKEN,
+                TestFixtures.SECRET, CREATED_AT), TestFixtures.USER_ID, null)));
     }
 
     @Test
     public void testDeserialize_nullSerializedSession() {
         final TwitterSession session = serializer.deserialize(null);
-        assertNull(session);
+        Assert.assertThat(session, nullValue());
     }
 
     @Test
@@ -92,7 +91,7 @@ public class TwitterSessionSerializerTest  {
         final TwitterSession session = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET, CREATED_AT),
                 TwitterSession.UNKNOWN_USER_ID, TwitterSession.UNKNOWN_USER_NAME);
-        assertEquals(SESSION_JSON, serializer.serialize(session));
+        Assert.assertThat(serializer.serialize(session), is(SESSION_JSON));
     }
 
     @Test
@@ -100,7 +99,7 @@ public class TwitterSessionSerializerTest  {
         final TwitterSession session = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET, CREATED_AT),
                 TestFixtures.USER_ID, TestFixtures.SCREEN_NAME);
-        assertEquals(FULL_SESSION_JSON, serializer.serialize(session));
+        Assert.assertThat(serializer.serialize(session), is(FULL_SESSION_JSON));
     }
 
     @Test
@@ -108,6 +107,6 @@ public class TwitterSessionSerializerTest  {
         final TwitterSession session = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET, CREATED_AT),
                 TestFixtures.USER_ID, null);
-        assertEquals(SESSION_JSON_NULL_USERNAME, serializer.serialize(session));
+        Assert.assertThat(serializer.serialize(session), is(SESSION_JSON_NULL_USERNAME));
     }
 }

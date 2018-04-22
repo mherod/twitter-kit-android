@@ -24,6 +24,7 @@ import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.TwitterApi;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,8 +41,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.mock.Calls;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -96,7 +96,7 @@ public class OAuth2ServiceTest  {
         final Method method = OAuth2Service.OAuth2Api.class
                 .getDeclaredMethod("getGuestToken", String.class);
         final POST post = method.getAnnotation(POST.class);
-        assertEquals("/1.1/guest/activate.json", post.value());
+        Assert.assertThat(post.value(), is("/1.1/guest/activate.json"));
     }
 
     @Test
@@ -104,7 +104,7 @@ public class OAuth2ServiceTest  {
         final Method method = OAuth2Service.OAuth2Api.class
                 .getDeclaredMethod("getAppAuthToken", String.class, String.class);
         final POST post = method.getAnnotation(POST.class);
-        assertEquals("/oauth2/token", post.value());
+        Assert.assertThat(post.value(), is("/oauth2/token"));
     }
 
     @Test
@@ -112,20 +112,19 @@ public class OAuth2ServiceTest  {
         final Method method = OAuth2Service.OAuth2Api.class
                 .getDeclaredMethod("getAppAuthToken", String.class, String.class);
         final Headers header = method.getAnnotation(Headers.class);
-        assertEquals("Content-Type: application/x-www-form-urlencoded;charset=UTF-8",
-                header.value()[0]);
+        Assert.assertThat(header.value()[0], is("Content-Type: application/x-www-form-urlencoded;charset=UTF-8"));
     }
 
     @Test
     public void testApiHost() {
-        assertEquals(twitterApi, service.getApi());
+        Assert.assertThat(service.getApi(), is(twitterApi));
     }
 
     @Test
     public void testGetUserAgent() {
         final String userAgent
                 = TwitterApi.buildUserAgent("TwitterAndroidSDK", twitterCore.getVersion());
-        assertEquals(userAgent, service.getUserAgent());
+        Assert.assertThat(service.getUserAgent(), is(userAgent));
     }
 
     @Test
@@ -156,7 +155,7 @@ public class OAuth2ServiceTest  {
         service.requestGuestAuthToken(new Callback<GuestAuthToken>() {
             @Override
             public void success(Result<GuestAuthToken> result) {
-                assertEquals(GUEST_TOKEN, result.getData());
+                Assert.assertThat(result.getData(), is(GUEST_TOKEN));
             }
 
             @Override
@@ -184,7 +183,7 @@ public class OAuth2ServiceTest  {
 
             @Override
             public void failure(TwitterException error) {
-                assertNotNull(error);
+                Assert.assertThat(error, notNullValue());
             }
         });
     }
@@ -208,7 +207,7 @@ public class OAuth2ServiceTest  {
 
             @Override
             public void failure(TwitterException error) {
-                assertNotNull(error);
+                Assert.assertThat(error, notNullValue());
             }
         });
     }

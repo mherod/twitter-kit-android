@@ -20,6 +20,7 @@ package com.twitter.sdk.android.tweetcomposer;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,8 +30,7 @@ import org.robolectric.shadows.ShadowMimeTypeMap;
 
 import java.io.File;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class FileUtilsTest {
@@ -53,43 +53,43 @@ public class FileUtilsTest {
                 .authority("com.android.providers.media.documents")
                 .path("image%3A59161")
                 .build();
-        assertTrue(FileUtils.isMediaDocumentAuthority(uri));
+        Assert.assertThat(FileUtils.isMediaDocumentAuthority(uri), is(true));
     }
 
     @Test
     public void testIsContentScheme() {
         final Uri uri = new Uri.Builder().scheme("content").build();
-        assertTrue(FileUtils.isContentScheme(uri));
+        Assert.assertThat(FileUtils.isContentScheme(uri), is(true));
     }
 
     @Test
     public void testIsFileScheme() {
         final Uri uri = new Uri.Builder().scheme("file").build();
-        assertTrue(FileUtils.isFileScheme(uri));
+        Assert.assertThat(FileUtils.isFileScheme(uri), is(true));
     }
 
     @Test
     public void testGetMimeType() {
-        assertEquals("image/png", FileUtils.getMimeType(new File("file.png")));
-        assertEquals("image/jpeg", FileUtils.getMimeType(new File("file.jpeg")));
-        assertEquals("image/jpeg", FileUtils.getMimeType(new File("file.jpeg")));
-        assertEquals("application/octet-stream", FileUtils.getMimeType(new File("")));
+        Assert.assertThat(FileUtils.getMimeType(new File("file.png")), is("image/png"));
+        Assert.assertThat(FileUtils.getMimeType(new File("file.jpeg")), is("image/jpeg"));
+        Assert.assertThat(FileUtils.getMimeType(new File("file.jpeg")), is("image/jpeg"));
+        Assert.assertThat(FileUtils.getMimeType(new File("")), is("application/octet-stream"));
     }
 
     @Test
     public void testExtensionToMimeType() {
-        assertEquals("image/png", mimeTypeMap.getMimeTypeFromExtension("png"));
-        assertEquals("image/jpeg", mimeTypeMap.getMimeTypeFromExtension("jpg"));
-        assertEquals("image/jpeg", mimeTypeMap.getMimeTypeFromExtension("jpeg"));
-        assertEquals(null, mimeTypeMap.getMimeTypeFromExtension(""));
+        Assert.assertThat(mimeTypeMap.getMimeTypeFromExtension("png"), is("image/png"));
+        Assert.assertThat(mimeTypeMap.getMimeTypeFromExtension("jpg"), is("image/jpeg"));
+        Assert.assertThat(mimeTypeMap.getMimeTypeFromExtension("jpeg"), is("image/jpeg"));
+        Assert.assertThat(mimeTypeMap.getMimeTypeFromExtension(""), nullValue());
     }
 
     @Test
     public void testGetExtension() {
-        assertEquals("", FileUtils.getExtension(""));
-        assertEquals("", FileUtils.getExtension("file"));
-        assertEquals("", FileUtils.getExtension("file."));
-        assertEquals("png", FileUtils.getExtension("file.png"));
-        assertEquals("jpg", FileUtils.getExtension("file.jpg"));
+        Assert.assertThat(FileUtils.getExtension(""), is(""));
+        Assert.assertThat(FileUtils.getExtension("file"), is(""));
+        Assert.assertThat(FileUtils.getExtension("file."), is(""));
+        Assert.assertThat(FileUtils.getExtension("file.png"), is("png"));
+        Assert.assertThat(FileUtils.getExtension("file.jpg"), is("jpg"));
     }
 }

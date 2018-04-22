@@ -38,14 +38,14 @@ import com.twitter.sdk.android.core.internal.oauth.OAuth1aService;
 import com.twitter.sdk.android.core.internal.oauth.OAuthConstants;
 import com.twitter.sdk.android.core.internal.oauth.OAuthResponse;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -95,7 +95,7 @@ public class OAuthControllerTest  {
         final OAuthResponse oAuthResponse = new OAuthResponse(mockRequestToken, null, 0L);
         callback.success(new Result<>(oAuthResponse, null));
 
-        assertEquals(mockRequestToken, controller.requestToken);
+        Assert.assertThat(controller.requestToken, is(mockRequestToken));
         verify(mockOAuth1aService).getAuthorizeUrl(eq(mockRequestToken));
     }
 
@@ -114,8 +114,8 @@ public class OAuthControllerTest  {
         final Intent data = intentArgCaptor.getValue();
         final TwitterAuthException authException
                 = (TwitterAuthException) data.getSerializableExtra(AuthHandler.EXTRA_AUTH_ERROR);
-        assertNull(authException.getCause());
-        assertEquals(expectedMsg, authException.getMessage());
+        Assert.assertThat(authException.getCause(), nullValue());
+        Assert.assertThat(authException.getMessage(), is(expectedMsg));
     }
 
     @Test
@@ -127,7 +127,7 @@ public class OAuthControllerTest  {
         verify(mockListener).onComplete(eq(AuthHandler.RESULT_CODE_ERROR),
                 intentArgCaptor.capture());
         final Intent data = intentArgCaptor.getValue();
-        assertEquals(mockException, data.getSerializableExtra(AuthHandler.EXTRA_AUTH_ERROR));
+        Assert.assertThat(data.getSerializableExtra(AuthHandler.EXTRA_AUTH_ERROR), is(mockException));
     }
 
     @Test
@@ -157,10 +157,10 @@ public class OAuthControllerTest  {
         final ArgumentCaptor<Intent> intentArgCaptor = ArgumentCaptor.forClass(Intent.class);
         verify(mockListener).onComplete(eq(Activity.RESULT_OK), intentArgCaptor.capture());
         final Intent data = intentArgCaptor.getValue();
-        assertEquals(TestFixtures.SCREEN_NAME, data.getStringExtra(AuthHandler.EXTRA_SCREEN_NAME));
-        assertEquals(TestFixtures.USER_ID, data.getLongExtra(AuthHandler.EXTRA_USER_ID, 0L));
-        assertEquals(TestFixtures.TOKEN, data.getStringExtra(AuthHandler.EXTRA_TOKEN));
-        assertEquals(TestFixtures.SECRET, data.getStringExtra(AuthHandler.EXTRA_TOKEN_SECRET));
+        Assert.assertThat(data.getStringExtra(AuthHandler.EXTRA_SCREEN_NAME), is(TestFixtures.SCREEN_NAME));
+        Assert.assertThat(data.getLongExtra(AuthHandler.EXTRA_USER_ID, 0L), is(TestFixtures.USER_ID));
+        Assert.assertThat(data.getStringExtra(AuthHandler.EXTRA_TOKEN), is(TestFixtures.TOKEN));
+        Assert.assertThat(data.getStringExtra(AuthHandler.EXTRA_TOKEN_SECRET), is(TestFixtures.SECRET));
     }
 
     @Test

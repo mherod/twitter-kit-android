@@ -17,6 +17,10 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import org.junit.Assert;
+
+import static org.hamcrest.CoreMatchers.*;
+
 public class CompactTweetViewXmlTest extends BaseTweetViewXmlTest {
 
     @Override
@@ -33,7 +37,7 @@ public class CompactTweetViewXmlTest extends BaseTweetViewXmlTest {
 
     public void testLayout() {
         final CompactTweetView view = getView();
-        Assert.assertNotNull(view);
+        Assert.assertThat(view, notNullValue());
         Assert.assertEquals(R.layout.tw__tweet_compact, view.getLayout());
     }
 }

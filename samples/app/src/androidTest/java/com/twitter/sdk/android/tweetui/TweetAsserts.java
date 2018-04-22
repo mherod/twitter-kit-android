@@ -21,7 +21,7 @@ import android.graphics.drawable.Drawable;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.view.View;
 import android.widget.TextView;
-import com.example.app.R;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
@@ -30,7 +30,6 @@ import java.util.Locale;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
 public abstract class TweetAsserts {

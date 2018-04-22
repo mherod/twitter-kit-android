@@ -21,6 +21,9 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.twitter.sdk.android.core.TestResources;
 import com.twitter.sdk.android.core.internal.CommonUtils;
+
+import org.hamcrest.number.OrderingComparison;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,7 +32,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.io.InputStreamReader;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class UserTest {
@@ -61,18 +64,18 @@ public class UserTest {
             final User user = gson.fromJson(reader, User.class);
             // We simply assert that we parsed it successfully and rely on our other unit tests to
             // verify parsing of the individual objects.
-            assertEquals(EXPECTED_ID, user.id);
-            assertEquals(EXPECTED_ID, user.getId());
-            assertEquals(EXPECTED_NAME, user.name);
-            assertTrue(user.entities.url.urls.size() > 0);
-            assertTrue(user.entities.description.urls.isEmpty());
-            assertEquals(EXPECTED_SCREEN_NAME, user.screenName);
-            assertEquals(EXPECTED_PROFILE_IMAGE_URL_HTTPS, user.profileImageUrlHttps);
-            assertEquals(EXPECTED_VERIFIED, user.verified);
-            assertNotNull(user.status);
-            assertNotNull(user.withheldInCountries);
-            assertEquals(1, user.withheldInCountries.size());
-            assertEquals(EXPECTED_WITHHELD_IN_COUNTRIES, user.withheldInCountries.get(0));
+            Assert.assertThat(user.getId(), is(EXPECTED_ID));
+            Assert.assertThat(user.getId(), is(EXPECTED_ID));
+            Assert.assertThat(user.getName(), is(EXPECTED_NAME));
+            Assert.assertThat(user.getEntities().url.urls.size(), OrderingComparison.greaterThan(0));
+            Assert.assertThat(user.getEntities().description.urls.isEmpty(), is(true));
+            Assert.assertThat(user.getScreenName(), is(EXPECTED_SCREEN_NAME));
+            Assert.assertThat(user.getProfileImageUrlHttps(), is(EXPECTED_PROFILE_IMAGE_URL_HTTPS));
+            Assert.assertThat(user.getVerified(), is(EXPECTED_VERIFIED));
+            Assert.assertThat(user.getStatus(), notNullValue());
+            Assert.assertThat(user.getWithheldInCountries(), notNullValue());
+            Assert.assertThat(user.getWithheldInCountries().size(), is(1));
+            Assert.assertThat(user.getWithheldInCountries().get(0), is(EXPECTED_WITHHELD_IN_COUNTRIES));
         } finally {
             CommonUtils.closeQuietly(reader);
         }

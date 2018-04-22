@@ -22,6 +22,10 @@ import android.graphics.drawable.Drawable;
 import android.test.AndroidTestCase;
 import android.widget.ImageView;
 
+import org.junit.Assert;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
@@ -79,8 +83,8 @@ public class OverlayImageViewTest extends AndroidTestCase {
         overlayImageView.setOverlayDrawable(drawable);
 
         verify(overlay).cleanupDrawable(overlayImageView);
-        Assert.assertNotNull(overlayImageView.overlay);
-        Assert.assertEquals(drawable, overlayImageView.overlay.drawable);
+        Assert.assertThat(overlayImageView.overlay, notNullValue());
+        Assert.assertThat(overlayImageView.overlay.drawable, is(drawable));
     }
 
     public void testSetOverlayDrawable_nullDrawable() {

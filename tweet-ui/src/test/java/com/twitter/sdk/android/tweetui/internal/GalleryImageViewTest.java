@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,8 +33,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
@@ -63,19 +63,19 @@ public class GalleryImageViewTest {
 
     @Test
     public void testConstructor() {
-        assertNotNull(subject.imageView);
-        assertNotNull(subject.progressBar);
+        Assert.assertThat(subject.imageView, notNullValue());
+        Assert.assertThat(subject.progressBar, notNullValue());
 
         FrameLayout.LayoutParams params;
         params = (FrameLayout.LayoutParams) subject.imageView.getLayoutParams();
-        assertEquals(FrameLayout.LayoutParams.MATCH_PARENT, params.height);
-        assertEquals(FrameLayout.LayoutParams.MATCH_PARENT, params.width);
-        assertEquals(Gravity.CENTER, params.gravity);
+        Assert.assertThat(params.height, is(FrameLayout.LayoutParams.MATCH_PARENT));
+        Assert.assertThat(params.width, is(FrameLayout.LayoutParams.MATCH_PARENT));
+        Assert.assertThat(params.gravity, is(Gravity.CENTER));
 
         params = (FrameLayout.LayoutParams) subject.progressBar.getLayoutParams();
-        assertEquals(FrameLayout.LayoutParams.WRAP_CONTENT, params.height);
-        assertEquals(FrameLayout.LayoutParams.WRAP_CONTENT, params.width);
-        assertEquals(Gravity.CENTER, params.gravity);
+        Assert.assertThat(params.height, is(FrameLayout.LayoutParams.WRAP_CONTENT));
+        Assert.assertThat(params.width, is(FrameLayout.LayoutParams.WRAP_CONTENT));
+        Assert.assertThat(params.gravity, is(Gravity.CENTER));
     }
 
     @Test

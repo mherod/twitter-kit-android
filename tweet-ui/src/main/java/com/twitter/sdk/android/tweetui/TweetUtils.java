@@ -85,8 +85,8 @@ public final class TweetUtils {
      * @return Returns true if tweet has a greater than zero id and a screen name
      */
     static boolean isTweetResolvable(Tweet tweet) {
-        return tweet != null && tweet.id > 0 && tweet.user != null
-                && !TextUtils.isEmpty(tweet.user.screenName);
+        return tweet != null && tweet.getId() > 0 && tweet.getUser() != null
+                && !TextUtils.isEmpty(tweet.getUser().getScreenName());
     }
 
     /**
@@ -96,17 +96,17 @@ public final class TweetUtils {
      * @return either the tweet argument or the Tweet in the retweetedStatus field
      */
     static Tweet getDisplayTweet(Tweet tweet) {
-        if (tweet == null || tweet.retweetedStatus == null) {
+        if (tweet == null || tweet.getRetweetedStatus() == null) {
             return tweet;
         } else {
-            return tweet.retweetedStatus;
+            return tweet.getRetweetedStatus();
         }
     }
 
     static boolean showQuoteTweet(Tweet tweet) {
-        return tweet.quotedStatus != null &&
-                tweet.card == null && (tweet.entities == null || tweet.entities.media == null
-                || tweet.entities.media.isEmpty());
+        return tweet.getQuotedStatus() != null &&
+                tweet.getCard() == null && (tweet.getEntities() == null || tweet.getEntities().getMedia() == null
+                || tweet.getEntities().getMedia().isEmpty());
     }
 
     /**

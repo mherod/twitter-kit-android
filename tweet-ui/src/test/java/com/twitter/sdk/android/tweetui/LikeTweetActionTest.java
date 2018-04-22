@@ -24,15 +24,14 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.TwitterApiConstants;
 import com.twitter.sdk.android.core.models.Tweet;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -65,10 +64,10 @@ public class LikeTweetActionTest {
         // - performs a like action which favorites the correct tweet id
         // - passes FavoriteCallback with toggle button and tweet references
         likeAction.onClick(mockToggleButton);
-        verify(mockTweetRepository).favorite(eq(TestFixtures.TEST_TWEET.id),
+        verify(mockTweetRepository).favorite(eq(TestFixtures.TEST_TWEET.getId()),
                 favoriteCbCaptor.capture());
-        assertEquals(mockToggleButton, favoriteCbCaptor.getValue().button);
-        assertFalse(favoriteCbCaptor.getValue().tweet.favorited);
+        Assert.assertThat(favoriteCbCaptor.getValue().button, is(mockToggleButton));
+        Assert.assertThat(favoriteCbCaptor.getValue().tweet.getFavorited(), is(false));
 
         assertFavoriteScribe();
     }
@@ -84,10 +83,10 @@ public class LikeTweetActionTest {
         // - performs an unlike action which unfavorites the correct tweet id
         // - passes FavoriteCallback with toggle button and tweet references
         favoriteAction.onClick(mockToggleButton);
-        verify(mockTweetRepository).unfavorite(eq(TestFixtures.TEST_TWEET.id),
+        verify(mockTweetRepository).unfavorite(eq(TestFixtures.TEST_TWEET.getId()),
                 favoriteCbCaptor.capture());
-        assertEquals(mockToggleButton, favoriteCbCaptor.getValue().button);
-        assertTrue(favoriteCbCaptor.getValue().tweet.favorited);
+        Assert.assertThat(favoriteCbCaptor.getValue().button, is(mockToggleButton));
+        Assert.assertThat(favoriteCbCaptor.getValue().tweet.getFavorited(), is(true));
 
         assertUnfavoriteScribe();
     }
@@ -97,7 +96,7 @@ public class LikeTweetActionTest {
                 = ArgumentCaptor.forClass(Tweet.class);
         verify(mockScribeClient).favorite(tweetCaptor.capture());
         final Tweet capturedTweet = tweetCaptor.getValue();
-        assertEquals(TestFixtures.TEST_TWEET, capturedTweet);
+        Assert.assertThat(capturedTweet, is(TestFixtures.TEST_TWEET));
     }
 
     private void assertUnfavoriteScribe() {
@@ -105,7 +104,7 @@ public class LikeTweetActionTest {
                 = ArgumentCaptor.forClass(Tweet.class);
         verify(mockScribeClient).unfavorite(tweetCaptor.capture());
         final Tweet capturedTweet = tweetCaptor.getValue();
-        assertEquals(TestFixtures.TEST_FAVORITED_TWEET, capturedTweet);
+        Assert.assertThat(capturedTweet, is(TestFixtures.TEST_FAVORITED_TWEET));
     }
 
     @Test
@@ -138,8 +137,8 @@ public class LikeTweetActionTest {
         final ArgumentCaptor<Result<Tweet>> resultCaptor
                 = ArgumentCaptor.forClass(Result.class);
         verify(mockCallback).success(resultCaptor.capture());
-        assertEquals(tweet.getId(), resultCaptor.getValue().getData().getId());
-        assertTrue(resultCaptor.getValue().getData().favorited);
+        Assert.assertThat(resultCaptor.getValue().getData().getId(), is(tweet.getId()));
+        Assert.assertThat(resultCaptor.getValue().getData().getFavorited(), is(true));
     }
 
     @Test
@@ -160,8 +159,8 @@ public class LikeTweetActionTest {
         final ArgumentCaptor<Result<Tweet>> resultCaptor
                 = ArgumentCaptor.forClass(Result.class);
         verify(mockCallback).success(resultCaptor.capture());
-        assertEquals(tweet.getId(), resultCaptor.getValue().getData().getId());
-        assertFalse(resultCaptor.getValue().getData().favorited);
+        Assert.assertThat(resultCaptor.getValue().getData().getId(), is(tweet.getId()));
+        Assert.assertThat(resultCaptor.getValue().getData().getFavorited(), is(false));
     }
 
     @Test
@@ -174,7 +173,7 @@ public class LikeTweetActionTest {
                 mockCallback);
         final TwitterApiException twitterApiException = mock(TwitterApiException.class);
         callback.failure(twitterApiException);
-        verify(mockToggleButton).setToggledOn(favoritedTweet.favorited);
+        verify(mockToggleButton).setToggledOn(favoritedTweet.getFavorited());
         verify(mockCallback).failure(twitterApiException);
     }
 
@@ -188,7 +187,7 @@ public class LikeTweetActionTest {
                 mockCallback);
         final TwitterException twitterException = mock(TwitterException.class);
         callback.failure(twitterException);
-        verify(mockToggleButton).setToggledOn(unfavoritedTweet.favorited);
+        verify(mockToggleButton).setToggledOn(unfavoritedTweet.getFavorited());
         verify(mockCallback).failure(twitterException);
     }
 }

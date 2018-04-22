@@ -62,6 +62,7 @@ public class TimelineActivity extends BaseActivity {
             public void success(Result<Tweet> result) {
                 // Intentionally blank
             }
+
             @Override
             public void failure(TwitterException exception) {
                 if (exception instanceof TwitterAuthException) {
@@ -88,8 +89,11 @@ public class TimelineActivity extends BaseActivity {
         // set custom scroll listener to enable swipe refresh layout only when at list top
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             boolean enableRefresh;
+
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {}
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
                                  int totalItemCount) {

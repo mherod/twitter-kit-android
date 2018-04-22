@@ -21,20 +21,17 @@ import android.os.Build
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.TextUtils
-import android.text.style.CharacterStyle
 import android.view.View
-
 import com.twitter.sdk.android.core.models.ModelUtils
 import com.twitter.sdk.android.tweetui.internal.ClickableLinkSpan
 import com.twitter.sdk.android.tweetui.internal.TweetMediaUtils
-
 import java.util.ArrayList
-import java.util.Collections
 import java.util.regex.Pattern
+import kotlin.Comparator
 
 object TweetTextLinkifier {
-    val QUOTED_STATUS_URL = Pattern.compile("^https?://twitter\\.com(/#!)?/\\w+/status/\\d+$")
-    val VINE_URL = Pattern.compile("^https?://vine\\.co(/#!)?/v/\\w+$")
+    private val QUOTED_STATUS_URL: Pattern? = Pattern.compile("^https?://twitter\\.com(/#!)?/\\w+/status/\\d+$")
+    private val VINE_URL: Pattern? = Pattern.compile("^https?://vine\\.co(/#!)?/v/\\w+$")
 
     /**
      * Returns a charSequence with the display urls substituted in place of the t.co links. It will
@@ -181,8 +178,8 @@ object TweetTextLinkifier {
     }
 
     @JvmStatic
-    fun getEntityToStrip(tweetText: String?, combined: List<FormattedUrlEntity>,
-                         stripQuoteTweet: Boolean, stripVineCard: Boolean): FormattedUrlEntity? {
+    private fun getEntityToStrip(tweetText: String?, combined: List<FormattedUrlEntity>,
+                                 stripQuoteTweet: Boolean, stripVineCard: Boolean): FormattedUrlEntity? {
         if (combined.isEmpty()) return null
 
         val urlEntity = combined[combined.size - 1]
@@ -209,11 +206,11 @@ object TweetTextLinkifier {
 
     @JvmStatic
     fun isQuotedStatus(urlEntity: FormattedUrlEntity): Boolean {
-        return QUOTED_STATUS_URL.matcher(urlEntity.expandedUrl).find()
+        return QUOTED_STATUS_URL!!.matcher(urlEntity.expandedUrl).find()
     }
 
     @JvmStatic
     fun isVineCard(urlEntity: FormattedUrlEntity): Boolean {
-        return VINE_URL.matcher(urlEntity.expandedUrl).find()
+        return VINE_URL!!.matcher(urlEntity.expandedUrl).find()
     }
 }

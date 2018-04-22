@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.core;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +29,7 @@ import java.util.Map;
 
 import okhttp3.Headers;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class TwitterRateLimitTest  {
@@ -47,7 +48,7 @@ public class TwitterRateLimitTest  {
     @Test
     public void testConstructor_nonePublic() {
         final Constructor<?>[] constructors = TwitterRateLimit.class.getConstructors();
-        assertEquals(0, constructors.length);
+        Assert.assertThat(constructors.length, is(0));
     }
 
     @Test
@@ -61,16 +62,16 @@ public class TwitterRateLimitTest  {
         headers.put(X_RATE_LIMIT_RESET, reset);
 
         final TwitterRateLimit rateLimit = new TwitterRateLimit(Headers.of(headers));
-        assertEquals(10, rateLimit.getLimit());
-        assertEquals(20, rateLimit.getRemaining());
-        assertEquals(30L, rateLimit.getReset());
+        Assert.assertThat(rateLimit.getLimit(), is(10));
+        Assert.assertThat(rateLimit.getRemaining(), is(20));
+        Assert.assertThat(rateLimit.getReset(), is(30L));
     }
 
     @Test
     public void testCreator_emptyHeader() {
         final TwitterRateLimit rateLimit = new TwitterRateLimit(Headers.of(headers));
-        assertEquals(0, rateLimit.getLimit());
-        assertEquals(0, rateLimit.getRemaining());
-        assertEquals(0, rateLimit.getReset());
+        Assert.assertThat(rateLimit.getLimit(), is(0));
+        Assert.assertThat(rateLimit.getRemaining(), is(0));
+        Assert.assertThat(rateLimit.getReset(), is(0));
     }
 }

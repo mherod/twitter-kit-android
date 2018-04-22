@@ -20,17 +20,14 @@ package com.twitter.sdk.android.core.internal.persistence;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class PreferenceStoreImplTest {
@@ -44,15 +41,15 @@ public class PreferenceStoreImplTest {
     @Test
     @SuppressLint("CommitPrefEdits")
     public void testGet() {
-        assertNotNull(preferenceStore.get());
-        assertTrue(preferenceStore.get() instanceof SharedPreferences);
+        Assert.assertThat(preferenceStore.get(), notNullValue());
+        Assert.assertThat(preferenceStore.get() instanceof SharedPreferences, is(true));
     }
 
     @Test
     @SuppressLint("CommitPrefEdits")
     public void testEdit() {
-        assertNotNull(preferenceStore.edit());
-        assertTrue(preferenceStore.edit() instanceof SharedPreferences.Editor);
+        Assert.assertThat(preferenceStore.edit(), notNullValue());
+        Assert.assertThat(preferenceStore.edit() instanceof SharedPreferences.Editor, is(true));
     }
 
     @Test
@@ -62,12 +59,12 @@ public class PreferenceStoreImplTest {
         final String value = "Test Value";
         final SharedPreferences.Editor editor = preferenceStore.edit();
         editor.putString(key, value);
-        assertTrue(preferenceStore.save(editor));
+        Assert.assertThat(preferenceStore.save(editor), is(true));
 
         final String result = preferenceStore.get().getString(key, null);
 
-        assertNotNull(result);
-        assertEquals(value, result);
+        Assert.assertThat(result, notNullValue());
+        Assert.assertThat(result, is(value));
     }
 
     @Test
@@ -79,11 +76,11 @@ public class PreferenceStoreImplTest {
         final PreferenceStoreImpl secondPrefStore =
                 new PreferenceStoreImpl(RuntimeEnvironment.application, "PersistenceTest");
 
-        assertNotSame(preferenceStore.get(), secondPrefStore.get());
+        Assert.assertThat(secondPrefStore.get(), not(sameInstance(preferenceStore.get())));
 
         preferenceStore.save(preferenceStore.edit().putString(key, value));
 
-        assertNull(secondPrefStore.get().getString(key, null));
+        Assert.assertThat(secondPrefStore.get().getString(key, null), nullValue());
 
     }
 }

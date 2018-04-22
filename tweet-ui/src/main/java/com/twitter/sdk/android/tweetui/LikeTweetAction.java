@@ -56,13 +56,13 @@ class LikeTweetAction extends BaseTweetAction implements View.OnClickListener {
     public void onClick(View view) {
         if (view instanceof ToggleImageButton) {
             final ToggleImageButton toggleImageButton = (ToggleImageButton) view;
-            if (tweet.favorited) {
+            if (tweet.getFavorited()) {
                 scribeUnFavoriteAction();
-                tweetRepository.unfavorite(tweet.id,
+                tweetRepository.unfavorite(tweet.getId(),
                         new LikeCallback(toggleImageButton, tweet, getActionCallback()));
             } else {
                 scribeFavoriteAction();
-                tweetRepository.favorite(tweet.id,
+                tweetRepository.favorite(tweet.getId(),
                         new LikeCallback(toggleImageButton, tweet, getActionCallback()));
             }
         }
@@ -121,13 +121,13 @@ class LikeTweetAction extends BaseTweetAction implements View.OnClickListener {
                         return;
                     default:
                         // reset the toggle state back to match the Tweet
-                        button.setToggledOn(tweet.favorited);
+                        button.setToggledOn(tweet.getFavorited());
                         cb.failure(exception);
                         return;
                 }
             }
             // reset the toggle state back to match the Tweet
-            button.setToggledOn(tweet.favorited);
+            button.setToggledOn(tweet.getFavorited());
             cb.failure(exception);
         }
     }

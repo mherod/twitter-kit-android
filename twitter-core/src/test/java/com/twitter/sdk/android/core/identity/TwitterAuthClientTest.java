@@ -38,6 +38,7 @@ import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.models.UserBuilder;
 import com.twitter.sdk.android.core.services.AccountService;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,7 +50,7 @@ import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.mock.Calls;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
@@ -68,7 +69,6 @@ public class TwitterAuthClientTest {
     private static final int TEST_REQUEST_CODE = 100;
     private static final String TEST_EMAIL = "foo@twitter.com";
 
-    private Context mockContext;
     private TwitterCore mockTwitterCore;
     private TwitterAuthConfig mockAuthConfig;
     private SessionManager<TwitterSession> mockSessionManager;
@@ -79,7 +79,7 @@ public class TwitterAuthClientTest {
 
     @Before
     public void setUp() throws Exception {
-        mockContext = mock(Context.class);
+        Context mockContext = mock(Context.class);
         when(mockContext.getPackageName()).thenReturn(getClass().getPackage().toString());
 
         mockTwitterCore = mock(TwitterCore.class);
@@ -96,7 +96,7 @@ public class TwitterAuthClientTest {
 
     @Test
     public void testGetRequestCode() {
-        assertEquals(TEST_REQUEST_CODE, authClient.getRequestCode());
+        Assert.assertThat(authClient.getRequestCode(), is(TEST_REQUEST_CODE));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class TwitterAuthClientTest {
             authClient.authorize(null, mock(Callback.class));
             fail("Expected IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
-            assertEquals("Activity must not be null.", e.getMessage());
+            Assert.assertThat(e.getMessage(), is("Activity must not be null."));
         }
     }
 
@@ -125,7 +125,7 @@ public class TwitterAuthClientTest {
             authClient.authorize(mock(Activity.class), null);
             fail("Expected IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
-            assertEquals("Callback must not be null.", e.getMessage());
+            Assert.assertThat(e.getMessage(), is("Callback must not be null."));
         }
     }
 
@@ -198,7 +198,7 @@ public class TwitterAuthClientTest {
         final ArgumentCaptor<TwitterAuthException> argCaptor
                 = ArgumentCaptor.forClass(TwitterAuthException.class);
         verify(mockCallback).failure(argCaptor.capture());
-        assertEquals("Authorize failed.", argCaptor.getValue().getMessage());
+        Assert.assertThat(argCaptor.getValue().getMessage(), is("Authorize failed."));
     }
 
     @Test
@@ -312,7 +312,7 @@ public class TwitterAuthClientTest {
         authClient.requestEmail(mock(TwitterSession.class), new Callback<String>() {
             @Override
             public void success(Result<String> result) {
-                assertEquals(TEST_EMAIL, result.getData());
+                Assert.assertThat(result.getData(), is(TEST_EMAIL));
             }
 
             @Override
@@ -336,7 +336,7 @@ public class TwitterAuthClientTest {
 
             @Override
             public void failure(TwitterException exception) {
-                assertEquals(exception.getCause(), networkException);
+                Assert.assertThat(networkException, is(exception.getCause()));
             }
         });
     }

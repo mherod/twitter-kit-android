@@ -22,18 +22,19 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 
-import com.twitter.sdk.android.tweetui.R;
+import org.junit.Assert;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class VideoControlViewTest extends AndroidTestCase {
-    static final int SECOND_IN_MS = 1000;
-    static final int MINUTE_IN_MS = 60000;
-    static final int TEST_BUFFER_PROGRESS = 32;
-    VideoControlView videoControlView;
+    private static final int SECOND_IN_MS = 1000;
+    private static final int MINUTE_IN_MS = 60000;
+    private static final int TEST_BUFFER_PROGRESS = 32;
+    private VideoControlView videoControlView;
 
     public void setUp() throws Exception {
         super.setUp();
@@ -42,19 +43,19 @@ public class VideoControlViewTest extends AndroidTestCase {
     }
 
     public void testInitialState() {
-        Assert.assertTrue(videoControlView.getVisibility() == View.VISIBLE);
-        Assert.assertNotNull(videoControlView.seekBar);
-        Assert.assertNotNull(videoControlView.duration);
-        Assert.assertNotNull(videoControlView.currentTime);
-        Assert.assertNotNull(videoControlView.stateControl);
-        Assert.assertNull(videoControlView.player);
+        Assert.assertThat(videoControlView.getVisibility(), is(View.VISIBLE));
+        Assert.assertThat(videoControlView.seekBar, notNullValue());
+        Assert.assertThat(videoControlView.duration, notNullValue());
+        Assert.assertThat(videoControlView.currentTime, notNullValue());
+        Assert.assertThat(videoControlView.stateControl, notNullValue());
+        Assert.assertThat(videoControlView.player, nullValue());
 
-        Assert.assertEquals(1000, videoControlView.seekBar.getMax());
-        Assert.assertEquals(0, videoControlView.seekBar.getProgress());
-        Assert.assertEquals(0, videoControlView.seekBar.getSecondaryProgress());
+        Assert.assertThat(videoControlView.seekBar.getMax(), is(1000));
+        Assert.assertThat(videoControlView.seekBar.getProgress(), is(0));
+        Assert.assertThat(videoControlView.seekBar.getSecondaryProgress(), is(0));
 
-        Assert.assertEquals("0:00", videoControlView.duration.getText());
-        Assert.assertEquals("0:00", videoControlView.currentTime.getText());
+        Assert.assertThat(videoControlView.duration.getText(), is("0:00"));
+        Assert.assertThat(videoControlView.currentTime.getText(), is("0:00"));
     }
 
     public void testCreateStateControlClickListener() {
@@ -84,7 +85,7 @@ public class VideoControlViewTest extends AndroidTestCase {
         when(player.getDuration()).thenReturn(MINUTE_IN_MS);
         listener.onProgressChanged(null, 500, true);
         verify(player).seekTo(30000);
-        Assert.assertEquals("0:30", videoControlView.currentTime.getText());
+        Assert.assertThat(videoControlView.currentTime.getText(), is("0:30"));
     }
 
     public void testCreateProgressChangeListener_fromUserFalse() {
@@ -101,7 +102,7 @@ public class VideoControlViewTest extends AndroidTestCase {
     }
 
     public void testIsShowing() {
-        Assert.assertTrue(videoControlView.isShowing());
+        Assert.assertThat(videoControlView.isShowing(), is(true));
     }
 
     public void testUpdateProgress() {
@@ -114,33 +115,33 @@ public class VideoControlViewTest extends AndroidTestCase {
 
         videoControlView.updateProgress();
 
-        Assert.assertEquals(16, videoControlView.seekBar.getProgress());
-        Assert.assertEquals(500, videoControlView.seekBar.getSecondaryProgress());
+        Assert.assertThat(videoControlView.seekBar.getProgress(), is(16));
+        Assert.assertThat(videoControlView.seekBar.getSecondaryProgress(), is(500));
 
-        Assert.assertEquals("1:00", videoControlView.duration.getText());
-        Assert.assertEquals("0:01", videoControlView.currentTime.getText());
+        Assert.assertThat(videoControlView.duration.getText(), is("1:00"));
+        Assert.assertThat(videoControlView.currentTime.getText(), is("0:01"));
     }
 
     public void testSetDuration() {
         videoControlView.setDuration(SECOND_IN_MS);
-        Assert.assertEquals("0:01", videoControlView.duration.getText());
+        Assert.assertThat(videoControlView.duration.getText(), is("0:01"));
     }
 
     public void testSetCurrentTime() {
         videoControlView.setCurrentTime(SECOND_IN_MS);
-        Assert.assertEquals("0:01", videoControlView.currentTime.getText());
+        Assert.assertThat(videoControlView.currentTime.getText(), is("0:01"));
     }
 
     public void testSetSeekBarProgress() {
         videoControlView.setProgress(SECOND_IN_MS, MINUTE_IN_MS, TEST_BUFFER_PROGRESS);
-        Assert.assertEquals(16, videoControlView.seekBar.getProgress());
-        Assert.assertEquals(320, videoControlView.seekBar.getSecondaryProgress());
+        Assert.assertThat(videoControlView.seekBar.getProgress(), is(16));
+        Assert.assertThat(videoControlView.seekBar.getSecondaryProgress(), is(320));
     }
 
     public void testSetSeekBarProgress_zeroDuration() {
         videoControlView.setProgress(SECOND_IN_MS, 0, TEST_BUFFER_PROGRESS);
-        Assert.assertEquals(0, videoControlView.seekBar.getProgress());
-        Assert.assertEquals(320, videoControlView.seekBar.getSecondaryProgress());
+        Assert.assertThat(videoControlView.seekBar.getProgress(), is(0));
+        Assert.assertThat(videoControlView.seekBar.getSecondaryProgress(), is(320));
     }
 
     public void testSetPlayDrawable() {
@@ -172,6 +173,6 @@ public class VideoControlViewTest extends AndroidTestCase {
 
     public void testSetMediaPlayer() {
         videoControlView.setMediaPlayer(mock(VideoControlView.MediaPlayerControl.class));
-        Assert.assertNotNull(videoControlView.player);
+        Assert.assertThat(videoControlView.player, notNullValue());
     }
 }

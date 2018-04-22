@@ -19,12 +19,13 @@ package com.twitter.sdk.android.core;
 
 import com.twitter.sdk.android.core.internal.oauth.OAuth1aHeaders;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -58,7 +59,7 @@ public class OAuthSigningTests  {
             new OAuthSigning(null, authToken);
             fail("Expected IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
-            assertEquals("authConfig must not be null", e.getMessage());
+            Assert.assertThat(e.getMessage(), is("authConfig must not be null"));
         }
     }
 
@@ -68,7 +69,7 @@ public class OAuthSigningTests  {
             new OAuthSigning(authConfig, null);
             fail("Expected IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
-            assertEquals("authToken must not be null", e.getMessage());
+            Assert.assertThat(e.getMessage(), is("authToken must not be null"));
         }
     }
 

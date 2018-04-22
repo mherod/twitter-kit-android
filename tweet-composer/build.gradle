@@ -69,6 +69,7 @@ dependencies {
 
     androidTestCompile dependency.mockito
     androidTestCompile dependency.dexmakerMockito
+    androidTestCompile dependency.junit
 
     testCompile dependency.mockito
     testCompile dependency.junit

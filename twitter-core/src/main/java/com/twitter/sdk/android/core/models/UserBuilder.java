@@ -32,7 +32,7 @@ public class UserBuilder {
     private int followersCount;
     private int friendsCount;
     private boolean geoEnabled;
-    private long id = User.INVALID_ID;
+    private long id = User.Companion.getINVALID_ID();
     private String idStr;
     private boolean isTranslator;
     private String lang;

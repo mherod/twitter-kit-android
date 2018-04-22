@@ -20,6 +20,7 @@ package com.twitter.sdk.android.core.internal.oauth;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -27,7 +28,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 @SuppressWarnings("checkstyle:linelength")
@@ -112,7 +113,7 @@ public class OAuth1aParametersTest  {
             final OAuth1aParameters oAuth1aParameters = toOAuth1aParameters(testParameters);
             final String signatureBase = oAuth1aParameters.constructSignatureBase(
                     testParameters.nonce, testParameters.timestamp);
-            assertEquals(testParameters.expectedSignatureBase, signatureBase);
+            Assert.assertThat(signatureBase, is(testParameters.expectedSignatureBase));
         }
     }
 
@@ -136,7 +137,7 @@ public class OAuth1aParametersTest  {
             final OAuth1aParameters oAuth1aParameters = toOAuth1aParameters(testParameters);
             final String signature
                     = oAuth1aParameters.calculateSignature(testParameters.expectedSignatureBase);
-            assertEquals(testParameters.expectedSignature, signature);
+            Assert.assertThat(signature, is(testParameters.expectedSignature));
         }
     }
 
@@ -147,7 +148,7 @@ public class OAuth1aParametersTest  {
             final String authHeader = oAuth1aParameters.constructAuthorizationHeader(
                     testParameters.nonce, testParameters.timestamp,
                     testParameters.expectedSignature);
-            assertEquals(testParameters.expectedAuthHeader, authHeader);
+            Assert.assertThat(authHeader, is(testParameters.expectedAuthHeader));
         }
     }
 }

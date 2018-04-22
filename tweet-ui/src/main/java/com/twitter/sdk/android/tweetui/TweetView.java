@@ -84,7 +84,7 @@ public class TweetView extends BaseTweetView {
      * verification data is unavailable, remove the check.
      */
     private void setVerifiedCheck(Tweet tweet) {
-        if (tweet != null && tweet.user != null && tweet.user.verified) {
+        if (tweet != null && tweet.getUser() != null && tweet.getUser().getVerified()) {
             fullNameView.setCompoundDrawablesWithIntrinsicBounds(0, 0,
                     R.drawable.tw__ic_tweet_verified, 0);
         } else {

@@ -17,12 +17,12 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class BaseTimelineTest {
@@ -31,11 +31,11 @@ public class BaseTimelineTest {
     @Test
     public void testDecrementMaxId_positive() {
         final Long correctedId = BaseTimeline.decrementMaxId(TEST_ID);
-        assertEquals((Long) (TEST_ID - 1L), correctedId);
+        Assert.assertThat(correctedId, is(TEST_ID - 1L));
     }
 
     @Test
     public void testDecrementMaxId_nullId() {
-        assertNull(BaseTimeline.decrementMaxId(null));
+        Assert.assertThat(BaseTimeline.decrementMaxId(null), nullValue());
     }
 }

@@ -25,8 +25,11 @@ import com.twitter.sdk.android.core.TwitterConfig;
 import com.twitter.sdk.android.core.TwitterCoreTestUtils;
 import com.twitter.sdk.android.core.TwitterTestUtils;
 
+import org.junit.Assert;
+
 import java.util.concurrent.ThreadPoolExecutor;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.mockito.Mockito.mock;
 
 public class TweetUiBackgroundTest extends InstrumentationTestCase {
@@ -60,6 +63,6 @@ public class TweetUiBackgroundTest extends InstrumentationTestCase {
     }
 
     public void testGetTweetRepository() {
-        Assert.assertNotNull(TweetUi.getInstance().getTweetRepository());
+        Assert.assertThat(TweetUi.getInstance().getTweetRepository(), notNullValue());
     }
 }

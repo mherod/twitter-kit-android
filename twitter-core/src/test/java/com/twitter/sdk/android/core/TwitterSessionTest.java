@@ -17,10 +17,12 @@
 
 package com.twitter.sdk.android.core;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
@@ -33,7 +35,7 @@ public class TwitterSessionTest  {
                     TwitterSession.UNKNOWN_USER_NAME);
             fail();
         } catch (IllegalArgumentException ie) {
-            assertEquals("AuthToken must not be null.", ie.getMessage());
+            Assert.assertThat(ie.getMessage(), is("AuthToken must not be null."));
         }
     }
 
@@ -45,8 +47,8 @@ public class TwitterSessionTest  {
         final TwitterSession newSession = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET), TestFixtures.USER_ID,
                 TestFixtures.SCREEN_NAME);
-        assertEquals(session.hashCode(), newSession.hashCode());
-        assertEquals(session, newSession);
+        Assert.assertThat(newSession.hashCode(), is(session.hashCode()));
+        Assert.assertThat(newSession, is(session));
     }
 
     @Test
@@ -57,8 +59,8 @@ public class TwitterSessionTest  {
         final TwitterSession newSession = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET), TestFixtures.USER_ID,
                 null);
-        assertEquals(session.hashCode(), newSession.hashCode());
-        assertEquals(session, newSession);
+        Assert.assertThat(newSession.hashCode(), is(session.hashCode()));
+        Assert.assertThat(newSession, is(session));
     }
 
     @Test
@@ -70,7 +72,7 @@ public class TwitterSessionTest  {
         final TwitterSession newSession = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET), differentUserId,
                 TestFixtures.SCREEN_NAME);
-        assertNotSame(session, newSession);
+        Assert.assertThat(newSession, not(sameInstance(session)));
     }
 
     @Test
@@ -82,7 +84,7 @@ public class TwitterSessionTest  {
         final TwitterSession newSession = new TwitterSession(
                 new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET), differentUserId,
                 null);
-        assertNotSame(session, newSession);
+        Assert.assertThat(newSession, not(sameInstance(session)));
     }
 
 }

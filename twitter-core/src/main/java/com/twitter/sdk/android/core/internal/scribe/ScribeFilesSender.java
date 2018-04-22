@@ -75,7 +75,6 @@ class ScribeFilesSender implements FilesSender {
     private final SessionManager<? extends Session<TwitterAuthToken>> sessionManager;
     private final GuestSessionProvider guestSessionProvider;
     private final AtomicReference<ScribeService> scribeService;
-    private final ExecutorService executorService;
     private final IdManager idManager;
 
     ScribeFilesSender(Context context, ScribeConfig scribeConfig, long ownerId,
@@ -89,7 +88,7 @@ class ScribeFilesSender implements FilesSender {
         this.authConfig = authConfig;
         this.sessionManager = sessionManager;
         this.guestSessionProvider = guestSessionProvider;
-        this.executorService = executorService;
+        ExecutorService executorService1 = executorService;
         this.idManager = idManager;
         this.scribeService = new AtomicReference<>();
     }

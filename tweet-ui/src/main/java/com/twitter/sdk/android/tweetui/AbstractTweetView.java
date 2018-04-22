@@ -173,7 +173,7 @@ abstract class AbstractTweetView extends RelativeLayout{
         if (tweet == null) {
             return INVALID_ID;
         }
-        return tweet.id;
+        return tweet.getId();
     }
 
     /**
@@ -226,7 +226,7 @@ abstract class AbstractTweetView extends RelativeLayout{
 
         // set permalink if tweet id and screen name are available
         if (TweetUtils.isTweetResolvable(tweet)) {
-            setPermalinkUri(tweet.user.screenName, getTweetId());
+            setPermalinkUri(tweet.getUser().getScreenName(), getTweetId());
         } else {
             permalinkUri = null;
         }
@@ -272,12 +272,12 @@ abstract class AbstractTweetView extends RelativeLayout{
     }
 
     void scribeCardImpression(Long tweetId, Card card) {
-        final ScribeItem scribeItem = ScribeItem.fromTweetCard(tweetId, card);
+        final ScribeItem scribeItem = ScribeItem.Companion.fromTweetCard(tweetId, card);
         dependencyProvider.getVideoScribeClient().impression(scribeItem);
     }
 
     void scribeMediaEntityImpression(long tweetId, MediaEntity mediaEntity) {
-        final ScribeItem scribeItem = ScribeItem.fromMediaEntity(tweetId, mediaEntity);
+        final ScribeItem scribeItem = ScribeItem.Companion.fromMediaEntity(tweetId, mediaEntity);
         dependencyProvider.getVideoScribeClient().impression(scribeItem);
     }
 
@@ -285,8 +285,8 @@ abstract class AbstractTweetView extends RelativeLayout{
      * Sets the Tweet author name. If author name is unavailable, resets to empty string.
      */
     private void setName(Tweet displayTweet) {
-        if (displayTweet != null && displayTweet.user != null) {
-            fullNameView.setText(Utils.stringOrEmpty(displayTweet.user.name));
+        if (displayTweet != null && displayTweet.getUser() != null) {
+            fullNameView.setText(Utils.stringOrEmpty(displayTweet.getUser().getName()));
         } else {
             fullNameView.setText(EMPTY_STRING);
         }
@@ -296,9 +296,9 @@ abstract class AbstractTweetView extends RelativeLayout{
      * Sets the Tweet author screen name. If screen name is unavailable, resets to empty string.
      */
     private void setScreenName(Tweet displayTweet) {
-        if (displayTweet != null && displayTweet.user != null) {
+        if (displayTweet != null && displayTweet.getUser() != null) {
             screenNameView.setText(UserUtils.formatScreenName(
-                    Utils.stringOrEmpty(displayTweet.user.screenName)));
+                    Utils.stringOrEmpty(displayTweet.getUser().getScreenName())));
         } else {
             screenNameView.setText(EMPTY_STRING);
         }
@@ -330,8 +330,8 @@ abstract class AbstractTweetView extends RelativeLayout{
             return;
         }
 
-        if (displayTweet.card != null && VineCardUtils.isVine(displayTweet.card)) {
-            final Card card = displayTweet.card;
+        if (displayTweet.getCard() != null && VineCardUtils.isVine(displayTweet.getCard())) {
+            final Card card = displayTweet.getCard();
             final ImageValue imageValue = VineCardUtils.getImageValue(card);
             final String playerStreamUrl = VineCardUtils.getStreamUrl(card);
             // Make sure we have required bindings for Vine card
@@ -340,7 +340,7 @@ abstract class AbstractTweetView extends RelativeLayout{
                 tweetMediaView.setVineCard(displayTweet);
                 mediaBadgeView.setVisibility(View.VISIBLE);
                 mediaBadgeView.setCard(card);
-                scribeCardImpression(displayTweet.id, card);
+                scribeCardImpression(displayTweet.getId(), card);
             }
         } else if (TweetMediaUtils.hasSupportedVideo(displayTweet)) {
             final MediaEntity mediaEntity = TweetMediaUtils.getVideoEntity(displayTweet);
@@ -348,7 +348,7 @@ abstract class AbstractTweetView extends RelativeLayout{
             tweetMediaView.setTweetMediaEntities(tweet, Collections.singletonList(mediaEntity));
             mediaBadgeView.setVisibility(View.VISIBLE);
             mediaBadgeView.setMediaEntity(mediaEntity);
-            scribeMediaEntityImpression(displayTweet.id, mediaEntity);
+            scribeMediaEntityImpression(displayTweet.getId(), mediaEntity);
         } else if (TweetMediaUtils.hasPhoto(displayTweet)) {
             final List<MediaEntity> mediaEntities = TweetMediaUtils.getPhotoEntities(displayTweet);
             setViewsForMedia(getAspectRatioForPhotoEntity(mediaEntities.size()));
@@ -396,12 +396,12 @@ abstract class AbstractTweetView extends RelativeLayout{
 
         if (formattedText == null) return null;
 
-        final boolean stripVineCard = displayTweet.card != null
-                && VineCardUtils.isVine(displayTweet.card);
+        final boolean stripVineCard = displayTweet.getCard() != null
+                && VineCardUtils.isVine(displayTweet.getCard());
 
         final boolean stripQuoteTweet = TweetUtils.showQuoteTweet(displayTweet);
 
-        return TweetTextLinkifier.INSTANCE.linkifyUrls(formattedText, getLinkClickListener(), actionColor,
+        return TweetTextLinkifier.linkifyUrls(formattedText, getLinkClickListener(), actionColor,
                 actionHighlightColor, stripQuoteTweet, stripVineCard);
     }
 
@@ -416,14 +416,14 @@ abstract class AbstractTweetView extends RelativeLayout{
         String tweetText = null;
         if (formattedTweetText != null) tweetText = formattedTweetText.getText();
 
-        final long createdAt = TweetDateUtils.apiTimeToLong(displayTweet.createdAt);
+        final long createdAt = TweetDateUtils.apiTimeToLong(displayTweet.getCreatedAt());
         String timestamp = null;
         if (createdAt != TweetDateUtils.INVALID_DATE) {
             timestamp = DateFormat.getDateInstance().format(new Date(createdAt));
         }
 
         setContentDescription(getResources().getString(R.string.tw__tweet_content_description,
-                Utils.stringOrEmpty(displayTweet.user.name), Utils.stringOrEmpty(tweetText),
+                Utils.stringOrEmpty(displayTweet.getUser().getName()), Utils.stringOrEmpty(tweetText),
                 Utils.stringOrEmpty(timestamp)));
     }
 

@@ -19,43 +19,42 @@ package com.twitter.sdk.android.mopub;
 
 import android.graphics.Color;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class ColorUtilsTest {
 
     @Test
     public void testIsLightColor_black() {
-        assertFalse(ColorUtils.isLightColor(Color.BLACK));
+        Assert.assertThat(ColorUtils.isLightColor(Color.BLACK), is(false));
     }
 
     @Test
     public void testIsLightColor_white() {
-        assertTrue(ColorUtils.isLightColor(Color.WHITE));
+        Assert.assertThat(ColorUtils.isLightColor(Color.WHITE), is(true));
     }
 
     @Test
     public void testDefaultCtaButtonIsDarkColor() {
-        assertFalse(ColorUtils.isLightColor(R.color.tw__ad_cta_default));
+        Assert.assertThat(ColorUtils.isLightColor(R.color.tw__ad_cta_default), is(false));
     }
 
     @Test
     public void testCtaTextColorIsLightForDarkBgColor() {
-        assertEquals(Color.WHITE, ColorUtils.calculateCtaTextColor(R.color.tw__ad_cta_default));
-        assertEquals(Color.WHITE, ColorUtils.calculateCtaTextColor(Color.BLACK));
-        assertEquals(Color.WHITE, ColorUtils.calculateCtaTextColor(Color.DKGRAY));
+        Assert.assertThat(ColorUtils.calculateCtaTextColor(R.color.tw__ad_cta_default), is(Color.WHITE));
+        Assert.assertThat(ColorUtils.calculateCtaTextColor(Color.BLACK), is(Color.WHITE));
+        Assert.assertThat(ColorUtils.calculateCtaTextColor(Color.DKGRAY), is(Color.WHITE));
     }
 
     @Test
     public void testCtaTextColorIsDarkForLightBgColor() {
-        assertTrue(Color.WHITE != ColorUtils.calculateCtaTextColor(Color.WHITE));
-        assertTrue(Color.WHITE != ColorUtils.calculateCtaTextColor(Color.LTGRAY));
+        Assert.assertThat(Color.WHITE, not(is(ColorUtils.calculateCtaTextColor(Color.WHITE))));
+        Assert.assertThat(Color.WHITE, not(is(ColorUtils.calculateCtaTextColor(Color.LTGRAY))));
     }
 
     @Test
@@ -70,9 +69,9 @@ public class ColorUtilsTest {
         final int lighterGreen = Color.green(lighterColor);
         final int lighterBlue = Color.blue(lighterColor);
 
-        assertTrue(lighterRed > originalRed
+        Assert.assertThat(lighterRed > originalRed
                 && lighterGreen > originalGreen
-                && lighterBlue > originalBlue);
+                && lighterBlue > originalBlue, is(true));
     }
 
     @Test
@@ -87,22 +86,22 @@ public class ColorUtilsTest {
         final int darkerGreen = Color.green(darkerColor);
         final int darkerBlue = Color.blue(darkerColor);
 
-        assertTrue(originalRed > darkerRed
+        Assert.assertThat(originalRed > darkerRed
                 && originalGreen > darkerGreen
-                && originalBlue > darkerBlue);
+                && originalBlue > darkerBlue, is(true));
     }
 
     @Test
     public void testContrastColorForDarkColor() {
         final int darkColor = Color.BLACK;
         final int contrastingLightColor = ColorUtils.calculateContrastingColor(darkColor);
-        assertTrue(ColorUtils.isLightColor(contrastingLightColor));
+        Assert.assertThat(ColorUtils.isLightColor(contrastingLightColor), is(true));
     }
 
     @Test
     public void testContrastColorForLightColor() {
         final int lightColor = Color.WHITE;
         final int contrastingDarkColor = ColorUtils.calculateContrastingColor(lightColor);
-        assertFalse(ColorUtils.isLightColor(contrastingDarkColor));
+        Assert.assertThat(ColorUtils.isLightColor(contrastingDarkColor), is(false));
     }
 }

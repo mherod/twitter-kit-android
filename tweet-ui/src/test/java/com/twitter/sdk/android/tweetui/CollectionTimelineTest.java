@@ -27,6 +27,7 @@ import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.models.UserBuilder;
 import com.twitter.sdk.android.core.services.CollectionService;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,9 +36,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
@@ -77,11 +77,11 @@ public class CollectionTimelineTest {
 
     @Before
     public void setUp() throws Exception {
-        testUserMap.put(TEST_USER_1.id, TEST_USER_1);
-        testUserMap.put(TEST_USER_2.id, TEST_USER_2);
-        testTweetMap.put(TEST_TWEET_1.id, TEST_TWEET_1);
-        testTweetMap.put(TEST_TWEET_2.id, TEST_TWEET_2);
-        testTweetMap.put(TEST_TWEET_QUOTE.id, TEST_TWEET_QUOTE);
+        testUserMap.put(TEST_USER_1.getId(), TEST_USER_1);
+        testUserMap.put(TEST_USER_2.getId(), TEST_USER_2);
+        testTweetMap.put(TEST_TWEET_1.getId(), TEST_TWEET_1);
+        testTweetMap.put(TEST_TWEET_2.getId(), TEST_TWEET_2);
+        testTweetMap.put(TEST_TWEET_QUOTE.getId(), TEST_TWEET_QUOTE);
         // testItems order Test Tweet 1, then 2
         testItems.add(new TwitterCollection.TimelineItem(
                 new TwitterCollection.TimelineItem.TweetItem(5858L)));
@@ -109,8 +109,7 @@ public class CollectionTimelineTest {
     public void testConstructor() {
         final CollectionTimeline timeline = new CollectionTimeline(twitterCore, TEST_COLLECTION_ID,
                 TEST_ITEMS_PER_REQUEST);
-        assertEquals(CollectionTimeline.COLLECTION_PREFIX + TEST_COLLECTION_ID,
-                timeline.collectionIdentifier);
+        Assert.assertThat(timeline.collectionIdentifier, is(CollectionTimeline.COLLECTION_PREFIX + TEST_COLLECTION_ID));
     }
 
     @Test
@@ -149,7 +148,7 @@ public class CollectionTimelineTest {
         final CollectionTimeline timeline = new CollectionTimeline.Builder(twitterCore)
                 .id(TEST_COLLECTION_ID)
                 .build();
-        assertEquals(REQUIRED_IMPRESSION_SECTION, timeline.getTimelineType());
+        Assert.assertThat(timeline.getTimelineType(), is(REQUIRED_IMPRESSION_SECTION));
     }
 
     @Test
@@ -160,10 +159,10 @@ public class CollectionTimelineTest {
                 = new TwitterCollection.Metadata("", TEST_POSITION, testItems);
         final List<Tweet> tweets = CollectionTimeline.getOrderedTweets(
                 new TwitterCollection(contents, metadata));
-        assertEquals(3, tweets.size());
-        assertEquals(TEST_TWEET_1, tweets.get(0));
-        assertEquals(TEST_TWEET_2, tweets.get(1));
-        assertEquals(TEST_TWEET_QUOTE, tweets.get(2));
+        Assert.assertThat(tweets.size(), is(3));
+        Assert.assertThat(tweets.get(0), is(TEST_TWEET_1));
+        Assert.assertThat(tweets.get(1), is(TEST_TWEET_2));
+        Assert.assertThat(tweets.get(2), is(TEST_TWEET_QUOTE));
     }
 
     @Test
@@ -174,10 +173,10 @@ public class CollectionTimelineTest {
                 TEST_POSITION, testItemsRev);
         final List<Tweet> tweets = CollectionTimeline.getOrderedTweets(
                 new TwitterCollection(contents, metadata));
-        assertEquals(3, tweets.size());
-        assertEquals(TEST_TWEET_QUOTE, tweets.get(0));
-        assertEquals(TEST_TWEET_2, tweets.get(1));
-        assertEquals(TEST_TWEET_1, tweets.get(2));
+        Assert.assertThat(tweets.size(), is(3));
+        Assert.assertThat(tweets.get(0), is(TEST_TWEET_QUOTE));
+        Assert.assertThat(tweets.get(1), is(TEST_TWEET_2));
+        Assert.assertThat(tweets.get(2), is(TEST_TWEET_1));
     }
 
     @Test
@@ -186,32 +185,32 @@ public class CollectionTimelineTest {
             new TwitterCollection.Content(null, testUserMap),
             new TwitterCollection.Metadata("", TEST_POSITION, testItems));
         List<Tweet> tweets = CollectionTimeline.getOrderedTweets(collection);
-        assertTrue(tweets.isEmpty());
+        Assert.assertThat(tweets.isEmpty(), is(true));
         collection = new TwitterCollection(new TwitterCollection.Content(testTweetMap, null),
                 new TwitterCollection.Metadata("", TEST_POSITION, testItems));
         tweets = CollectionTimeline.getOrderedTweets(collection);
-        assertTrue(tweets.isEmpty());
+        Assert.assertThat(tweets.isEmpty(), is(true));
         collection = new TwitterCollection(new TwitterCollection.Content(testTweetMap, testUserMap),
                 new TwitterCollection.Metadata("", null, testItems));
         tweets = CollectionTimeline.getOrderedTweets(collection);
-        assertTrue(tweets.isEmpty());
+        Assert.assertThat(tweets.isEmpty(), is(true));
         collection = new TwitterCollection(new TwitterCollection.Content(testTweetMap, testUserMap),
                 new TwitterCollection.Metadata("", TEST_POSITION, null));
         tweets = CollectionTimeline.getOrderedTweets(collection);
-        assertTrue(tweets.isEmpty());
+        Assert.assertThat(tweets.isEmpty(), is(true));
         collection = new TwitterCollection(new TwitterCollection.Content(testTweetMap, testUserMap),
                 null);
         tweets = CollectionTimeline.getOrderedTweets(collection);
-        assertTrue(tweets.isEmpty());
+        Assert.assertThat(tweets.isEmpty(), is(true));
         collection = new TwitterCollection(null, new TwitterCollection.Metadata("", TEST_POSITION,
                 testItems));
         tweets = CollectionTimeline.getOrderedTweets(collection);
-        assertTrue(tweets.isEmpty());
+        Assert.assertThat(tweets.isEmpty(), is(true));
         collection = new TwitterCollection(null, null);
         tweets = CollectionTimeline.getOrderedTweets(collection);
-        assertTrue(tweets.isEmpty());
+        Assert.assertThat(tweets.isEmpty(), is(true));
         tweets = CollectionTimeline.getOrderedTweets(null);
-        assertTrue(tweets.isEmpty());
+        Assert.assertThat(tweets.isEmpty(), is(true));
     }
 
     @Test
@@ -222,8 +221,8 @@ public class CollectionTimelineTest {
                 = new TwitterCollection.Metadata("", TEST_POSITION, testItems);
         final TimelineCursor cursor = CollectionTimeline.getTimelineCursor(
                 new TwitterCollection(contents, metadata));
-        assertEquals(TEST_MAX_POSITION, cursor.maxPosition);
-        assertEquals(TEST_MIN_POSITION, cursor.minPosition);
+        Assert.assertThat(cursor.maxPosition, is(TEST_MAX_POSITION));
+        Assert.assertThat(cursor.minPosition, is(TEST_MIN_POSITION));
     }
 
     @Test
@@ -231,12 +230,12 @@ public class CollectionTimelineTest {
         TwitterCollection collection = new TwitterCollection(new TwitterCollection.Content(null,
                 testUserMap), new TwitterCollection.Metadata("", null, testItems));
         TimelineCursor timelineCursor = CollectionTimeline.getTimelineCursor(collection);
-        assertNull(timelineCursor);
+        Assert.assertThat(timelineCursor, nullValue());
         collection = new TwitterCollection(new TwitterCollection.Content(null, testUserMap), null);
         timelineCursor = CollectionTimeline.getTimelineCursor(collection);
-        assertNull(timelineCursor);
+        Assert.assertThat(timelineCursor, nullValue());
         timelineCursor = CollectionTimeline.getTimelineCursor(null);
-        assertNull(timelineCursor);
+        Assert.assertThat(timelineCursor, nullValue());
     }
 
     /* Builder */
@@ -246,9 +245,8 @@ public class CollectionTimelineTest {
                 .id(TEST_COLLECTION_ID)
                 .maxItemsPerRequest(TEST_ITEMS_PER_REQUEST)
                 .build();
-        assertEquals(CollectionTimeline.COLLECTION_PREFIX + TEST_COLLECTION_ID,
-                timeline.collectionIdentifier);
-        assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
+        Assert.assertThat(timeline.collectionIdentifier, is(CollectionTimeline.COLLECTION_PREFIX + TEST_COLLECTION_ID));
+        Assert.assertThat(timeline.maxItemsPerRequest, is(TEST_ITEMS_PER_REQUEST));
     }
 
     @Test
@@ -256,9 +254,8 @@ public class CollectionTimelineTest {
         final CollectionTimeline timeline = new CollectionTimeline.Builder(twitterCore)
                 .id(TEST_COLLECTION_ID)
                 .build();
-        assertEquals(CollectionTimeline.COLLECTION_PREFIX + TEST_COLLECTION_ID,
-                timeline.collectionIdentifier);
-        assertEquals(REQUIRED_DEFAULT_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
+        Assert.assertThat(timeline.collectionIdentifier, is(CollectionTimeline.COLLECTION_PREFIX + TEST_COLLECTION_ID));
+        Assert.assertThat(timeline.maxItemsPerRequest, is(REQUIRED_DEFAULT_ITEMS_PER_REQUEST));
     }
 
     @Test
@@ -266,8 +263,7 @@ public class CollectionTimelineTest {
         final CollectionTimeline timeline = new CollectionTimeline.Builder(twitterCore)
                 .id(TEST_COLLECTION_ID)
                 .build();
-        assertEquals(CollectionTimeline.COLLECTION_PREFIX + TEST_COLLECTION_ID,
-                timeline.collectionIdentifier);
+        Assert.assertThat(timeline.collectionIdentifier, is(CollectionTimeline.COLLECTION_PREFIX + TEST_COLLECTION_ID));
     }
 
     @Test
@@ -276,7 +272,7 @@ public class CollectionTimelineTest {
             new CollectionTimeline.Builder(twitterCore).id(null).build();
             fail("Expected IllegalStateException");
         } catch (IllegalStateException e) {
-            assertEquals("collection id must not be null", e.getMessage());
+            Assert.assertThat(e.getMessage(), is("collection id must not be null"));
         }
     }
 
@@ -286,6 +282,6 @@ public class CollectionTimelineTest {
                 .id(TEST_COLLECTION_ID)
                 .maxItemsPerRequest(TEST_ITEMS_PER_REQUEST)
                 .build();
-        assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
+        Assert.assertThat(timeline.maxItemsPerRequest, is(TEST_ITEMS_PER_REQUEST));
     }
 }

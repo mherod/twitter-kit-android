@@ -27,15 +27,14 @@ open class FormattedUrlEntity(
         open var end: Int,
         open val displayUrl: String,
         open val url: String,
-        open val expandedUrl: String
+        open val expandedUrl: String?
 ) {
     companion object {
 
         @JvmStatic
-        fun createFormattedUrlEntity(entity: UrlEntity): FormattedUrlEntity {
-            return FormattedUrlEntity(entity.start, entity.end, entity.displayUrl,
-                    entity.url, entity.expandedUrl)
-        }
+        fun createFormattedUrlEntity(entity: UrlEntity): FormattedUrlEntity =
+                FormattedUrlEntity(entity.start, entity.end, entity.displayUrl,
+                        entity.url, entity.expandedUrl)
 
         @JvmStatic
         fun createFormattedUrlEntity(hashtagEntity: HashtagEntity): FormattedUrlEntity {

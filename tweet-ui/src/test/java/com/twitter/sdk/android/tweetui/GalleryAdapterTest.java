@@ -24,6 +24,7 @@ import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.tweetui.internal.GalleryImageView;
 import com.twitter.sdk.android.tweetui.internal.SwipeToDismissTouchListener;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,10 +35,7 @@ import org.robolectric.RuntimeEnvironment;
 
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
@@ -61,23 +59,23 @@ public class GalleryAdapterTest {
 
     @Test
     public void testGetCount_withZeroItems() {
-        assertEquals(0, subject.getCount());
+        Assert.assertThat(subject.getCount(), is(0));
     }
 
     @Test
     public void testGetCount_withOneItems() {
         subject.addAll(Collections.singletonList(entity));
-        assertEquals(1, subject.getCount());
+        Assert.assertThat(subject.getCount(), is(1));
     }
 
     @Test
     public void testIsViewFromObject_withSameObject() {
-        assertTrue(subject.isViewFromObject(view, view));
+        Assert.assertThat(subject.isViewFromObject(view, view), is(true));
     }
 
     @Test
     public void testIsViewFromObject_withDifferentObject() {
-        assertFalse(subject.isViewFromObject(view, entity));
+        Assert.assertThat(subject.isViewFromObject(view, entity), is(false));
     }
 
     @Test
@@ -85,7 +83,7 @@ public class GalleryAdapterTest {
         subject.addAll(Collections.singletonList(entity));
         final GalleryImageView result = (GalleryImageView) subject.instantiateItem(container, 0);
 
-        assertNotNull(result);
+        Assert.assertThat(result, notNullValue());
         verify(container).addView(result);
     }
 

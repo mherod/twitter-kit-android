@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.core.internal.network;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -24,8 +25,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.net.URI;
 import java.util.TreeMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class UrlUtilsTest {
@@ -62,7 +62,7 @@ public class UrlUtilsTest {
     public void testPercentEncode() {
         int i = 0;
         for (String s : ORIGINAL_STRINGS) {
-            assertEquals(PERCENT_ENCODED_STRINGS[i], UrlUtils.percentEncode(s));
+            Assert.assertThat(UrlUtils.percentEncode(s), is(PERCENT_ENCODED_STRINGS[i]));
             i += 1;
         }
     }
@@ -70,15 +70,15 @@ public class UrlUtilsTest {
     @Test
     public void testGetQueryParams_nullDecode() {
         final TreeMap<String, String> params = UrlUtils.getQueryParams(EMPTY_PARAM_VALUE, true);
-        assertNotNull(params);
-        assertEquals(0, params.size());
+        Assert.assertThat(params, notNullValue());
+        Assert.assertThat(params.size(), is(0));
     }
 
     @Test
     public void testGetQueryParams_nullNotDecode() {
         final TreeMap<String, String> params = UrlUtils.getQueryParams(EMPTY_PARAM_VALUE, false);
-        assertNotNull(params);
-        assertEquals(0, params.size());
+        Assert.assertThat(params, notNullValue());
+        Assert.assertThat(params.size(), is(0));
     }
 
     @Test
@@ -106,16 +106,16 @@ public class UrlUtilsTest {
     }
 
     private void assertNotDecodedValue(final TreeMap<String, String> params) {
-        assertEquals(3, params.size());
-        assertEquals(PLAIN_PARAM_VALUE, params.get(PLAIN_PARAM_KEY));
-        assertEquals(EMPTY_PARAM_VALUE, params.get(EMPTY_PARAM_KEY));
-        assertEquals(DECODED_PARAM_VALUE_PLAIN, params.get(DECODED_PARAM_KEY));
+        Assert.assertThat(params.size(), is(3));
+        Assert.assertThat(params.get(PLAIN_PARAM_KEY), is(PLAIN_PARAM_VALUE));
+        Assert.assertThat(params.get(EMPTY_PARAM_KEY), is(EMPTY_PARAM_VALUE));
+        Assert.assertThat(params.get(DECODED_PARAM_KEY), is(DECODED_PARAM_VALUE_PLAIN));
     }
 
     private void assertDecodedValue(final TreeMap<String, String> params) {
-        assertEquals(3, params.size());
-        assertEquals(PLAIN_PARAM_VALUE, params.get(PLAIN_PARAM_KEY));
-        assertEquals(EMPTY_PARAM_VALUE, params.get(EMPTY_PARAM_KEY));
-        assertEquals(DECODED_PARAM_VALUE_DECODED, params.get(DECODED_PARAM_KEY));
+        Assert.assertThat(params.size(), is(3));
+        Assert.assertThat(params.get(PLAIN_PARAM_KEY), is(PLAIN_PARAM_VALUE));
+        Assert.assertThat(params.get(EMPTY_PARAM_KEY), is(EMPTY_PARAM_VALUE));
+        Assert.assertThat(params.get(DECODED_PARAM_KEY), is(DECODED_PARAM_VALUE_DECODED));
     }
 }

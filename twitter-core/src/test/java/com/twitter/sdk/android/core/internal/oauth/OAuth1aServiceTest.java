@@ -25,6 +25,7 @@ import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.TwitterApi;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,10 +39,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Query;
 import retrofit2.mock.Calls;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
@@ -68,12 +66,12 @@ public class OAuth1aServiceTest {
 
     @Test
     public void testGetTempTokenUrl() {
-        assertEquals("https://api.twitter.com/oauth/request_token", service.getTempTokenUrl());
+        Assert.assertThat(service.getTempTokenUrl(), is("https://api.twitter.com/oauth/request_token"));
     }
 
     @Test
     public void testGetAccessTokenUrl() {
-        assertEquals("https://api.twitter.com/oauth/access_token", service.getAccessTokenUrl());
+        Assert.assertThat(service.getAccessTokenUrl(), is("https://api.twitter.com/oauth/access_token"));
     }
 
     @Test
@@ -81,7 +79,7 @@ public class OAuth1aServiceTest {
         service.api = new MockOAuth1aService() {
             @Override
             public Call<ResponseBody> getTempToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth) {
-                assertTrue(auth.contains(OAuthConstants.PARAM_CALLBACK));
+                Assert.assertThat(auth, containsString(OAuthConstants.PARAM_CALLBACK));
                 return super.getTempToken(auth);
             }
         };
@@ -97,9 +95,9 @@ public class OAuth1aServiceTest {
             public Call<ResponseBody> getAccessToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth,
                                                      @Query(OAuthConstants.PARAM_VERIFIER) String innerVerifier) {
 
-                assertEquals(verifier, innerVerifier);
-                assertNotNull(auth);
-                assertTrue(auth.contains(token.getToken()));
+                Assert.assertThat(innerVerifier, is(verifier));
+                Assert.assertThat(auth, notNullValue());
+                Assert.assertThat(auth, containsString(token.getToken()));
 
                 return super.getAccessToken(auth, innerVerifier);
             }
@@ -109,29 +107,29 @@ public class OAuth1aServiceTest {
 
     @Test
     public void testApiHost() {
-        assertEquals(twitterApi, service.getApi());
+        Assert.assertThat(service.getApi(), is(twitterApi));
     }
 
     @Test
     public void testGetUserAgent() {
         final String userAgent = TwitterApi.buildUserAgent("TwitterAndroidSDK",
                 twitterCore.getVersion());
-        assertEquals(userAgent, service.getUserAgent());
+        Assert.assertThat(service.getUserAgent(), is(userAgent));
     }
 
     @Test
     public void testBuildCallbackUrl() {
         final String callbackUrl = service.buildCallbackUrl(authConfig);
 
-        assertEquals(String.format("twittersdk://callback?version=%s&app=%s",
-                twitterCore.getVersion(), authConfig.getConsumerKey()), callbackUrl);
+        Assert.assertThat(callbackUrl, is(String.format("twittersdk://callback?version=%s&app=%s",
+                twitterCore.getVersion(), authConfig.getConsumerKey())));
     }
 
     @Test
     public void testGetAuthorizeUrl() {
         final TwitterAuthToken authToken = new TwitterAuthToken("token", "secret");
         final String authorizeUrl = service.getAuthorizeUrl(authToken);
-        assertEquals("https://api.twitter.com/oauth/authorize?oauth_token=token", authorizeUrl);
+        Assert.assertThat(authorizeUrl, is("https://api.twitter.com/oauth/authorize?oauth_token=token"));
     }
 
     @Test
@@ -140,18 +138,17 @@ public class OAuth1aServiceTest {
                 + "oauth_token_secret=PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo&"
                 + "screen_name=test&user_id=1";
         final OAuthResponse authResponse = OAuth1aService.parseAuthResponse(response);
-        assertEquals("7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4",
-                authResponse.authToken.getToken());
-        assertEquals("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo", authResponse.authToken.getSecret());
-        assertEquals("test", authResponse.userName);
-        assertEquals(1L, authResponse.userId);
+        Assert.assertThat(authResponse.authToken.getToken(), is("7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4"));
+        Assert.assertThat(authResponse.authToken.getSecret(), is("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo"));
+        Assert.assertThat(authResponse.userName, is("test"));
+        Assert.assertThat(authResponse.userId, is(1L));
     }
 
     @Test
     public void testParseAuthResponse_noQueryParameters() {
         final String response = "noQueryParameters";
         final OAuthResponse authResponse = OAuth1aService.parseAuthResponse(response);
-        assertNull(authResponse);
+        Assert.assertThat(authResponse, nullValue());
     }
 
     @Test
@@ -159,7 +156,7 @@ public class OAuth1aServiceTest {
         final String response = "oauth_token_secret=PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo&"
                 + "screen_name=test&user_id=1";
         final OAuthResponse authResponse = OAuth1aService.parseAuthResponse(response);
-        assertNull(authResponse);
+        Assert.assertThat(authResponse, nullValue());
     }
 
     @Test
@@ -167,7 +164,7 @@ public class OAuth1aServiceTest {
         final String response = "oauth_token=7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4&"
                 + "screen_name=test&user_id=1";
         final OAuthResponse authResponse = OAuth1aService.parseAuthResponse(response);
-        assertNull(authResponse);
+        Assert.assertThat(authResponse, nullValue());
     }
 
     @Test
@@ -176,11 +173,10 @@ public class OAuth1aServiceTest {
                 + "oauth_token_secret=PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo&"
                 + "user_id=1";
         final OAuthResponse authResponse = OAuth1aService.parseAuthResponse(response);
-        assertEquals("7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4",
-                authResponse.authToken.getToken());
-        assertEquals("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo", authResponse.authToken.getSecret());
-        assertNull(authResponse.userName);
-        assertEquals(1L, authResponse.userId);
+        Assert.assertThat(authResponse.authToken.getToken(), is("7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4"));
+        Assert.assertThat(authResponse.authToken.getSecret(), is("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo"));
+        Assert.assertThat(authResponse.userName, nullValue());
+        Assert.assertThat(authResponse.userId, is(1L));
     }
 
     @Test
@@ -189,11 +185,10 @@ public class OAuth1aServiceTest {
                 + "oauth_token_secret=PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo&"
                 + "screen_name=test";
         final OAuthResponse authResponse = OAuth1aService.parseAuthResponse(response);
-        assertEquals("7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4",
-                authResponse.authToken.getToken());
-        assertEquals("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo", authResponse.authToken.getSecret());
-        assertEquals("test", authResponse.userName);
-        assertEquals(0L, authResponse.userId);
+        Assert.assertThat(authResponse.authToken.getToken(), is("7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4"));
+        Assert.assertThat(authResponse.authToken.getSecret(), is("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo"));
+        Assert.assertThat(authResponse.userName, is("test"));
+        Assert.assertThat(authResponse.userId, is(0L));
     }
 
     @Test
@@ -205,12 +200,10 @@ public class OAuth1aServiceTest {
             @Override
             public void success(Result<OAuthResponse> result) {
                 final OAuthResponse authResponse = result.getData();
-                assertEquals("7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4",
-                        authResponse.authToken.getToken());
-                assertEquals("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo",
-                        authResponse.authToken.getSecret());
-                assertEquals("test", authResponse.userName);
-                assertEquals(1L, authResponse.userId);
+                Assert.assertThat(authResponse.authToken.getToken(), is("7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4"));
+                Assert.assertThat(authResponse.authToken.getSecret(), is("PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo"));
+                Assert.assertThat(authResponse.userName, is("test"));
+                Assert.assertThat(authResponse.userId, is(1L));
             }
 
             @Override
@@ -242,7 +235,7 @@ public class OAuth1aServiceTest {
 
             @Override
             public void failure(TwitterException exception) {
-                assertNotNull(exception);
+                Assert.assertThat(exception, notNullValue());
             }
         };
         setupCallbackWrapperTest(response, callback);
@@ -258,7 +251,7 @@ public class OAuth1aServiceTest {
 
             @Override
             public void failure(TwitterException exception) {
-                assertNotNull(exception);
+                Assert.assertThat(exception, notNullValue());
             }
         };
         final Callback<ResponseBody> callbackWrapper = service.getCallbackWrapper(callback);

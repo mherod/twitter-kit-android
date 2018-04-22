@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.core.internal;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.concurrent.Callable;
@@ -24,7 +25,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
 
 public class ExecutorUtilsTest {
@@ -36,7 +37,7 @@ public class ExecutorUtilsTest {
         final ExecutorService service =
                 ExecutorUtils.buildSingleThreadScheduledExecutorService(THREAD_FACTORY_NAME);
         final Future<String> future = service.submit(new ThreadNameCallable());
-        assertEquals(FIRST_THREAD_NAME, future.get());
+        Assert.assertThat(future.get(), is(FIRST_THREAD_NAME));
     }
 
     @Test
@@ -44,7 +45,7 @@ public class ExecutorUtilsTest {
         final ExecutorService service =
                 ExecutorUtils.buildThreadPoolExecutorService(THREAD_FACTORY_NAME);
         final Future<String> future = service.submit(new ThreadNameCallable());
-        assertEquals(FIRST_THREAD_NAME, future.get());
+        Assert.assertThat(future.get(), is(FIRST_THREAD_NAME));
     }
 
     @Test
@@ -64,7 +65,7 @@ public class ExecutorUtilsTest {
         for (int i = 0; i < 2; i++) {
             thread = threadFactory.newThread(mock(Runnable.class));
             // Thread identifier starts from 1
-            assertEquals(threadFactorName + (i + 1), thread.getName());
+            Assert.assertThat(thread.getName(), is(threadFactorName + (i + 1)));
         }
     }
 

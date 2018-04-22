@@ -24,6 +24,7 @@ import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.services.AccountService;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +35,7 @@ import java.io.IOException;
 
 import retrofit2.mock.Calls;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doReturn;
@@ -80,12 +81,12 @@ public class TwitterSessionVerifierTest {
         verify(mockAccountService).verifyCredentials(true, false, false);
         verify(mockScribeClient).scribe(namespaceCaptor.capture());
         final EventNamespace ns = namespaceCaptor.getValue();
-        assertEquals(REQUIRED_IMPRESSION_CLIENT, ns.client);
-        assertEquals(REQUIRED_IMPRESSION_PAGE, ns.page);
-        assertEquals(REQUIRED_IMPRESSION_SECTION, ns.section);
-        assertEquals(REQUIRED_IMPRESSION_COMPONENT, ns.component);
-        assertEquals(REQUIRED_IMPRESSION_ELEMENT, ns.element);
-        assertEquals(REQUIRED_IMPRESSION_ACTION, ns.action);
+        Assert.assertThat(ns.client, is(REQUIRED_IMPRESSION_CLIENT));
+        Assert.assertThat(ns.page, is(REQUIRED_IMPRESSION_PAGE));
+        Assert.assertThat(ns.section, is(REQUIRED_IMPRESSION_SECTION));
+        Assert.assertThat(ns.component, is(REQUIRED_IMPRESSION_COMPONENT));
+        Assert.assertThat(ns.element, is(REQUIRED_IMPRESSION_ELEMENT));
+        Assert.assertThat(ns.action, is(REQUIRED_IMPRESSION_ACTION));
     }
 
     @Test

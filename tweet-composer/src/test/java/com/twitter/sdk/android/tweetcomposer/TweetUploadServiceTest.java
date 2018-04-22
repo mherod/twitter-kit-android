@@ -30,6 +30,7 @@ import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.services.MediaService;
 import com.twitter.sdk.android.core.services.StatusesService;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +45,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.mock.Calls;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.anyString;
@@ -61,19 +62,16 @@ public class TweetUploadServiceTest {
     private static final String EXPECTED_TWEET_TEXT = "tweet text";
 
     private Context context;
-    private TwitterApiClient mockTwitterApiClient;
     private StatusesService mockStatusesService;
     private MediaService mockMediaService;
-    private TweetUploadService.DependencyProvider mockDependencyProvider;
     private TweetUploadService service;
-    private Tweet tweet;
 
     @Before
     public void setUp() {
         context = RuntimeEnvironment.application;
         mockMediaService = mock(MediaService.class);
         mockStatusesService = mock(StatusesService.class);
-        tweet =  new TweetBuilder().setId(123L).setText(EXPECTED_TWEET_TEXT).build();
+        Tweet tweet = new TweetBuilder().setId(123L).setText(EXPECTED_TWEET_TEXT).build();
         when(mockMediaService
                 .upload(any(RequestBody.class), any(RequestBody.class), any(RequestBody.class)))
                 .thenReturn(mock(Call.class));
@@ -82,11 +80,11 @@ public class TweetUploadServiceTest {
                 isNull(Boolean.class), eq(true), isNull(String.class)))
                 .thenReturn(Calls.response(tweet));
 
-        mockTwitterApiClient = mock(TwitterApiClient.class);
+        TwitterApiClient mockTwitterApiClient = mock(TwitterApiClient.class);
         when(mockTwitterApiClient.getStatusesService()).thenReturn(mockStatusesService);
         when(mockTwitterApiClient.getMediaService()).thenReturn(mockMediaService);
 
-        mockDependencyProvider = mock(TweetUploadService.DependencyProvider.class);
+        TweetUploadService.DependencyProvider mockDependencyProvider = mock(TweetUploadService.DependencyProvider.class);
         when(mockDependencyProvider.getTwitterApiClient(any(TwitterSession.class)))
                 .thenReturn(mockTwitterApiClient);
 
@@ -154,8 +152,8 @@ public class TweetUploadServiceTest {
         verify(service).sendBroadcast(intentCaptor.capture());
 
         final Intent capturedIntent = intentCaptor.getValue();
-        assertEquals(TweetUploadService.UPLOAD_SUCCESS, capturedIntent.getAction());
-        assertEquals(RuntimeEnvironment.application.getPackageName(), capturedIntent.getPackage());
+        Assert.assertThat(capturedIntent.getAction(), is(TweetUploadService.UPLOAD_SUCCESS));
+        Assert.assertThat(capturedIntent.getPackage(), is(RuntimeEnvironment.application.getPackageName()));
     }
 
     @Test
@@ -166,9 +164,8 @@ public class TweetUploadServiceTest {
         verify(service).sendBroadcast(intentCaptor.capture());
 
         final Intent capturedIntent = intentCaptor.getValue();
-        assertEquals(TweetUploadService.UPLOAD_FAILURE, capturedIntent.getAction());
-        assertEquals(mockIntent,
-                capturedIntent.getParcelableExtra(TweetUploadService.EXTRA_RETRY_INTENT));
-        assertEquals(RuntimeEnvironment.application.getPackageName(), capturedIntent.getPackage());
+        Assert.assertThat(capturedIntent.getAction(), is(TweetUploadService.UPLOAD_FAILURE));
+        Assert.assertThat(capturedIntent.getParcelableExtra(TweetUploadService.EXTRA_RETRY_INTENT), is(mockIntent));
+        Assert.assertThat(capturedIntent.getPackage(), is(RuntimeEnvironment.application.getPackageName()));
     }
 }

@@ -46,7 +46,6 @@ public class OAuthActivity extends Activity implements OAuthController.Listener 
     OAuthController oAuthController;
 
     private ProgressBar spinner;
-    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +53,7 @@ public class OAuthActivity extends Activity implements OAuthController.Listener 
         setContentView(R.layout.tw__activity_oauth);
 
         spinner = findViewById(R.id.tw__spinner);
-        webView = findViewById(R.id.tw__web_view);
+        WebView webView = findViewById(R.id.tw__web_view);
 
         final boolean showProgress;
         if (savedInstanceState != null) {

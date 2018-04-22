@@ -22,6 +22,7 @@ import android.text.format.DateUtils;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,9 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.mock;
@@ -128,7 +127,7 @@ public class SessionMonitorTest {
     public void testVerifyAll_shouldNotImmediatelyReverify() {
         when(mockSystemCurrentTimeProvider.getCurrentTimeMillis()).thenReturn(TEST_TIME_1200_UTC);
         sessionMonitor.verifyAll();
-        assertFalse(sessionMonitor.monitorState.beginVerification(TEST_TIME_1200_UTC + 1));
+        Assert.assertThat(sessionMonitor.monitorState.beginVerification(TEST_TIME_1200_UTC + 1), is(false));
     }
 
     @Test
@@ -150,7 +149,7 @@ public class SessionMonitorTest {
 
         monitorState.lastVerification = startTime;
         monitorState.verifying = true;
-        assertFalse(monitorState.beginVerification(now));
+        Assert.assertThat(monitorState.beginVerification(now), is(false));
     }
 
     @Test
@@ -160,7 +159,7 @@ public class SessionMonitorTest {
 
         monitorState.lastVerification = startTime;
         monitorState.verifying = false;
-        assertFalse(monitorState.beginVerification(now));
+        Assert.assertThat(monitorState.beginVerification(now), is(false));
     }
 
     @Test
@@ -170,7 +169,7 @@ public class SessionMonitorTest {
 
         monitorState.lastVerification = startTime;
         monitorState.verifying = false;
-        assertTrue(monitorState.beginVerification(now));
+        Assert.assertThat(monitorState.beginVerification(now), is(true));
     }
 
     @Test
@@ -180,19 +179,19 @@ public class SessionMonitorTest {
 
         monitorState.lastVerification = startTime;
         monitorState.verifying = false;
-        assertTrue(monitorState.beginVerification(now));
+        Assert.assertThat(monitorState.beginVerification(now), is(true));
     }
 
     @Test
     public void testMonitorStateStartVerification_newState() {
-        assertTrue(monitorState.beginVerification(System.currentTimeMillis()));
+        Assert.assertThat(monitorState.beginVerification(System.currentTimeMillis()), is(true));
     }
 
     @Test
     public void testMonitorStateStartVerification_marksVerificationInProgress() {
-        assertFalse(monitorState.verifying);
-        assertTrue(monitorState.beginVerification(System.currentTimeMillis()));
-        assertTrue(monitorState.verifying);
+        Assert.assertThat(monitorState.verifying, is(false));
+        Assert.assertThat(monitorState.beginVerification(System.currentTimeMillis()), is(true));
+        Assert.assertThat(monitorState.verifying, is(true));
     }
 
     @Test
@@ -200,7 +199,7 @@ public class SessionMonitorTest {
         monitorState.verifying = true;
         monitorState.lastVerification = TEST_TIME_1200_UTC;
         monitorState.endVerification(TEST_TIME_2359_UTC);
-        assertFalse(monitorState.verifying);
-        assertEquals(TEST_TIME_2359_UTC, monitorState.lastVerification);
+        Assert.assertThat(monitorState.verifying, is(false));
+        Assert.assertThat(monitorState.lastVerification, is(TEST_TIME_2359_UTC));
     }
 }

@@ -24,8 +24,8 @@ public class FormattedMediaEntity extends FormattedUrlEntity {
     final String mediaUrlHttps;
 
     FormattedMediaEntity(MediaEntity entity) {
-        super(entity.getStart(), entity.getEnd(), entity.displayUrl, entity.url,
-                entity.expandedUrl);
+        super(entity.getStart(), entity.getEnd(), entity.getDisplayUrl(), entity.getUrl(),
+                entity.getExpandedUrl());
         this.type = entity.type;
         this.mediaUrlHttps = entity.mediaUrlHttps;
     }

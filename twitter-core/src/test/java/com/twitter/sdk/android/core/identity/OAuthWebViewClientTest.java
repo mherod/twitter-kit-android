@@ -24,13 +24,14 @@ import android.webkit.WebView;
 
 import com.twitter.sdk.android.core.TestFixtures;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -84,10 +85,10 @@ public class OAuthWebViewClientTest  {
         verify(mockListener).onSuccess(bundleArgCaptor.capture());
 
         final Bundle bundle = bundleArgCaptor.getValue();
-        assertEquals(EXPECTED_VERSION_VALUE, bundle.getString(EXPECTED_VERSION_KEY));
-        assertEquals(EXPECTED_APP_VALUE, bundle.getString(EXPECTED_APP_KEY));
-        assertEquals(EXPECTED_OAUTH_TOKEN_VALUE, bundle.getString(EXPECTED_OAUTH_TOKEN_KEY));
-        assertEquals(EXPECTED_OAUTH_VERIFIER_VALUE, bundle.getString(EXPECTED_OAUTH_VERIFIER_KEY));
+        Assert.assertThat(bundle.getString(EXPECTED_VERSION_KEY), is(EXPECTED_VERSION_VALUE));
+        Assert.assertThat(bundle.getString(EXPECTED_APP_KEY), is(EXPECTED_APP_VALUE));
+        Assert.assertThat(bundle.getString(EXPECTED_OAUTH_TOKEN_KEY), is(EXPECTED_OAUTH_TOKEN_VALUE));
+        Assert.assertThat(bundle.getString(EXPECTED_OAUTH_VERIFIER_KEY), is(EXPECTED_OAUTH_VERIFIER_VALUE));
     }
 
     @Test
@@ -120,8 +121,8 @@ public class OAuthWebViewClientTest  {
         verify(mockListener).onError(exceptionArgCaptor.capture());
 
         final WebViewException exception = exceptionArgCaptor.getValue();
-        assertEquals(expectedErrorCode, exception.getErrorCode());
-        assertEquals(expectedErrorDesc, exception.getMessage());
-        assertEquals(expectedFailingUrl, exception.getFailingUrl());
+        Assert.assertThat(exception.getErrorCode(), is(expectedErrorCode));
+        Assert.assertThat(exception.getMessage(), is(expectedErrorDesc));
+        Assert.assertThat(exception.getFailingUrl(), is(expectedFailingUrl));
     }
 }

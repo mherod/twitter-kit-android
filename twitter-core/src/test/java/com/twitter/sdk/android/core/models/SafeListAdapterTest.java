@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,8 +30,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class SafeListAdapterTest  {
@@ -52,13 +52,13 @@ public class SafeListAdapterTest  {
     @Test
     public void testDeserialization_nullListModel1() {
         final Model1 model = gson.fromJson(TEST_JSON_LIST_NULL, Model1.class);
-        assertEquals(Collections.EMPTY_LIST, model.listOfIntegers);
+        Assert.assertThat(model.listOfIntegers, is(Collections.EMPTY_LIST));
     }
 
     @Test
     public void testDeserialization_emptyListModel1() {
         final Model1 model = gson.fromJson(TEST_JSON_LIST_EMPTY, Model1.class);
-        assertEquals(Collections.EMPTY_LIST, model.listOfIntegers);
+        Assert.assertThat(model.listOfIntegers, is(Collections.EMPTY_LIST));
     }
 
     @Test
@@ -67,20 +67,20 @@ public class SafeListAdapterTest  {
         try {
             model.listOfIntegers.add(TEST_ANY_NUMBER);
         } catch (Exception e) {
-            assertTrue(e instanceof UnsupportedOperationException);
+            Assert.assertThat(e instanceof UnsupportedOperationException, is(true));
         }
     }
 
     @Test
     public void testDeserialization_nullListModel2() {
         final Model2 model = gson.fromJson(TEST_JSON_LIST_NULL, Model2.class);
-        assertEquals(Collections.EMPTY_LIST, model.listOfLongs);
+        Assert.assertThat(model.listOfLongs, is(Collections.EMPTY_LIST));
     }
 
     @Test
     public void testDeserialization_emptyList() {
         final Model2 model = gson.fromJson(TEST_JSON_LIST_EMPTY, Model2.class);
-        assertEquals(Collections.EMPTY_LIST, model.listOfLongs);
+        Assert.assertThat(model.listOfLongs, is(Collections.EMPTY_LIST));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class SafeListAdapterTest  {
         try {
             model.listOfLongs.add((long) TEST_ANY_NUMBER);
         } catch (Exception e) {
-            assertTrue(e instanceof UnsupportedOperationException);
+            Assert.assertThat(e instanceof UnsupportedOperationException, is(true));
         }
     }
 

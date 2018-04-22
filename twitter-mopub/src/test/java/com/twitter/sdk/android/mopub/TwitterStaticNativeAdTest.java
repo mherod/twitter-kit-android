@@ -25,6 +25,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
+import static org.hamcrest.Matchers.*;
+
 @RunWith(RobolectricTestRunner.class)
 public class TwitterStaticNativeAdTest extends AndroidTestCase {
 
@@ -43,11 +45,11 @@ public class TwitterStaticNativeAdTest extends AndroidTestCase {
         final int cardBorderColor =
                 nativeAd.getResources().getColor(R.color.tw__ad_light_card_border_color);
 
-        Assert.assertEquals(expectedContainerBgColor, nativeAd.containerBackgroundColor);
-        Assert.assertEquals(expectedCardBgColor, nativeAd.cardBackgroundColor);
-        Assert.assertEquals(expectedPrimaryTextColor, nativeAd.primaryTextColor);
-        Assert.assertEquals(ctaBackgroundColor, nativeAd.ctaBackgroundColor);
-        Assert.assertEquals(cardBorderColor, nativeAd.cardBorderColor);
+        Assert.assertThat(nativeAd.containerBackgroundColor, is(expectedContainerBgColor));
+        Assert.assertThat(nativeAd.cardBackgroundColor, is(expectedCardBgColor));
+        Assert.assertThat(nativeAd.primaryTextColor, is(expectedPrimaryTextColor));
+        Assert.assertThat(nativeAd.ctaBackgroundColor, is(ctaBackgroundColor));
+        Assert.assertThat(nativeAd.cardBorderColor, is(cardBorderColor));
     }
 
     @Test
@@ -67,10 +69,10 @@ public class TwitterStaticNativeAdTest extends AndroidTestCase {
         final int cardBorderColor =
                 nativeAd.getResources().getColor(R.color.tw__ad_dark_card_border_color);
 
-        Assert.assertEquals(expectedContainerBgColor, nativeAd.containerBackgroundColor);
-        Assert.assertEquals(expectedCardBgColor, nativeAd.cardBackgroundColor);
-        Assert.assertEquals(expectedPrimaryTextColor, nativeAd.primaryTextColor);
-        Assert.assertEquals(ctaBackgroundColor, nativeAd.ctaBackgroundColor);
-        Assert.assertEquals(cardBorderColor, nativeAd.cardBorderColor);
+        Assert.assertThat(nativeAd.containerBackgroundColor, is(expectedContainerBgColor));
+        Assert.assertThat(nativeAd.cardBackgroundColor, is(expectedCardBgColor));
+        Assert.assertThat(nativeAd.primaryTextColor, is(expectedPrimaryTextColor));
+        Assert.assertThat(nativeAd.ctaBackgroundColor, is(ctaBackgroundColor));
+        Assert.assertThat(nativeAd.cardBorderColor, is(cardBorderColor));
     }
 }

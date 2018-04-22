@@ -21,6 +21,8 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.twitter.sdk.android.core.TestResources;
 import com.twitter.sdk.android.core.internal.CommonUtils;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,7 +33,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class PlaceTest {
@@ -74,31 +76,30 @@ public class PlaceTest {
             final Place place = gson.fromJson(reader, Place.class);
             assertAttributes(place.attributes);
             assertBoundingBox(place.boundingBox);
-            assertEquals(EXPECTED_COUNTRY, place.country);
-            assertEquals(EXPECTED_COUNTRY_CODE, place.countryCode);
-            assertEquals(EXPECTED_FULL_NAME, place.fullName);
-            assertEquals(EXPECTED_ID, place.id);
-            assertEquals(EXPECTED_NAME, place.name);
-            assertEquals(EXPECTED_PLACE_TYPE, place.placeType);
-            assertEquals(EXPECTED_URL, place.url);
+            Assert.assertThat(place.country, is(EXPECTED_COUNTRY));
+            Assert.assertThat(place.countryCode, is(EXPECTED_COUNTRY_CODE));
+            Assert.assertThat(place.fullName, is(EXPECTED_FULL_NAME));
+            Assert.assertThat(place.id, is(EXPECTED_ID));
+            Assert.assertThat(place.name, is(EXPECTED_NAME));
+            Assert.assertThat(place.placeType, is(EXPECTED_PLACE_TYPE));
+            Assert.assertThat(place.url, is(EXPECTED_URL));
         } finally {
             CommonUtils.closeQuietly(reader);
         }
     }
 
     private void assertAttributes(Map<String, String> attributes) {
-        assertEquals(EXPECTED_ATTR_STREET_ADDRESS_VALUE,
-                attributes.get(EXPECTED_ATTR_STREET_ADDRESS));
-        assertEquals(EXPECTED_ATTR_623_ID_VALUE, attributes.get(EXPECTED_ATTR_623_ID));
-        assertEquals(EXPECTED_ATTR_TWITTER_VALUE, attributes.get(EXPECTED_ATTR_TWITTER));
+        Assert.assertThat(attributes.get(EXPECTED_ATTR_STREET_ADDRESS), is(EXPECTED_ATTR_STREET_ADDRESS_VALUE));
+        Assert.assertThat(attributes.get(EXPECTED_ATTR_623_ID), is(EXPECTED_ATTR_623_ID_VALUE));
+        Assert.assertThat(attributes.get(EXPECTED_ATTR_TWITTER), is(EXPECTED_ATTR_TWITTER_VALUE));
     }
 
     private void assertBoundingBox(Place.BoundingBox boundingBox) {
-        assertEquals(EXPECTED_BOUNDING_BOX_TYPE, boundingBox.type);
-        assertEquals(4, boundingBox.coordinates.get(0).size());
+        Assert.assertThat(boundingBox.type, is(EXPECTED_BOUNDING_BOX_TYPE));
+        Assert.assertThat(boundingBox.coordinates.get(0).size(), is(4));
         for (List<Double> d: boundingBox.coordinates.get(0)) {
-            assertEquals(EXPECTED_BOUNDING_BOX_LONGITUDE, d.get(0));
-            assertEquals(EXPECTED_BOUNDING_BOX_LATITUDE, d.get(1));
+            Assert.assertThat(d.get(0), is(EXPECTED_BOUNDING_BOX_LONGITUDE));
+            Assert.assertThat(d.get(1), is(EXPECTED_BOUNDING_BOX_LATITUDE));
         }
     }
 }

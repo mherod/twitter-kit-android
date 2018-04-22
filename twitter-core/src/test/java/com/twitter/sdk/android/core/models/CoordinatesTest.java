@@ -19,12 +19,13 @@ package com.twitter.sdk.android.core.models;
 
 import com.google.gson.Gson;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class CoordinatesTest  {
@@ -52,8 +53,8 @@ public class CoordinatesTest  {
     @Test
     public void testDeserialization() {
         final Coordinates coordinates = gson.fromJson(TEST_JSON, Coordinates.class);
-        assertEquals(TEST_COORDINATES_LONGITUDE, coordinates.getLongitude());
-        assertEquals(TEST_COORDINATES_LATITUDE, coordinates.getLatitude());
-        assertEquals(TEST_TYPE, coordinates.type);
+        Assert.assertThat(coordinates.getLongitude(), is(TEST_COORDINATES_LONGITUDE));
+        Assert.assertThat(coordinates.getLatitude(), is(TEST_COORDINATES_LATITUDE));
+        Assert.assertThat(coordinates.type, is(TEST_TYPE));
     }
 }

@@ -23,13 +23,15 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.network.OkHttpClientHelper;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
@@ -47,7 +49,7 @@ public class OkHttpClientHelperTest {
                 sessionProvider);
 
         final List<Interceptor> interceptors = guestAuthHttpClient.interceptors();
-        assertTrue(interceptors.contains(mockInterceptor));
+        Assert.assertThat(interceptors, hasItem(mockInterceptor));
     }
 
     @Test
@@ -63,6 +65,6 @@ public class OkHttpClientHelperTest {
                 new TwitterAuthConfig("", ""));
 
         final List<Interceptor> interceptors = guestAuthHttpClient.interceptors();
-        assertTrue(interceptors.contains(mockInterceptor));
+        Assert.assertThat(interceptors, hasItem(mockInterceptor));
     }
 }

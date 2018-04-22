@@ -21,15 +21,14 @@ import android.graphics.Color;
 import android.text.TextPaint;
 import android.view.View;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -54,7 +53,7 @@ public class ClickableLinkSpanTest {
         clickableLinkSpan = new TestClickableLinkSpan(SELECTED_COLOR);
         clickableLinkSpan.updateDrawState(textPaint);
         verify(textPaint).setColor(textPaint.linkColor);
-        assertEquals(Color.TRANSPARENT, textPaint.bgColor);
+        Assert.assertThat(textPaint.bgColor, is(Color.TRANSPARENT));
     }
 
     @Test
@@ -62,7 +61,7 @@ public class ClickableLinkSpanTest {
         clickableLinkSpan = new TestClickableLinkSpan(SELECTED_COLOR, LINK_COLOR, false);
         clickableLinkSpan.updateDrawState(textPaint);
         verify(textPaint).setColor(LINK_COLOR);
-        assertEquals(Color.TRANSPARENT, textPaint.bgColor);
+        Assert.assertThat(textPaint.bgColor, is(Color.TRANSPARENT));
     }
 
     @Test
@@ -70,7 +69,7 @@ public class ClickableLinkSpanTest {
         clickableLinkSpan = new TestClickableLinkSpan(SELECTED_COLOR, LINK_COLOR, true);
         clickableLinkSpan.updateDrawState(textPaint);
         verify(textPaint).setUnderlineText(true);
-        assertEquals(Color.TRANSPARENT, textPaint.bgColor);
+        Assert.assertThat(textPaint.bgColor, is(Color.TRANSPARENT));
     }
 
     @Test
@@ -79,21 +78,21 @@ public class ClickableLinkSpanTest {
         clickableLinkSpan.select(true);
         clickableLinkSpan.updateDrawState(textPaint);
         verify(textPaint).setUnderlineText(true);
-        assertEquals(SELECTED_COLOR, textPaint.bgColor);
+        Assert.assertThat(textPaint.bgColor, is(SELECTED_COLOR));
     }
 
     @Test
     public void testSelect_shouldSetIsSelectedTrue() {
         clickableLinkSpan = new TestClickableLinkSpan(SELECTED_COLOR, LINK_COLOR, true);
         clickableLinkSpan.select(true);
-        assertTrue(clickableLinkSpan.isSelected());
+        Assert.assertThat(clickableLinkSpan.isSelected(), is(true));
     }
 
     @Test
     public void testSelect_shouldSetIsSelectedFalse() {
         clickableLinkSpan = new TestClickableLinkSpan(SELECTED_COLOR, LINK_COLOR, true);
         clickableLinkSpan.select(false);
-        assertFalse(clickableLinkSpan.isSelected());
+        Assert.assertThat(clickableLinkSpan.isSelected(), is(false));
     }
 
     private static class TestClickableLinkSpan extends ClickableLinkSpan {

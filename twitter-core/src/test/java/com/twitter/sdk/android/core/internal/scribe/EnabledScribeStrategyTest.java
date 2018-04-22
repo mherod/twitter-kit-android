@@ -19,6 +19,7 @@ package com.twitter.sdk.android.core.internal.scribe;
 
 import android.content.Context;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -26,7 +27,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
@@ -64,6 +65,6 @@ public class EnabledScribeStrategyTest {
         final EnabledScribeStrategy strategy = new EnabledScribeStrategy(mock(Context.class),
                 mock(ScheduledExecutorService.class), mock(ScribeFilesManager.class),
                 scribeConfig, mockSender);
-        assertEquals(mockSender, strategy.getFilesSender());
+        Assert.assertThat(strategy.getFilesSender(), is(mockSender));
     }
 }

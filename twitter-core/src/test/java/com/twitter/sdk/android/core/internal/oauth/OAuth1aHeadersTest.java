@@ -20,6 +20,8 @@ package com.twitter.sdk.android.core.internal.oauth;
 
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +29,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
@@ -51,10 +53,10 @@ public class OAuth1aHeadersTest  {
 
         final Map<String, String> headers = oAuthHeaders.getOAuthEchoHeaders(config, token, null,
                 "GET", VERIFY_CREDENTIALS_URL, null);
-        assertEquals(VERIFY_CREDENTIALS_URL, headers.get(OAuth1aHeaders
-                .HEADER_AUTH_SERVICE_PROVIDER));
-        assertEquals(ANY_AUTH_CREDENTIALS, headers.get(OAuth1aHeaders
-                .HEADER_AUTH_CREDENTIALS));
+        Assert.assertThat(headers.get(OAuth1aHeaders
+                .HEADER_AUTH_SERVICE_PROVIDER), is(VERIFY_CREDENTIALS_URL));
+        Assert.assertThat(headers.get(OAuth1aHeaders
+                .HEADER_AUTH_CREDENTIALS), is(ANY_AUTH_CREDENTIALS));
     }
 
     @Test
@@ -62,8 +64,8 @@ public class OAuth1aHeadersTest  {
         final TwitterAuthConfig config = mock(TwitterAuthConfig.class);
         final TwitterAuthToken token = mock(TwitterAuthToken.class);
 
-        assertEquals(ANY_AUTH_CREDENTIALS, oAuthHeaders.getAuthorizationHeader(config, token, null,
-                "GET", VERIFY_CREDENTIALS_URL, null));
+        Assert.assertThat(oAuthHeaders.getAuthorizationHeader(config, token, null,
+                "GET", VERIFY_CREDENTIALS_URL, null), is(ANY_AUTH_CREDENTIALS));
     }
 
     private class MockOAuth1aParameters extends OAuth1aParameters {

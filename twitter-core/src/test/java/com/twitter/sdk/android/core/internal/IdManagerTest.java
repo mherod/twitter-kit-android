@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStore;
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,9 +35,7 @@ import org.robolectric.RuntimeEnvironment;
 import static com.twitter.sdk.android.core.internal.IdManager.ADVERTISING_PREFERENCES;
 import static com.twitter.sdk.android.core.internal.IdManager.PREFKEY_INSTALLATION_UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -69,34 +68,34 @@ public class IdManagerTest {
 
     @Test
     public void testGetAppIdentifier() {
-        assertEquals(TEST_PACKAGE, idManager.getAppIdentifier());
+        Assert.assertThat(idManager.getAppIdentifier(), is(TEST_PACKAGE));
     }
 
     @Test
     public void testGetOsVersionString() {
-        assertEquals(TEST_VERSION, idManager.getOsVersionString());
+        Assert.assertThat(idManager.getOsVersionString(), is(TEST_VERSION));
     }
 
     @Test
     public void testGetAdvertisingId() {
-        assertEquals(TEST_AD_ID, idManager.getAdvertisingId());
-        assertTrue(idManager.fetchedAdvertisingInfo);
+        Assert.assertThat(idManager.getAdvertisingId(), is(TEST_AD_ID));
+        Assert.assertThat(idManager.fetchedAdvertisingInfo, is(true));
     }
 
     @Test
     public void testIsLimitAdTrackingEnabled() {
-        assertTrue(idManager.isLimitAdTrackingEnabled());
-        assertTrue(idManager.fetchedAdvertisingInfo);
+        Assert.assertThat(idManager.isLimitAdTrackingEnabled(), is(true));
+        Assert.assertThat(idManager.fetchedAdvertisingInfo, is(true));
     }
 
     @Test
     public void testGetDeviceUUID_shouldReturnUUID() {
         final String uuid = idManager.getDeviceUUID();
-        assertNotNull(TEST_SECURE_ID, uuid);
+        Assert.assertThat(TEST_SECURE_ID, uuid, notNullValue());
 
         final SharedPreferences prefs = context
                 .getSharedPreferences(ADVERTISING_PREFERENCES, Context.MODE_PRIVATE);
-        assertEquals(uuid, prefs.getString(PREFKEY_INSTALLATION_UUID, ""));
+        Assert.assertThat(prefs.getString(PREFKEY_INSTALLATION_UUID, ""), is(uuid));
     }
 
     @Test
@@ -106,6 +105,6 @@ public class IdManagerTest {
         prefs.edit().putString(PREFKEY_INSTALLATION_UUID, TEST_UUID).apply();
 
         final String uuid = idManager.getDeviceUUID();
-        assertNotNull(TEST_UUID, uuid);
+        Assert.assertThat(TEST_UUID, uuid, notNullValue());
     }
 }

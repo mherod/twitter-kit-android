@@ -19,7 +19,9 @@ package com.twitter.sdk.android.tweetui;
 
 import android.content.res.Resources;
 import android.text.format.DateUtils;
+
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +30,7 @@ import org.robolectric.RuntimeEnvironment;
 
 import java.util.TimeZone;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class TweetDateUtilsTest {
@@ -58,94 +60,80 @@ public class TweetDateUtilsTest {
 
     @Test
     public void testApiTimeToLong_jacksFirstTweet() {
-        assertEquals(JACKS_FIRST_TWEET_IN_MILLIS,
-                TweetDateUtils.apiTimeToLong("Tue Mar 21 20:50:14 +0000 2006"));
+        Assert.assertThat(TweetDateUtils.apiTimeToLong("Tue Mar 21 20:50:14 +0000 2006"), is(JACKS_FIRST_TWEET_IN_MILLIS));
     }
 
     @Test
     public void testApiTimeToLong_emptyString() {
-        assertEquals(TweetDateUtils.INVALID_DATE,
-                TweetDateUtils.apiTimeToLong(""));
+        Assert.assertThat(TweetDateUtils.apiTimeToLong(""), is(TweetDateUtils.INVALID_DATE));
     }
 
     @Test
     public void testApiTimeToLong_nullString() {
-        assertEquals(TweetDateUtils.INVALID_DATE,
-                TweetDateUtils.apiTimeToLong(null));
+        Assert.assertThat(TweetDateUtils.apiTimeToLong(null), is(TweetDateUtils.INVALID_DATE));
     }
 
     @Test
     public void testApiTimeToLong_invalidString() {
-        assertEquals(TweetDateUtils.INVALID_DATE,
-                TweetDateUtils.apiTimeToLong("11111"));
+        Assert.assertThat(TweetDateUtils.apiTimeToLong("11111"), is(TweetDateUtils.INVALID_DATE));
     }
 
     @Test
     public void testGetRelativeTimeString_now() {
-        assertEquals("0s",
-                TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, NOW_IN_MILLIS));
+        Assert.assertThat(TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, NOW_IN_MILLIS), is("0s"));
     }
 
     @Test
     public void testGetRelativeTimeString_secondsAgo() {
         final long tenSecondsAgo = NOW_IN_MILLIS - DateUtils.SECOND_IN_MILLIS * 10;
-        assertEquals("10s",
-                TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, tenSecondsAgo));
+        Assert.assertThat(TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, tenSecondsAgo), is("10s"));
     }
 
     @Test
     public void testGetRelativeTimeString_minutesAgo() {
         final long twoMinutesAgo = NOW_IN_MILLIS - DateUtils.MINUTE_IN_MILLIS * 2;
-        assertEquals("2m",
-                TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, twoMinutesAgo));
+        Assert.assertThat(TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, twoMinutesAgo), is("2m"));
     }
 
     @Test
     public void testGetRelativeTimeString_hoursAgo() {
         final long twoHoursAgo = NOW_IN_MILLIS - DateUtils.HOUR_IN_MILLIS * 2;
-        assertEquals("2h",
-                TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, twoHoursAgo));
+        Assert.assertThat(TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, twoHoursAgo), is("2h"));
     }
 
     @Test
     public void testGetRelativeTimeString_daysAgo() {
         final long twoDaysAgo = NOW_IN_MILLIS - DateUtils.DAY_IN_MILLIS * 2;
-        assertEquals("Mar 18",
-                TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, twoDaysAgo));
+        Assert.assertThat(TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, twoDaysAgo), is("Mar 18"));
     }
 
     @Test
     public void testGetRelativeTimeString_lessThanAYearAgoWithinSameYear() {
         final long sixtyDaysAgo = NOW_IN_MILLIS - DateUtils.DAY_IN_MILLIS * 60;
-        assertEquals("Jan 19",
-                TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, sixtyDaysAgo));
+        Assert.assertThat(TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, sixtyDaysAgo), is("Jan 19"));
     }
 
     @Test
     public void testGetRelativeTimeString_moreThanAYearAgo() {
         final long twoYearsAgo = NOW_IN_MILLIS - DateUtils.DAY_IN_MILLIS * 730;
-        assertEquals("03/20/12",
-                TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, twoYearsAgo));
+        Assert.assertThat(TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, twoYearsAgo), is("03/20/12"));
     }
 
     @Test
     public void testGetRelativeTimeString_inTheFuture() {
         final long twoYearsIntoTheFuture = NOW_IN_MILLIS + DateUtils.DAY_IN_MILLIS * 730;
-        assertEquals("03/19/16",
-                TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS,
-                        twoYearsIntoTheFuture));
+        Assert.assertThat(TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS,
+                twoYearsIntoTheFuture), is("03/19/16"));
     }
 
     @Test
     public void testGetRelativeTimeString_negativeTime() {
         final long wayInthePast = -DateUtils.DAY_IN_MILLIS;
-        assertEquals("12/31/69",
-                TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, wayInthePast));
+        Assert.assertThat(TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, wayInthePast), is("12/31/69"));
     }
 
     @Test
     public void testGetRelativeTimeString_zeroTime() {
-        assertEquals("01/01/70",
-                TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, 0));
+        Assert.assertThat(TweetDateUtils.getRelativeTimeString(resources, NOW_IN_MILLIS, 0), is("01/01/70"));
     }
 }

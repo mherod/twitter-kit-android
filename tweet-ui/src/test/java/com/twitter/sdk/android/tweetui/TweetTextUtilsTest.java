@@ -21,11 +21,12 @@ import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.models.UrlEntity;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class TweetTextUtilsTest {
@@ -44,20 +45,20 @@ public class TweetTextUtilsTest {
         final Tweet tweet = setupTweetToBeFormatted();
         TweetTextUtils.format(formattedTweetText, tweet);
 
-        assertEquals(UNESCAPED_TWEET_TEXT, formattedTweetText.getText());
-        assertEquals("Hello", 1, formattedTweetText.getUrlEntities().get(0).getStart());
-        assertEquals("Hello", 5, formattedTweetText.getUrlEntities().get(0).getEnd());
-        assertEquals("There", 7, formattedTweetText.getUrlEntities().get(1).getStart());
-        assertEquals("There", 11, formattedTweetText.getUrlEntities().get(1).getEnd());
+        Assert.assertThat(formattedTweetText.getText(), is(UNESCAPED_TWEET_TEXT));
+        Assert.assertThat("Hello", formattedTweetText.getUrlEntities().get(0).getStart(), is(1));
+        Assert.assertThat("Hello", formattedTweetText.getUrlEntities().get(0).getEnd(), is(5));
+        Assert.assertThat("There", formattedTweetText.getUrlEntities().get(1).getStart(), is(7));
+        Assert.assertThat("There", formattedTweetText.getUrlEntities().get(1).getEnd(), is(11));
 
-        assertEquals("What", 15, formattedTweetText.getUrlEntities().get(2).getStart());
-        assertEquals("What", 18, formattedTweetText.getUrlEntities().get(2).getEnd());
+        Assert.assertThat("What", formattedTweetText.getUrlEntities().get(2).getStart(), is(15));
+        Assert.assertThat("What", formattedTweetText.getUrlEntities().get(2).getEnd(), is(18));
 
-        assertEquals("is", 20, formattedTweetText.getUrlEntities().get(3).getStart());
-        assertEquals("is", 21, formattedTweetText.getUrlEntities().get(3).getEnd());
+        Assert.assertThat("is", formattedTweetText.getUrlEntities().get(3).getStart(), is(20));
+        Assert.assertThat("is", formattedTweetText.getUrlEntities().get(3).getEnd(), is(21));
 
-        assertEquals("a", 23, formattedTweetText.getUrlEntities().get(4).getStart());
-        assertEquals("a", 23, formattedTweetText.getUrlEntities().get(4).getEnd());
+        Assert.assertThat("a", formattedTweetText.getUrlEntities().get(4).getStart(), is(23));
+        Assert.assertThat("a", formattedTweetText.getUrlEntities().get(4).getEnd(), is(23));
     }
 
     @Test
@@ -66,35 +67,35 @@ public class TweetTextUtilsTest {
 
         Tweet tweet = new TweetBuilder().setText("&amp;").build();
         TweetTextUtils.format(formattedTweetText, tweet);
-        assertEquals("&", formattedTweetText.getText());
+        Assert.assertThat(formattedTweetText.getText(), is("&"));
 
         tweet = new TweetBuilder().setText("&#;").build();
         TweetTextUtils.format(formattedTweetText, tweet);
-        assertEquals("&#;", formattedTweetText.getText());
+        Assert.assertThat(formattedTweetText.getText(), is("&#;"));
 
         tweet = new TweetBuilder().setText("&#34;").build();
         TweetTextUtils.format(formattedTweetText, tweet);
-        assertEquals("\"", formattedTweetText.getText());
+        Assert.assertThat(formattedTweetText.getText(), is("\""));
 
         tweet = new TweetBuilder().setText("&#x22;").build();
         TweetTextUtils.format(formattedTweetText, tweet);
-        assertEquals("\"", formattedTweetText.getText());
+        Assert.assertThat(formattedTweetText.getText(), is("\""));
 
         tweet = new TweetBuilder().setText("&lt; & Larry &gt; &").build();
         TweetTextUtils.format(formattedTweetText, tweet);
-        assertEquals("< & Larry > &", formattedTweetText.getText());
+        Assert.assertThat(formattedTweetText.getText(), is("< & Larry > &"));
 
         tweet = new TweetBuilder().setText("&&amp;").build();
         TweetTextUtils.format(formattedTweetText, tweet);
-        assertEquals("&&", formattedTweetText.getText());
+        Assert.assertThat(formattedTweetText.getText(), is("&&"));
 
         tweet = new TweetBuilder().setText("&&&&&&&&amp;").build();
         TweetTextUtils.format(formattedTweetText, tweet);
-        assertEquals("&&&&&&&&", formattedTweetText.getText());
+        Assert.assertThat(formattedTweetText.getText(), is("&&&&&&&&"));
 
         tweet = new TweetBuilder().setText("&&&&gt&&lt&&amplt;").build();
         TweetTextUtils.format(formattedTweetText, tweet);
-        assertEquals("&&&&gt&&lt&&amplt;", formattedTweetText.getText());
+        Assert.assertThat(formattedTweetText.getText(), is("&&&&gt&&lt&&amplt;"));
     }
 
     @Test
@@ -108,8 +109,8 @@ public class TweetTextUtilsTest {
                 .build();
         TweetTextUtils.format(formattedTweetText, tweet);
 
-        assertEquals(24, formattedTweetText.getUrlEntities().get(0).getStart());
-        assertEquals(47, formattedTweetText.getUrlEntities().get(0).getEnd());
+        Assert.assertThat(formattedTweetText.getUrlEntities().get(0).getStart(), is(24));
+        Assert.assertThat(formattedTweetText.getUrlEntities().get(0).getEnd(), is(47));
     }
 
     private Tweet setupTweetToBeFormatted() {

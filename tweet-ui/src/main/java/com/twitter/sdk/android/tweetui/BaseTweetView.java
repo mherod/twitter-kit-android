@@ -213,14 +213,14 @@ public abstract class BaseTweetView extends AbstractTweetView {
         }
 
         // offset from white when background is light
-        secondaryTextColor = ColorUtils.INSTANCE.calculateOpacityTransform(
+        secondaryTextColor = ColorUtils.calculateOpacityTransform(
                 isLightBg ? SECONDARY_TEXT_COLOR_LIGHT_OPACITY : SECONDARY_TEXT_COLOR_DARK_OPACITY,
                 isLightBg ? Color.WHITE : Color.BLACK,
                 primaryTextColor
         );
 
         // offset from black when background is light
-        mediaBgColor = ColorUtils.INSTANCE.calculateOpacityTransform(
+        mediaBgColor = ColorUtils.calculateOpacityTransform(
                 isLightBg ? MEDIA_BG_LIGHT_OPACITY : MEDIA_BG_DARK_OPACITY,
                 isLightBg ? Color.BLACK : Color.WHITE,
                 containerBgColor
@@ -326,7 +326,7 @@ public abstract class BaseTweetView extends AbstractTweetView {
             quoteTweetView = new QuoteTweetView(getContext());
             quoteTweetView.setStyle(primaryTextColor, secondaryTextColor, actionColor,
                     actionHighlightColor, mediaBgColor, photoErrorResId);
-            quoteTweetView.setTweet(tweet.quotedStatus);
+            quoteTweetView.setTweet(tweet.getQuotedStatus());
             quoteTweetView.setTweetLinkClickListener(tweetLinkClickListener);
             quoteTweetView.setTweetMediaClickListener(tweetMediaClickListener);
             quoteTweetHolder.setVisibility(View.VISIBLE);
@@ -341,11 +341,11 @@ public abstract class BaseTweetView extends AbstractTweetView {
      * @param tweet The status from the API, if it is a retweet show the "retweeted by" text
      */
     void showRetweetedBy(Tweet tweet) {
-        if (tweet == null || tweet.retweetedStatus == null) {
+        if (tweet == null || tweet.getRetweetedStatus() == null) {
             retweetedByView.setVisibility(GONE);
         } else {
             retweetedByView.setText(
-                    getResources().getString(R.string.tw__retweeted_by_format, tweet.user.name));
+                    getResources().getString(R.string.tw__retweeted_by_format, tweet.getUser().getName()));
             retweetedByView.setVisibility(VISIBLE);
         }
     }
@@ -373,10 +373,10 @@ public abstract class BaseTweetView extends AbstractTweetView {
      */
     private void setTimestamp(Tweet displayTweet) {
         final String formattedTimestamp;
-        if (displayTweet != null && displayTweet.createdAt != null &&
-                TweetDateUtils.isValidTimestamp(displayTweet.createdAt)) {
+        if (displayTweet != null && displayTweet.getCreatedAt() != null &&
+                TweetDateUtils.isValidTimestamp(displayTweet.getCreatedAt())) {
             final Long createdAtTimestamp
-                    = TweetDateUtils.apiTimeToLong(displayTweet.createdAt);
+                    = TweetDateUtils.apiTimeToLong(displayTweet.getCreatedAt());
             final String timestamp = TweetDateUtils.getRelativeTimeString(getResources(),
                     System.currentTimeMillis(),
                     createdAtTimestamp);
@@ -400,10 +400,10 @@ public abstract class BaseTweetView extends AbstractTweetView {
         if (imageLoader == null) return;
 
         final String url;
-        if (displayTweet == null || displayTweet.user == null) {
+        if (displayTweet == null || displayTweet.getUser() == null) {
             url = null;
         } else {
-            url = UserUtils.INSTANCE.getProfileImageUrlHttps(displayTweet.user,
+            url = UserUtils.INSTANCE.getProfileImageUrlHttps(displayTweet.getUser(),
                     AvatarSize.REASONABLY_SMALL);
         }
 
@@ -415,14 +415,14 @@ public abstract class BaseTweetView extends AbstractTweetView {
      * @param displayTweet The tweet from which to linkify the profile photo
      */
     void linkifyProfilePhotoView(final Tweet displayTweet) {
-        if (displayTweet != null && displayTweet.user != null) {
+        if (displayTweet != null && displayTweet.getUser() != null) {
             avatarView.setOnClickListener(v -> {
                 if (tweetLinkClickListener != null) {
                     tweetLinkClickListener.onLinkClick(displayTweet,
-                            TweetUtils.getProfilePermalink(displayTweet.user.screenName));
+                            TweetUtils.getProfilePermalink(displayTweet.getUser().getScreenName()));
                 } else {
                     final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(
-                            TweetUtils.getProfilePermalink(displayTweet.user.screenName)));
+                            TweetUtils.getProfilePermalink(displayTweet.getUser().getScreenName())));
                     if (!IntentUtils.safeStartActivity(getContext(), intent)) {
                         Twitter.getLogger().e(TweetUi.LOGTAG,
                                 "Activity cannot be found to open URL");

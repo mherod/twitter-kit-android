@@ -24,6 +24,7 @@ import com.twitter.sdk.android.core.models.TweetEntities;
 import com.twitter.sdk.android.core.models.VideoInfo;
 import com.twitter.sdk.android.tweetui.TestFixtures;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -31,11 +32,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class TweetMediaUtilsTest {
@@ -51,14 +48,14 @@ public class TweetMediaUtilsTest {
     @Test
     public void testGetPhotoEntity_nullEntities() {
         final Tweet tweet = new TweetBuilder().setEntities(null).build();
-        assertNull(TweetMediaUtils.getPhotoEntity(tweet));
+        Assert.assertThat(TweetMediaUtils.getPhotoEntity(tweet), nullValue());
     }
 
     @Test
     public void testGetPhotoEntity_nullMedia() {
         final TweetEntities entities = new TweetEntities(null, null, null, null, null);
         final Tweet tweet = new TweetBuilder().setEntities(entities).build();
-        assertNull(TweetMediaUtils.getPhotoEntity(tweet));
+        Assert.assertThat(TweetMediaUtils.getPhotoEntity(tweet), nullValue());
     }
 
     @Test
@@ -66,7 +63,7 @@ public class TweetMediaUtilsTest {
         final TweetEntities entities = new TweetEntities(null, null, new ArrayList<>(),
                 null, null);
         final Tweet tweet = new TweetBuilder().setEntities(entities).build();
-        assertNull(TweetMediaUtils.getPhotoEntity(tweet));
+        Assert.assertThat(TweetMediaUtils.getPhotoEntity(tweet), nullValue());
     }
 
     @Test
@@ -78,7 +75,7 @@ public class TweetMediaUtilsTest {
         final TweetEntities entities = new TweetEntities(null, null, media, null, null);
         final Tweet tweet = new TweetBuilder().setEntities(entities).build();
 
-        assertEquals(entity, TweetMediaUtils.getPhotoEntity(tweet));
+        Assert.assertThat(TweetMediaUtils.getPhotoEntity(tweet), is(entity));
     }
 
     @Test
@@ -90,7 +87,7 @@ public class TweetMediaUtilsTest {
         final TweetEntities entities = new TweetEntities(null, null, media, null, null);
         final Tweet tweet = new TweetBuilder().setEntities(entities).build();
 
-        assertNull(TweetMediaUtils.getPhotoEntity(tweet));
+        Assert.assertThat(TweetMediaUtils.getPhotoEntity(tweet), nullValue());
     }
 
     @Test
@@ -102,7 +99,7 @@ public class TweetMediaUtilsTest {
         final TweetEntities entities = new TweetEntities(null, null, media, null, null);
         final Tweet tweet = new TweetBuilder().setEntities(entities).build();
 
-        assertTrue(TweetMediaUtils.hasPhoto(tweet));
+        Assert.assertThat(TweetMediaUtils.hasPhoto(tweet), is(true));
     }
 
     @Test
@@ -114,33 +111,33 @@ public class TweetMediaUtilsTest {
         final TweetEntities entities = new TweetEntities(null, null, media, null, null);
         final Tweet tweet = new TweetBuilder().setEntities(entities).build();
 
-        assertFalse(TweetMediaUtils.hasPhoto(tweet));
+        Assert.assertThat(TweetMediaUtils.hasPhoto(tweet), is(false));
     }
 
     @Test
     public void testHasPhoto_uninitializedMediaEntities() {
         final TweetEntities entities = new TweetEntities(null, null, null, null, null);
         final Tweet tweet = new TweetBuilder().setEntities(entities).build();
-        assertFalse(TweetMediaUtils.hasPhoto(tweet));
+        Assert.assertThat(TweetMediaUtils.hasPhoto(tweet), is(false));
     }
 
     @Test
     public void testHasPhoto_nullEntities() {
         final Tweet tweet = new TweetBuilder().setEntities(null).build();
-        assertFalse(TweetMediaUtils.hasPhoto(tweet));
+        Assert.assertThat(TweetMediaUtils.hasPhoto(tweet), is(false));
     }
 
     @Test
     public void testGetVideoEntity_nullEntities() {
         final Tweet tweet = new TweetBuilder().setExtendedEntities(null).build();
-        assertNull(TweetMediaUtils.getVideoEntity(tweet));
+        Assert.assertThat(TweetMediaUtils.getVideoEntity(tweet), nullValue());
     }
 
     @Test
     public void testGetVideoEntity_nullMedia() {
         final TweetEntities entities = new TweetEntities(null, null, null, null, null);
         final Tweet tweet = new TweetBuilder().setExtendedEntities(entities).build();
-        assertNull(TweetMediaUtils.getVideoEntity(tweet));
+        Assert.assertThat(TweetMediaUtils.getVideoEntity(tweet), nullValue());
     }
 
     @Test
@@ -148,7 +145,7 @@ public class TweetMediaUtilsTest {
         final TweetEntities entities = new TweetEntities(null, null, new ArrayList<>(),
                 null, null);
         final Tweet tweet = new TweetBuilder().setExtendedEntities(entities).build();
-        assertNull(TweetMediaUtils.getVideoEntity(tweet));
+        Assert.assertThat(TweetMediaUtils.getVideoEntity(tweet), nullValue());
     }
 
     @Test
@@ -160,7 +157,7 @@ public class TweetMediaUtilsTest {
         final TweetEntities entities = new TweetEntities(null, null, media, null, null);
         final Tweet tweet = new TweetBuilder().setExtendedEntities(entities).build();
 
-        assertEquals(entity, TweetMediaUtils.getVideoEntity(tweet));
+        Assert.assertThat(TweetMediaUtils.getVideoEntity(tweet), is(entity));
     }
 
     @Test
@@ -172,7 +169,7 @@ public class TweetMediaUtilsTest {
         final TweetEntities entities = new TweetEntities(null, null, media, null, null);
         final Tweet tweet = new TweetBuilder().setExtendedEntities(entities).build();
 
-        assertNull(TweetMediaUtils.getVideoEntity(tweet));
+        Assert.assertThat(TweetMediaUtils.getVideoEntity(tweet), nullValue());
     }
 
     @Test
@@ -185,7 +182,7 @@ public class TweetMediaUtilsTest {
                 null);
         final Tweet tweet = new TweetBuilder().setExtendedEntities(entities).build();
 
-        assertFalse(TweetMediaUtils.hasSupportedVideo(tweet));
+        Assert.assertThat(TweetMediaUtils.hasSupportedVideo(tweet), is(false));
     }
 
     @Test
@@ -198,7 +195,7 @@ public class TweetMediaUtilsTest {
                 null);
         final Tweet tweet = new TweetBuilder().setExtendedEntities(entities).build();
 
-        assertTrue(TweetMediaUtils.hasSupportedVideo(tweet));
+        Assert.assertThat(TweetMediaUtils.hasSupportedVideo(tweet), is(true));
     }
 
     @Test
@@ -210,62 +207,62 @@ public class TweetMediaUtilsTest {
         final TweetEntities entities = new TweetEntities(null, null, media, null, null);
         final Tweet tweet = new TweetBuilder().setExtendedEntities(entities).build();
 
-        assertFalse(TweetMediaUtils.hasSupportedVideo(tweet));
+        Assert.assertThat(TweetMediaUtils.hasSupportedVideo(tweet), is(false));
     }
 
     @Test
     public void testHasSupportedVideo_uninitializedMediaEntities() {
         final TweetEntities entities = new TweetEntities(null, null, null, null, null);
         final Tweet tweet = new TweetBuilder().setExtendedEntities(entities).build();
-        assertFalse(TweetMediaUtils.hasSupportedVideo(tweet));
+        Assert.assertThat(TweetMediaUtils.hasSupportedVideo(tweet), is(false));
     }
 
     @Test
     public void testHasSupportedVideo_nullEntities() {
         final Tweet tweet = new TweetBuilder().setExtendedEntities(null).build();
-        assertFalse(TweetMediaUtils.hasSupportedVideo(tweet));
+        Assert.assertThat(TweetMediaUtils.hasSupportedVideo(tweet), is(false));
     }
 
     @Test
     public void testIsPhotoType_photoEntity() {
         final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
                 TEST_MEDIA_TYPE_PHOTO);
-        assertTrue(TweetMediaUtils.isPhotoType(entity));
+        Assert.assertThat(TweetMediaUtils.isPhotoType(entity), is(true));
     }
 
     @Test
     public void testIsPhotoType_videoEntity() {
         final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
                 TEST_MEDIA_TYPE_VIDEO);
-        assertFalse(TweetMediaUtils.isPhotoType(entity));
+        Assert.assertThat(TweetMediaUtils.isPhotoType(entity), is(false));
     }
 
     @Test
     public void testIsPhotoType_animatedGifEntity() {
         final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
                 TEST_MEDIA_TYPE_ANIMATED_GIF);
-        assertFalse(TweetMediaUtils.isPhotoType(entity));
+        Assert.assertThat(TweetMediaUtils.isPhotoType(entity), is(false));
     }
 
     @Test
     public void testIsVideoType_photoEntity() {
         final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
                 TEST_MEDIA_TYPE_PHOTO);
-        assertFalse(TweetMediaUtils.isVideoType(entity));
+        Assert.assertThat(TweetMediaUtils.isVideoType(entity), is(false));
     }
 
     @Test
     public void testIsVideoType_videoEntity() {
         final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
                 TEST_MEDIA_TYPE_VIDEO);
-        assertTrue(TweetMediaUtils.isVideoType(entity));
+        Assert.assertThat(TweetMediaUtils.isVideoType(entity), is(true));
     }
 
     @Test
     public void testIsVideoType_animatedGifEntity() {
         final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
                 TEST_MEDIA_TYPE_ANIMATED_GIF);
-        assertTrue(TweetMediaUtils.isVideoType(entity));
+        Assert.assertThat(TweetMediaUtils.isVideoType(entity), is(true));
     }
 
     @Test
@@ -274,8 +271,8 @@ public class TweetMediaUtilsTest {
         final VideoInfo videoInfo = TestFixtures.createVideoInfoWithVariant(variant);
         final MediaEntity entity = TestFixtures.createEntityWithVideo(videoInfo);
 
-        assertNotNull(TweetMediaUtils.getSupportedVariant(entity));
-        assertEquals(variant, TweetMediaUtils.getSupportedVariant(entity));
+        Assert.assertThat(TweetMediaUtils.getSupportedVariant(entity), notNullValue());
+        Assert.assertThat(TweetMediaUtils.getSupportedVariant(entity), is(variant));
     }
 
     @Test
@@ -284,65 +281,65 @@ public class TweetMediaUtilsTest {
         final VideoInfo videoInfo = TestFixtures.createVideoInfoWithVariant(variant);
         final MediaEntity entity = TestFixtures.createEntityWithVideo(videoInfo);
 
-        assertNull(TweetMediaUtils.getSupportedVariant(entity));
+        Assert.assertThat(TweetMediaUtils.getSupportedVariant(entity), nullValue());
     }
 
     @Test
     public void testIsVariantSupported_withMP4() {
         final VideoInfo.Variant variant = new VideoInfo.Variant(0, TEST_CONTENT_TYPE_MP4, null);
-        assertTrue(TweetMediaUtils.isVariantSupported(variant));
+        Assert.assertThat(TweetMediaUtils.isVariantSupported(variant), is(true));
     }
 
     @Test
     public void testIsVariantSupported_withHLS() {
         final VideoInfo.Variant variant = new VideoInfo.Variant(0, TEST_CONTENT_TYPE_HLS, null);
-        assertTrue(TweetMediaUtils.isVariantSupported(variant));
+        Assert.assertThat(TweetMediaUtils.isVariantSupported(variant), is(true));
     }
 
     @Test
     public void testIsVariantSupported_withNullContentType() {
         final VideoInfo.Variant variant = new VideoInfo.Variant(0, null, null);
-        assertFalse(TweetMediaUtils.isVariantSupported(variant));
+        Assert.assertThat(TweetMediaUtils.isVariantSupported(variant), is(false));
     }
 
     @Test
     public void testIsVariantSupported_withUnsupportedContentType() {
         final VideoInfo.Variant variant = new VideoInfo.Variant(0, TEST_CONTENT_TYPE_DASH, null);
-        assertFalse(TweetMediaUtils.isVariantSupported(variant));
+        Assert.assertThat(TweetMediaUtils.isVariantSupported(variant), is(false));
     }
 
     @Test
     public void testIsLooping_withVideoOverSevenSeconds() {
         final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
                 TEST_MEDIA_TYPE_VIDEO, 7000);
-        assertFalse(TweetMediaUtils.isLooping(entity));
+        Assert.assertThat(TweetMediaUtils.isLooping(entity), is(false));
     }
 
     @Test
     public void testIsLooping_withVideoUnderSevenSeconds() {
         final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
                 TEST_MEDIA_TYPE_VIDEO, 6000);
-        assertTrue(TweetMediaUtils.isLooping(entity));
+        Assert.assertThat(TweetMediaUtils.isLooping(entity), is(true));
     }
 
     @Test
     public void testIsLooping_withAnimatedGif() {
         final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
                 TEST_MEDIA_TYPE_ANIMATED_GIF);
-        assertTrue(TweetMediaUtils.isLooping(entity));
+        Assert.assertThat(TweetMediaUtils.isLooping(entity), is(true));
     }
 
     @Test
     public void showVideoControlsWithVideo() {
         final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
                 TEST_MEDIA_TYPE_VIDEO);
-        assertTrue(TweetMediaUtils.showVideoControls(entity));
+        Assert.assertThat(TweetMediaUtils.showVideoControls(entity), is(true));
     }
 
     @Test
     public void showVideoControlsWithAnimatedGif() {
         final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
                 TEST_MEDIA_TYPE_ANIMATED_GIF);
-        assertFalse(TweetMediaUtils.showVideoControls(entity));
+        Assert.assertThat(TweetMediaUtils.showVideoControls(entity), is(false));
     }
 }
